@@ -20,7 +20,7 @@ import DelegateVoting from "./DelegateVoting";
 import ConfiramtionPopup from "./ConfirmationPopup";
 import NotifyPopup from "./NotifyPopup";
 import useStyles from "./Governance.styles";
-
+import BitDaoLogo from '../../BitDao.png';
 function createData(
   Rank: string,
   EnsAddr: string,
@@ -277,10 +277,10 @@ function Governance({}) {
           >
             <Toolbar component="div">
               <Grid item md={6} xs={6}>
-                <Typography variant="h4" className={classes.title}>
-                  <img src={process.env.REACT_APP_CLOUDFRONT + "bitlogo.png"} />
-                  
-                </Typography>
+                
+                  {/* <img src={process.env.REACT_APP_CLOUDFRONT + "bitlogo.png"} /> */}
+                  <img className='w-11rem 'src={BitDaoLogo} />
+              
               </Grid>
               <Grid item md={6} xs={6}>
                 <div
