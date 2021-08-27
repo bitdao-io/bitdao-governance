@@ -4,7 +4,7 @@ import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import COMPABI from "../abi/Comp.json";
-import NotifyPopup from "../pages/Governance/NotifyPopup";
+import NotifyPopup from "../pages/Governance/Components/NotifyPopup/NotifyPopup";
 // Enter a valid infura key here to avoid being rate limited
 // You can get a key for free at https://infura.io/register
 const INFURA_ID = process.env.REACT_APP_INFURA_KEY;

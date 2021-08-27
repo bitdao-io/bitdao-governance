@@ -7,7 +7,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "./fontFamily/SpaceGrotesk-Regular.ttf";
 import "./fontFamily/SpaceGrotesk-Bold.ttf";
 
-import NotifyPopup from "./pages/Governance/NotifyPopup";
+import NotifyPopup from "./pages/Governance/Components/NotifyPopup/NotifyPopup";
 import "./App.css";
 declare let window: any;
 const THEME = createMuiTheme({

@@ -1,1 +1,1 @@
-export {default} from "./factor"
+export {default} from "./Governance"
