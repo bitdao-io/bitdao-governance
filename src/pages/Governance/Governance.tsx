@@ -450,7 +450,7 @@ function Governance({}) {
                 </p>
                 <p className={classes.votingWalletMidBottomStartText}>
                   You can delegate
-                  your votes to a thrid party here. Delegation can be given to one
+                  your votes to a third party here. Delegation can be given to one
                   address at a time. Note that delegation does not lock or
                   transfer tokens.
                   <a
