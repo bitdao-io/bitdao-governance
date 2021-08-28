@@ -79,19 +79,20 @@ export default function DelegateVoting({
       onClose={handleClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      style={{ marginLeft: "28%", marginTop: "15%" }}
+      // style={{ marginLeft: "28%", marginTop: "15%" }}
     >
-      <div className="w-650px rounded-xl bg-white ">
-        <div className=" py-7 text-center">
-          <text className="text-lightBlue font-mono text-lg px-48">
+      <div className="w-3/4 max-w-720px rounded-xl bg-white mx-auto mt-10%">
+        <div className="py-7 text-center relative">
+          <text className="text-lightBlue font-mono text-lg w-3/4">
             Delegate Voting
           </text>
           <button
             onClick={() => {
               handleClose();
             }}
+            className='absolute right-5 top-7'
           >
-            <text className="ml-5 text-gray text-2xl">x</text>
+            <text className="text-gray text-2xl">x</text>
           </button>
         </div>
         <hr />
@@ -106,11 +107,11 @@ export default function DelegateVoting({
             lock or transfer your BIT tokens.
           </text>
           <div className="mt-2">
-            <div className="flex flex-row mb-4">
+            <div className="relative flex flex-row mb-4">
               <text className="font-mono text-black text-lg w-96">
                 Delegate Address
               </text>
-              <button className="ml-4" onClick={handleOwnDegelationAddr}>
+              <button className="absolute right-2" onClick={handleOwnDegelationAddr}>
                 <text className="font-mono text-red">Delegate To Yourself</text>
               </button>
             </div>

@@ -20,12 +20,11 @@ export default function Factor(): JSX.Element {
     const [connected, setConnected] = useState(false);
     const [confirmedTx, setConfirmedTx] = useState(false);
     const [bitBalance, setBitBalance]: any = useState("0");
-    const [currentVotes, setCurrentVotes] = React.useState("0");
-
     const [openDelegate, setOpenDelegate] = useState(false);
     const [refetchVotes, setRefetchVotes] = useState(false);
     const [votesDelegated, setVotesDelegated] = useState("0");
     const [totalTokenSupply, setTotalTokenSupply] = useState(0);
+    const [currentVotes, setCurrentVotes] = React.useState("0");
     const [delegationToAddr, setDelegationToAddr] = useState("");
     const [insufficientBal, setinsufficientBal] = useState(false);
     const [addrWithVotes, setAddrWithVotes]: any[] = useState([]);
@@ -240,7 +239,7 @@ export default function Factor(): JSX.Element {
 
 
     return (
-        <div className='w-full bg-gradient-to-r from-pageStart to-pageEnd'>
+        <div className={styles.root}>
             {/* header part */}
             <div className='grid grid-cols-2 py-10'>
                 <div className='mx-auto'>
@@ -258,7 +257,7 @@ export default function Factor(): JSX.Element {
                 </div>
             </div>
             {/* body part */}
-            <div className='flex flex-col px-96 py-20'>
+            <div className='flex flex-col w-1/2 mx-auto py-20 min-w-490px'>
                 {/* 主标题 */}
                 <div className=' text-center flex flex-col mb-10'>
                     <text className='text-blue font-normal text-5xl mb-2'>DELEGATE VOTES</text>
@@ -275,7 +274,7 @@ export default function Factor(): JSX.Element {
                 <Card>
                     {/* 钱数显示 */}
                     <div className='px-9 py-8'>
-                        <text className='font-mono text-2xl'>Voting Wallet</text>
+                        <text className={styles.subSectionTitle}>Voting Wallet</text>
                     </div>
                     <hr />
                     <div className='flex flex-row px-9 py-10'>
@@ -316,12 +315,12 @@ export default function Factor(): JSX.Element {
                                 <div className='pl-7'>
                                     {currentVotes.indexOf('.') && currentVotes.indexOf('.') > 0 ? (
                                         <>
-                                            <span className='font-mono text-2xl'>{currentVotes.slice(0, -4)}</span>
-                                            <span className='font-mono text-2xl' style={{ color: "#919191" }}>
+                                            <span className={styles.subSectionTitle}>{currentVotes.slice(0, -4)}</span>
+                                            <span className={styles.subSectionTitle} style={{ color: "#919191" }}>
                                                 {currentVotes.slice(-4)}
                                             </span>
                                         </>
-                                    ) : <text  className='font-mono text-2xl'>{currentVotes}</text>}
+                                    ) : <text  className={styles.subSectionTitle}>{currentVotes}</text>}
                                 </div>
 
                                 <a href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`} target="_blank">
@@ -331,7 +330,7 @@ export default function Factor(): JSX.Element {
                         </div>
                     ) : (
                         <div className='font-mono flex flex-col px-9 py-4'>
-                            <text className='font-mono text-2xl'>
+                            <text className={styles.subSectionTitle}>
                                 Setup Voting
                             </text>
                             <text className='mt-5 text-lg text-gray'>
@@ -345,7 +344,7 @@ export default function Factor(): JSX.Element {
                             >
                                 <text className='text-lg text-red'> Learn More.</text>
                             </a>
-                            <button className='px-48 mx-auto bg-red rounded-xl py-5 my-3 shadow-2xl' onClick={connected ? handleOpen : handleWallet}>
+                            <button className='mx-auto bg-red rounded-xl py-5 my-3 shadow-2xl w-2/3' onClick={connected ? handleOpen : handleWallet}>
                                 <text className='text-white font-mono text-2xl'>Get Started</text>
                             </button>
                         </div>
@@ -354,7 +353,7 @@ export default function Factor(): JSX.Element {
                 </Card>
                 <Card>
                     <div className='px-2 py-6'>
-                        <text className='font-mono text-2xl'>Top Addresses by Voting Weight</text>
+                        <text className={styles.subSectionTitle}>Top Addresses by Voting Weight</text>
                     </div>
                     <hr />
                     <div className='grid grid-cols-2 py-4'>
@@ -393,4 +392,9 @@ export default function Factor(): JSX.Element {
             )}
         </div>
     )
+}
+
+const styles = {
+    root:'w-full bg-gradient-to-r from-pageStart to-pageEnd',
+    subSectionTitle : 'font-mono text-2xl'
 }

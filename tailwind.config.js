@@ -24,6 +24,15 @@ module.exports = {
         'black' : '#121212',
         'red' : '#E84F7D',
         'skyBlue' : '#5CC7F2'
+      },
+      minWidth:{
+        '490px':'490px'
+      },
+      maxWidth:{
+        '720px': '720px'
+      },
+      spacing:{
+        '10%' : '10%'
       }
     },
   },
