@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Governance from "./pages/Governance";
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 import useWeb3Modal from "./hooks/useWeb3Modal";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "./fontFamily/SpaceGrotesk-Regular.ttf";
@@ -51,7 +51,7 @@ function App() {
               </Switch>
             </Router>
 
-            <Footer />
+            {/* <Footer /> */}
           </>
         )}
       </MuiThemeProvider>
