@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# Build package
+1. Install yarn packages by `yarn`
+2. Config the `.env` file by copy the values from the `.env_template` to the repository root
+3. Build package by `yarn run build`
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Setup AWS S3 Static Website Hosting
+1. Create AWS S3 bucket
+2. Set the block public access to 
 
-## Available Scripts
+    `Block public access to buckets and objects granted through new access control lists (ACLs)`
 
-In the project directory, you can run:
+     > On
 
-### `yarn start`
+    `Block public access to buckets and objects granted through any access control lists (ACLs)`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+      > On
+     
+3. Set the bucket policy:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicRead",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::<YOUR_BUCKET_NAME>/*"
+        }
+        ]
+    }
+```
+4. Enable Static website hosting
+5. Upload (drag and drop) everything from the `build` folder of your repo after you run `yarn build`. (There should be an index.html under the root of your S3 bucket)
 
-### `yarn test`
+# Setup AWS Certificate Manager
+1. Import public certificate manager and issue certificate by DNS
+2. Download the csv file
+3. Go to DNS manager of your domain and add CNAME records to issue certificate to ACM
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Setup Cloudfront
+1. Create a cloudfront distribution
+2. Select S3 bucket to be distributed
+3. Select the certificate that you issued in ACM
+4. Once the cloudfront enabled, create another CNAME record on your DNS manager with the cloudfront url and domain name
