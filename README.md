@@ -24,6 +24,7 @@
         ]
     }
 4. Enable Static website hosting
+5. Upload verying from build folder of your repo after yarn build. (There should be an index.html under the root of your S3 bucket)
 
 # Setup AWS Certificate Manager
 1. Import public certificate manager and issue certificate by DNS
