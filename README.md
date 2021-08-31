@@ -1,6 +1,6 @@
 # Build package
 1. Install yarn packages by `yarn`
-2. Config the .env file by copy .env_template to root repo
+2. Config the `.env` file by copy the values from the `.env_template` to the repository root
 3. Build package by `yarn run build`
 
 # Setup AWS S3 Static Website Hosting
