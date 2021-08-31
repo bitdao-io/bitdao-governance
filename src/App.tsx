@@ -47,7 +47,7 @@ function App() {
            
             <Router>
               <Switch>
-                <Route exact path="/governance" component={Governance}></Route>
+                <Route exact path="/" component={Governance}></Route>
               </Switch>
             </Router>
 
