@@ -272,7 +272,7 @@ function DelegateVoting({
               />
               <p className={classes.msgLabel}>{label} 
               
-              {insufficientBal?'Insufficient balance to vote':(
+              {insufficientBal?'Insufficient balance to delegate':(
                 <>
                     {nameLabel.name != ''?
                     <>
