@@ -206,7 +206,7 @@ const useStyles = makeStyles((theme: Theme) =>
       }
     },
     headtabelCell: {
-      padding:"13px 0px 13px 0px",
+      padding:"10px 0px 10px 0px",
       color:"#0E47EF",
       fontFamily: "ABeeZeeRegular !important",
     },
@@ -329,9 +329,11 @@ const useStyles = makeStyles((theme: Theme) =>
       float: 'left'
     },
     messageAlign:{
-      fontSize:"22px",
+      fontSize:"18px",
     float: 'left'
-    }
-  })
+    },
+    separator:{color:'rgb(190,190,190)'}
+  }),
+  
 );
  export  default useStyles;

@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 // import { createWatcher } from "@makerdao/multicall";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from "@material-ui/icons/Edit";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -31,13 +31,12 @@ function createData(
   return { Rank, EnsAddr, Votes, VoteWeight, ProposalsVoted };
 }
 
-
 function Governance({}) {
   const classes = useStyles();
 
   const [arrayLength, setArrayLength] = React.useState(15);
   const [connected, setConnected] = React.useState(false);
-  const [bitBalance, setBitBalance]:any = React.useState("0");
+  const [bitBalance, setBitBalance]: any = React.useState("1000");
   const [open, setOpen] = React.useState(false);
   const [openDelegate, setOpenDelegate] = React.useState(false);
   const [confirmTx, setConfirmTx] = React.useState(false);
@@ -56,13 +55,18 @@ function Governance({}) {
   );
   const [addressesWithDelegates, setAddressesWithDelegates]: any =
     React.useState([]);
-  const [provider, loadWeb3Modal, logoutOfWeb3Modal, contracts, accounts,networkId] =
-    useWeb3Modal();
+  const [
+    provider,
+    loadWeb3Modal,
+    logoutOfWeb3Modal,
+    contracts,
+    accounts,
+    networkId,
+  ] = useWeb3Modal();
 
   const [addrWithVotes, setAddrWithVotes]: any[] = React.useState([]);
 
   const [totalVotes, setTotalVotes]: any = React.useState(0);
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -74,24 +78,24 @@ function Governance({}) {
 
   const handleCloseDelegate = () => {
     setOpen(false);
-    setinsufficientBal(false)
+    setinsufficientBal(false);
     setOpenDelegate(false);
-    setDelegationClicked(false)
+    setDelegationClicked(false);
   };
   const handleConfirmClose = () => {
     setOpen(false);
     setConfirmTx(false);
     setPendingTx(false);
     setDelegationClicked(false);
-    setConfirmedTx(false)
+    setConfirmedTx(false);
   };
 
-  const openNotifyPopup = ()=>{
-    setNetwork(true)
-  }
-  const closeNotifyPopup = ()=>{
-    setNetwork(false)
-  }
+  const openNotifyPopup = () => {
+    setNetwork(true);
+  };
+  const closeNotifyPopup = () => {
+    setNetwork(false);
+  };
   // const handleDelegateVoting = () => {
   //   setOpen(false);
   //   setOpenDelegate(true);
@@ -109,77 +113,85 @@ function Governance({}) {
     } else {
       logoutOfWeb3Modal();
     }
-
-  }
-  const handleMatchAddress = (address: any) => {
-    const data = addrWithVotes.filter((item: any) => item.id.toLowerCase() == address.toLowerCase());
-    console.log('handleMatchAddress',data.length)
-    if(data.length>0){
-
-      const voteWeight = (data[0].delegatedVotes /totalTokenSupply)*100
-      return voteWeight;
-    }else{return 0;}
-    
   };
-  
-  const handleNumberFormat = (number:any)=>{
-    const splitbal = number.toString().split(".")
-    const toformatfun = new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"})
+  const handleMatchAddress = (address: any) => {
+    const data = addrWithVotes.filter(
+      (item: any) => item.id.toLowerCase() == address.toLowerCase()
+    );
+    console.log("handleMatchAddress", data.length);
+    if (data.length > 0) {
+      const voteWeight = (data[0].delegatedVotes / totalTokenSupply) * 100;
+      return voteWeight;
+    } else {
+      return 0;
+    }
+  };
+
+  const handleNumberFormat = (number: any) => {
+    const splitbal = number.toString().split(".");
+    const toformatfun = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
     const toformat = toformatfun.format(Number(splitbal[0]));
-    if(splitbal[1] == undefined){
-      const formatedBal  = toformat.toString().split(".")[0].split("$")[1]
+    if (splitbal[1] == undefined) {
+      const formatedBal = toformat.toString().split(".")[0].split("$")[1];
       return formatedBal;
-    }else{
-      const formatedBal  = toformat.toString().split(".")[0].split("$")[1]+"."+splitbal[1]
+    } else {
+      const formatedBal =
+        toformat.toString().split(".")[0].split("$")[1] + "." + splitbal[1];
+      console.log();
       return formatedBal;
     }
-  }
+  };
   const handleDelegateSubmit = async (address: any) => {
     if (contracts != undefined) {
       try {
         const balance = await contracts.methods.balanceOf(accounts).call();
-        // console.log(process.env.REACT_APP_NETWORK_ID)        
+        // console.log(process.env.REACT_APP_NETWORK_ID)
 
-          if(balance>0){
-            const v = Number(balance.toString())/10**18;
-            const formatedVote = handleNumberFormat(v);
-            setDelegationToAddr(address);
-            setDelegationClicked(true)
-            setVotesDelegated(formatedVote);
-            setConfirmTx(true);
-            setOpen(false);
-            const receipt = contracts.methods.delegate(address).send({ from: accounts, gas: 300000 }).on("transactionHash", async (txhash: string) => {
+        if (balance > 0) {
+          const v = Number(balance.toString()) / 10 ** 18;
+          const formatedVote = handleNumberFormat(v);
+          setDelegationToAddr(address);
+          setDelegationClicked(true);
+          setVotesDelegated(formatedVote);
+          setConfirmTx(true);
+          setOpen(false);
+          const receipt = contracts.methods
+            .delegate(address)
+            .send({ from: accounts, gas: 300000 })
+            .on("transactionHash", async (txhash: string) => {
               setPendingTx(true);
               setDelegationClicked(false);
               setTxHash(txhash);
-            }).on('receipt', function(receipt:any){
-                console.log('confirmation',receipt)
-                setPendingTx(false)
-                setConfirmedTx(true)
-                setOpen(false);
-                setDelegationClicked(false);
-                setDelegationToAddr(address);
-                setRefetchVotes(true);
-              
-            }).on('error', ()=>{
+            })
+            .on("receipt", function (receipt: any) {
+              console.log("confirmation", receipt);
+              setPendingTx(false);
+              setConfirmedTx(true);
+              setOpen(false);
+              setDelegationClicked(false);
+              setDelegationToAddr(address);
+              setRefetchVotes(true);
+            })
+            .on("error", () => {
               setOpen(false);
               setConfirmTx(false);
-              setConfirmedTx(false)
+              setConfirmedTx(false);
               setDelegationClicked(false);
-              setPendingTx(false)
-            })
-            
-          }
-          else{
-            console.log('insufficient balance')
-            setinsufficientBal(true);
-          } 
+              setPendingTx(false);
+            });
+        } else {
+          console.log("insufficient balance");
+          setinsufficientBal(true);
+        }
       } catch (error) {
         console.log(error.message);
       }
     }
   };
-  
+
   const getAllAddresses = async () => {
     try {
       const { data } = await axios.post(
@@ -198,11 +210,18 @@ function Governance({}) {
       const allDelegators = data.data.delegates;
       setAddrWithVotes(allDelegators);
 
-      const allVotes = data.data.delegates.map((item:any)=>item.delegatedVotes);
-      const sumOfAllVotes = allVotes.reduce((a:any, b:any) => parseInt(a) + parseInt(b), 0)
-      setTotalVotes(sumOfAllVotes)
-      
-      const changeDis = allDelegators.map((item:any)=>item.id.toLowerCase()==accounts.toLowerCase())    
+      const allVotes = data.data.delegates.map(
+        (item: any) => item.delegatedVotes
+      );
+      const sumOfAllVotes = allVotes.reduce(
+        (a: any, b: any) => parseInt(a) + parseInt(b),
+        0
+      );
+      setTotalVotes(sumOfAllVotes);
+
+      const changeDis = allDelegators.map(
+        (item: any) => item.id.toLowerCase() == accounts.toLowerCase()
+      );
 
       if (!changeDis.includes(true)) {
         setNewUser(true);
@@ -210,11 +229,9 @@ function Governance({}) {
         setNewUser(false);
       }
       return allDelegators;
-
-      
     } catch (error) {
       console.log(error.message);
-      return[];
+      return [];
     }
   };
 
@@ -223,48 +240,58 @@ function Governance({}) {
   React.useEffect(() => {
     if (provider != undefined) {
       setConnected(true);
-      
     }
-    
   }, [provider]);
   React.useEffect(() => {
-    
     if (contracts != undefined) {
-      contracts.methods.totalSupply().call().then((res:any)=>{
-        const bal = Number(res.toString())/10**18;
-        setTotalTokenSupply(bal);
-      }).catch((err:any)=>console.log(err))
+      contracts.methods
+        .totalSupply()
+        .call()
+        .then((res: any) => {
+          const bal = Number(res.toString()) / 10 ** 18;
+          setTotalTokenSupply(bal);
+        })
+        .catch((err: any) => console.log(err));
     }
-    
   }, [contracts]);
 
   React.useEffect(() => {
     if (contracts != undefined) {
-      contracts.methods.balanceOf(accounts).call().then((res: any) => {
-          const bal = Number(res.toString())/10**18;
+      contracts.methods
+        .balanceOf(accounts)
+        .call()
+        .then((res: any) => {
+          const bal = Number(res.toString()) / 10 ** 18;
           const formatedBal = handleNumberFormat(bal);
           setBitBalance(formatedBal);
-        }).catch((err:any)=>{console.log(err)})
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
 
-
-        contracts.methods.getCurrentVotes(accounts).call().then((res:any) =>{
-          const bal = Number(res.toString())/10**18;
+      contracts.methods
+        .getCurrentVotes(accounts)
+        .call()
+        .then((res: any) => {
+          const bal = Number(res.toString()) / 10 ** 18;
           const formatedVotes = handleNumberFormat(bal);
           setCurrentVotes(formatedVotes);
-        }).catch((err:any)=>console.log(err))
+        })
+        .catch((err: any) => console.log(err));
 
-        contracts.methods.delegates(accounts).call().then((res:any)=>{
-        setDelegationToAddr(res);
-        }).catch((err:any)=>console.log(err))
-
+      contracts.methods
+        .delegates(accounts)
+        .call()
+        .then((res: any) => {
+          setDelegationToAddr(res);
+        })
+        .catch((err: any) => console.log(err));
     }
-  
-  }, [contracts, accounts,refetchVotes]);
+  }, [contracts, accounts, refetchVotes]);
 
   React.useEffect(() => {
-   getAllAddresses().then(res=>{})
-
-  }, [connected,refetchVotes]);
+    getAllAddresses().then((res) => {});
+  }, [connected, refetchVotes]);
 
   return (
     <Grid container spacing={4} className={classes.root}>
@@ -279,7 +306,6 @@ function Governance({}) {
               <Grid item md={6} xs={6}>
                 <Typography variant="h4" className={classes.title}>
                   <img src={process.env.REACT_APP_CLOUDFRONT + "bitlogo.png"} />
-                  
                 </Typography>
               </Grid>
               <Grid item md={6} xs={6}>
@@ -339,43 +365,61 @@ function Governance({}) {
               BIT Balance
             </Grid>
             <Grid item md={7} xs={12} className={classes.votingWalletMidBal}>
-              
               {accounts == undefined ? (
                 <>
-                  <span className={classes.messageAlign}style={{ color: "#919191", fontSize:"18px" }}>-</span> &nbsp;
-                  <span className={classes.imageAlign} style={{marginTop:'-8px'}}>
-                 
-                 <img src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"} style={{height:'35px'}}/>
-                
-                 
-                 </span>
+                  <span
+                    className={classes.messageAlign}
+                    style={{ color: "#919191" }}
+                  >
+                    -
+                  </span>{" "}
+                  &nbsp;
+                  <span
+                    className={classes.imageAlign}
+                    style={{ marginTop: "-6px" }}
+                  >
+                    <img
+                      src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"}
+                      style={{ height: "27px" }}
+                    />
+                  </span>
                 </>
               ) : (
                 <>
                   {/* {console.log(bitBalance.match(/.{1,3}/g))} */}
                   {/* replace(/\d(?=(\d{3})+\.)/g, "$&,") */}
-                  {bitBalance.indexOf('.') && bitBalance.indexOf('.') > 0 ? ( 
+                  {bitBalance.indexOf(".") && bitBalance.indexOf(".") > 0 ? (
                     <>
-                     <span  className={classes.messageAlign}>{bitBalance.slice(0,-4)}</span>
-                     <span className={classes.messageAlign}  style={{ color: "#919191" }}>
-                      {bitBalance.slice(-4)}
+                      <span className={classes.messageAlign}>
+                        {bitBalance.slice(0, -4)}
+                      </span>
+                      <span
+                        className={classes.messageAlign}
+                        style={{ color: "#919191" }}
+                      >
+                        {bitBalance.slice(-4)}
+                      </span>
+                    </>
+                  ) : (
+                    <span className={classes.messageAlign}>{bitBalance}</span>
+                  )}
+
+                  <span
+                    className={classes.imageAlign}
+                    style={{ marginTop: "1px" }}
+                  >
+                    <img
+                      src={process.env.REACT_APP_CLOUDFRONT + "bitballogo.png"}
+                      style={{ height: "16px" }}
+                    />
                   </span>
-                  </>
-                  ):  <span  className={classes.messageAlign}>{bitBalance}</span>}
-                  
-                  <span className={classes.imageAlign} style={{ marginTop:"2px",}}>
-                  <img src={process.env.REACT_APP_CLOUDFRONT + "bitballogo.png"}style={{height:'20px'}} />
-                 
-                  
-                  </span>
-                  
                 </>
               )}
             </Grid>
             <Grid item md={1} xs={12}></Grid>
           </Paper>
 
-          {!newUser ? (
+          {newUser ? (
             <>
               <Paper className={classes.votingWalletMid}>
                 <Grid
@@ -387,27 +431,30 @@ function Governance({}) {
                   Delegating To
                 </Grid>
                 <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
-                  {accounts.toLowerCase()!= undefined?(
+                  {accounts != undefined ? (
                     <>
-                    {delegationToAddr.toLowerCase() == "0x0000000000000000000000000000000000000000" ? (
-                    "Undelegated"
-                  ) : (
-                    <span>
-                      {delegationToAddr.toLowerCase() == accounts.toLowerCase()
-                        ? "Self"
-                        : delegationToAddr.slice(0, 4) +
-                          "..." +
-                          delegationToAddr.slice(-4)}
-                    </span>
-                  )}
+                      {delegationToAddr.toLowerCase() ==
+                      "0x0000000000000000000000000000000000000000" ? (
+                        "Undelegated"
+                      ) : (
+                        <span className={classes.messageAlign}>
+                          {delegationToAddr.toLowerCase() ==
+                          accounts.toLowerCase()
+                            ? "Self"
+                            : delegationToAddr.slice(0, 4) +
+                              "..." +
+                              delegationToAddr.slice(-4)}
+                        </span>
+                      )}
                     </>
-                  ):null}
-                  
+                  ) : null}
                   &nbsp;
                 </Grid>
                 <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
                   <p className={classes.addressChangeText} onClick={handleOpen}>
-                    <span><EditIcon/></span>
+                    <span>
+                      <EditIcon style={{height:'18px'}}/>
+                    </span>
                   </p>
                 </Grid>
               </Paper>
@@ -421,21 +468,29 @@ function Governance({}) {
                   Current Votes
                 </Grid>
                 <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
-                 
-                  {currentVotes.indexOf('.') && currentVotes.indexOf('.') > 0 ?( 
+                  {currentVotes.indexOf(".") &&
+                  currentVotes.indexOf(".") > 0 ? (
                     <>
-                     <span>{currentVotes.slice(0,-4)}</span>
-                     <span style={{ color: "#919191" }}>
-                      {currentVotes.slice(-4)}
-                  </span>
-                  </>
-                  ):  <span>{currentVotes}</span>}
-                 
+                      <span className={classes.messageAlign}>{currentVotes.slice(0, -4)}</span>
+                      <span className={classes.messageAlign} style={{ color: "#919191" }}>
+                        {currentVotes.slice(-4)}
+                      </span>
+                    </>
+                  ) : (
+                    <span className={classes.messageAlign}>{currentVotes}</span>
+                  )}
                 </Grid>
                 <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
                   <p className={classes.voteChangeText}>
-                    <a href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`} target="_blank">
-                      {currentVotes.length == 1 ?<span style={{ color: "#919191" }}>Vote &rarr;</span>:<span>Vote &rarr;</span>}
+                    <a
+                      href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`}
+                      target="_blank"
+                    >
+                      {currentVotes.length == 1 ? (
+                        <span style={{ color: "#919191" }}>Vote &rarr;</span>
+                      ) : (
+                        <span>Vote &rarr;</span>
+                      )}
                     </a>
                   </p>
                 </Grid>
@@ -449,10 +504,9 @@ function Governance({}) {
                   Set Up Voting
                 </p>
                 <p className={classes.votingWalletMidBottomStartText}>
-                  You can delegate
-                  your votes to a third party here. Delegation can be given to one
-                  address at a time. Note that delegation does not lock or
-                  transfer tokens.
+                  You can delegate your votes to a third party here. Delegation
+                  can be given to one address at a time. Note that delegation
+                  does not lock or transfer tokens.
                   <a
                     href={`${process.env.REACT_APP_BITDAO_DOCS}`}
                     target="_blank"
@@ -462,7 +516,10 @@ function Governance({}) {
                   </a>
                 </p>
                 <p className={classes.buttonContainer}>
-                  <button className={classes.startButton} onClick={connected?handleOpen:handleWallet}>
+                  <button
+                    className={classes.startButton}
+                    onClick={connected ? handleOpen : handleWallet}
+                  >
                     Get Started
                   </button>
                 </p>
@@ -497,40 +554,54 @@ function Governance({}) {
               <TableBody>
                 {/* sx={{ "&:last-child td, &:last-child th": { border: 0 } }} */}
                 {addrWithVotes.map((row: any, index: any) => (
-                    <TableRow key={index}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        className={classes.tabelCell}
-                        align="center"
+                  <TableRow key={index}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      className={classes.tabelCell}
+                      align="center"
+                    >
+                      <a
+                        href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
+                        target="_blank"
                       >
-                        <a
-                          href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
-                          target="_blank"
-                        >
-                          {index + 1}&nbsp;{" "}
-                          <img
-                            src={process.env.REACT_APP_CLOUDFRONT + "user.png"}
-                            style={{ width: "15px" }}
-                          />
-                          &nbsp;
-                          {row.id.slice(0, 5) +
-                            "..." +
-                            row.id.slice(-5)}
-                        </a>
-                      </TableCell>
-                      <TableCell className={classes.tabelCell} align="center">
-                        {handleNumberFormat(row.delegatedVotes)}
-                      </TableCell>
-                      {/* <TableCell className={classes.tabelCell} align="right">
+                        {index + 1}&nbsp; 
+                        <span className={classes.separator}>|</span> &nbsp;
+                        {row.id.slice(0, 5) + "..." + row.id.slice(-5)}
+                      </a>
+                    </TableCell>
+                    <TableCell className={classes.tabelCell} align="center">
+                      {console.log(
+                        "check number",
+                        typeof handleNumberFormat(row.delegatedVotes)
+                      )}
+                      {Number.isInteger(
+                        Number(
+                          handleNumberFormat(row.delegatedVotes).replace(
+                            /,/g,
+                            ""
+                          )
+                        )
+                      )
+                        ? handleNumberFormat(row.delegatedVotes)
+                        : handleNumberFormat(
+                            Number(
+                              handleNumberFormat(row.delegatedVotes).replace(
+                                /,/g,
+                                ""
+                              )
+                            ).toFixed(2)
+                          )}
+                    </TableCell>
+                    {/* <TableCell className={classes.tabelCell} align="right">
                           {console.log("total votes", totalVotes)}
                           {((row.vote / totalVotes) * 100).toFixed(2)}%
                         </TableCell> */}
-                      {/* <TableCell className={classes.tabelCell} align="right" style={{boxShadow: "inset -1px 0px 2px #ECECEC",}}>
+                    {/* <TableCell className={classes.tabelCell} align="right" style={{boxShadow: "inset -1px 0px 2px #ECECEC",}}>
                           {row.vote.toFixed(2)}
                         </TableCell> */}
-                    </TableRow>
-                  ))}
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -559,8 +630,12 @@ function Governance({}) {
             confirmedTx={confirmedTx}
           />
         )}
-        {network&&(
-          <NotifyPopup open={openNotifyPopup} handleClose={closeNotifyPopup} text={`Please switch to mainnet`}/>
+        {network && (
+          <NotifyPopup
+            open={openNotifyPopup}
+            handleClose={closeNotifyPopup}
+            text={`Please switch to mainnet`}
+          />
         )}
       </Container>
     </Grid>
