@@ -356,12 +356,21 @@ function Governance({}) {
         </Grid>
 
         <Grid item md={12} xs={12} className={classes.votesWrapper}>
-          {bitBalance >0 &&(
+          {bitBalance > 0 && (
             <Paper className={classes.tableHead}>Voting Wallet</Paper>
           )}
-          
-          <Paper className={`${classes.votingWalletMid} ${Number(bitBalance)==0 && classes.onlyBorder}`}>
-            <Grid item md={4} xs={12} className={` ${classes.votingWalletMidText}`} >
+
+          <Paper
+            className={`${classes.votingWalletMid} ${
+              Number(bitBalance) == 0 && classes.onlyBorder
+            }`}
+          >
+            <Grid
+              item
+              md={4}
+              xs={12}
+              className={` ${classes.votingWalletMidText}`}
+            >
               BIT Balance
             </Grid>
             <Grid item md={7} xs={12} className={classes.votingWalletMidBal}>
@@ -458,48 +467,92 @@ function Governance({}) {
                   </p>
                 </Grid>
               </Paper>
-              <Paper className={classes.votingWalletMidVotes}>
-                <Grid
-                  item
-                  md={4}
-                  xs={4}
-                  className={classes.votingWalletMidText}
-                >
-                  Current Votes
-                </Grid>
-                <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
-                  {currentVotes.indexOf(".") &&
-                  currentVotes.indexOf(".") > 0 ? (
-                    <>
-                      <span className={classes.messageAlign}>
-                        {currentVotes.slice(0, -4)}
-                      </span>
-                      <span
-                        className={classes.messageAlign}
-                        style={{ color: "#919191" }}
-                      >
-                        {currentVotes.slice(-4)}
-                      </span>
-                    </>
-                  ) : (
-                    <span className={classes.messageAlign}>{currentVotes}</span>
-                  )}
-                </Grid>
-                <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
-                  <p className={classes.voteChangeText}>
+              {delegationToAddr.toLowerCase() ==
+              "0x0000000000000000000000000000000000000000" ? (
+                <Paper className={classes.votingWalletMidBottom}>
+                  <p className={classes.votingWalletMidBottomSetup}>
+                    Set Up Voting
+                  </p>
+                  <p className={classes.votingWalletMidBottomStartText}>
+                    You can delegate your votes to a third party here.
+                    Delegation can be given to one address at a time. Note that
+                    delegation does not lock or transfer tokens.
                     <a
-                      href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`}
+                      href={`${process.env.REACT_APP_BITDAO_DOCS}`}
                       target="_blank"
+                      className={classes.subHeadingLink}
                     >
-                      {currentVotes.length == 1 ? (
-                        <span style={{ color: "#919191" }}>Vote &rarr;</span>
-                      ) : (
-                        <span>Vote &rarr;</span>
-                      )}
+                      <span className={classes.subHeadingLink}>
+                        {" "}
+                        Learn More.
+                      </span>
                     </a>
                   </p>
-                </Grid>
-              </Paper>
+                  <p className={classes.buttonContainer}>
+                    <button
+                      className={classes.startButton}
+                      onClick={connected ? handleOpen : handleWallet}
+                    >
+                      Get Started
+                    </button>
+                  </p>
+                </Paper>
+              ) : (
+                <Paper className={classes.votingWalletMidVotes}>
+                  <Grid
+                    item
+                    md={4}
+                    xs={4}
+                    className={classes.votingWalletMidText}
+                  >
+                    Current Votes
+                  </Grid>
+                  <Grid
+                    item
+                    md={4}
+                    xs={4}
+                    className={classes.votingWalletMidBal}
+                  >
+                    {currentVotes.indexOf(".") &&
+                    currentVotes.indexOf(".") > 0 ? (
+                      <>
+                        <span className={classes.messageAlign}>
+                          {currentVotes.slice(0, -4)}
+                        </span>
+                        <span
+                          className={classes.messageAlign}
+                          style={{ color: "#919191" }}
+                        >
+                          {currentVotes.slice(-4)}
+                        </span>
+                      </>
+                    ) : (
+                      <span className={classes.messageAlign}>
+                        {currentVotes}
+                      </span>
+                    )}
+                  </Grid>
+                  <Grid
+                    item
+                    md={4}
+                    xs={4}
+                    className={classes.votingWalletMidBal}
+                  >
+                    <p className={classes.voteChangeText}>
+                      <a
+                        href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`}
+                        target="_blank"
+                      >
+                        {currentVotes.length == 1 ? (
+                          <span style={{ color: "#919191" }}>Vote &rarr;</span>
+                        ) : (
+                          <span>Vote &rarr;</span>
+                        )}
+                      </a>
+                    </p>
+                  </Grid>
+                </Paper>
+              )}
             </>
           ) : (
             <>
@@ -539,8 +592,8 @@ function Governance({}) {
               ) : (
                 <Paper className={classes.votingWalletMidBottom}>
                   <p className={classes.votingWalletMidBottomSetup}>
-                  You don't have any BIT in your wallet!
-                    </p>
+                    You don't have any BIT in your wallet!
+                  </p>
                   <p className={classes.buttonContainer}>
                     <a href={`${process.env.REACT_APP_SUSHI_POOL}`}>
                       <button className={classes.startButton}>Buy BIT</button>
