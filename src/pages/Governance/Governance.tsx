@@ -1,7 +1,5 @@
 import React from "react";
 import axios from "axios";
-// import { createWatcher } from "@makerdao/multicall";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
@@ -11,7 +9,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Container, Toolbar, AppBar } from "@material-ui/core";
 import WalletButton from "../../components/WalletButton/WalletButton";
@@ -36,7 +33,7 @@ function Governance({}) {
 
   const [arrayLength, setArrayLength] = React.useState(15);
   const [connected, setConnected] = React.useState(false);
-  const [bitBalance, setBitBalance]: any = React.useState("1000");
+  const [bitBalance, setBitBalance]: any = React.useState("0");
   const [open, setOpen] = React.useState(false);
   const [openDelegate, setOpenDelegate] = React.useState(false);
   const [confirmTx, setConfirmTx] = React.useState(false);
@@ -359,9 +356,12 @@ function Governance({}) {
         </Grid>
 
         <Grid item md={12} xs={12} className={classes.votesWrapper}>
-          <Paper className={classes.tableHead}>Voting Wallet</Paper>
-          <Paper className={classes.votingWalletMid}>
-            <Grid item md={4} xs={12} className={classes.votingWalletMidText}>
+          {bitBalance >0 &&(
+            <Paper className={classes.tableHead}>Voting Wallet</Paper>
+          )}
+          
+          <Paper className={`${classes.votingWalletMid} ${Number(bitBalance)==0 && classes.onlyBorder}`}>
+            <Grid item md={4} xs={12} className={` ${classes.votingWalletMidText}`} >
               BIT Balance
             </Grid>
             <Grid item md={7} xs={12} className={classes.votingWalletMidBal}>
@@ -419,7 +419,7 @@ function Governance({}) {
             <Grid item md={1} xs={12}></Grid>
           </Paper>
 
-          {newUser ? (
+          {!newUser ? (
             <>
               <Paper className={classes.votingWalletMid}>
                 <Grid
@@ -453,7 +453,7 @@ function Governance({}) {
                 <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
                   <p className={classes.addressChangeText} onClick={handleOpen}>
                     <span>
-                      <EditIcon style={{height:'18px'}}/>
+                      <EditIcon style={{ height: "18px" }} />
                     </span>
                   </p>
                 </Grid>
@@ -471,8 +471,13 @@ function Governance({}) {
                   {currentVotes.indexOf(".") &&
                   currentVotes.indexOf(".") > 0 ? (
                     <>
-                      <span className={classes.messageAlign}>{currentVotes.slice(0, -4)}</span>
-                      <span className={classes.messageAlign} style={{ color: "#919191" }}>
+                      <span className={classes.messageAlign}>
+                        {currentVotes.slice(0, -4)}
+                      </span>
+                      <span
+                        className={classes.messageAlign}
+                        style={{ color: "#919191" }}
+                      >
                         {currentVotes.slice(-4)}
                       </span>
                     </>
@@ -499,31 +504,50 @@ function Governance({}) {
           ) : (
             <>
               {/* if user is new */}
-              <Paper className={classes.votingWalletMidBottom}>
-                <p className={classes.votingWalletMidBottomSetup}>
-                  Set Up Voting
-                </p>
-                <p className={classes.votingWalletMidBottomStartText}>
-                  You can delegate your votes to a third party here. Delegation
-                  can be given to one address at a time. Note that delegation
-                  does not lock or transfer tokens.
-                  <a
-                    href={`${process.env.REACT_APP_BITDAO_DOCS}`}
-                    target="_blank"
-                    className={classes.subHeadingLink}
-                  >
-                    <span className={classes.subHeadingLink}> Learn More.</span>
-                  </a>
-                </p>
-                <p className={classes.buttonContainer}>
-                  <button
-                    className={classes.startButton}
-                    onClick={connected ? handleOpen : handleWallet}
-                  >
-                    Get Started
-                  </button>
-                </p>
-              </Paper>
+              {/* check for use balance */}
+              {Number(bitBalance) > 0 ? (
+                <>
+                  <Paper className={classes.votingWalletMidBottom}>
+                    <p className={classes.votingWalletMidBottomSetup}>
+                      Set Up Voting
+                    </p>
+                    <p className={classes.votingWalletMidBottomStartText}>
+                      You can delegate your votes to a third party here.
+                      Delegation can be given to one address at a time. Note
+                      that delegation does not lock or transfer tokens.
+                      <a
+                        href={`${process.env.REACT_APP_BITDAO_DOCS}`}
+                        target="_blank"
+                        className={classes.subHeadingLink}
+                      >
+                        <span className={classes.subHeadingLink}>
+                          {" "}
+                          Learn More.
+                        </span>
+                      </a>
+                    </p>
+                    <p className={classes.buttonContainer}>
+                      <button
+                        className={classes.startButton}
+                        onClick={connected ? handleOpen : handleWallet}
+                      >
+                        Get Started
+                      </button>
+                    </p>
+                  </Paper>
+                </>
+              ) : (
+                <Paper className={classes.votingWalletMidBottom}>
+                  <p className={classes.votingWalletMidBottomSetup}>
+                  You don't have any BIT in your wallet!
+                    </p>
+                  <p className={classes.buttonContainer}>
+                    <a href={`${process.env.REACT_APP_SUSHI_POOL}`}>
+                      <button className={classes.startButton}>Buy BIT</button>
+                    </a>
+                  </p>
+                </Paper>
+              )}
             </>
           )}
         </Grid>
@@ -565,7 +589,7 @@ function Governance({}) {
                         href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
                         target="_blank"
                       >
-                        {index + 1}&nbsp; 
+                        {index + 1}&nbsp;
                         <span className={classes.separator}>|</span> &nbsp;
                         {row.id.slice(0, 5) + "..." + row.id.slice(-5)}
                       </a>

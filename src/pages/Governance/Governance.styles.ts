@@ -332,7 +332,8 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize:"18px",
     float: 'left'
     },
-    separator:{color:'rgb(190,190,190)'}
+    separator:{color:'rgb(190,190,190)'},
+    onlyBorder:{borderRadius: "15px 15px 0px 0px"}
   }),
   
 );
