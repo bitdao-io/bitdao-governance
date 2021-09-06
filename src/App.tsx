@@ -27,7 +27,6 @@ function App() {
   React.useEffect(() => {
     const { innerWidth: width, innerHeight: height } = window;
     if(width<768){
-      console.log(width)
       setOpen(true);
       setWinSize(width);
     }
