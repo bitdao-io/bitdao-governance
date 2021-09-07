@@ -40,10 +40,10 @@ function App() {
     <div className="App">
       <MuiThemeProvider theme={THEME}>
         
-        {winSize < 768 ? (
+        {/* {winSize < 768 ? (
           <NotifyPopup open={open} handleClose={handleClose} text={`Please visit this page on desktop`} />
         ) : (
-          <>
+          <> */}
            
             <Router>
               <Switch>
@@ -52,8 +52,8 @@ function App() {
             </Router>
 
             <Footer />
-          </>
-        )}
+          {/* </>
+        )} */}
       </MuiThemeProvider>
     </div>
   );

@@ -126,16 +126,16 @@ export default function Factor(): JSX.Element {
     const generateTopAddressList = () => {
         return (addrWithVotes.map((row: any, index: any) => {
             return (
-                <div className='grid grid-cols-2 text-lg text-black border-b'>
+                <div className='grid grid-cols-2 text-sm py-5 overflow:hidden iphone:text-lg text-black border-b'>
                     <a
                         href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
                         target="_blank"
-                        className='flex flex-row py-8 pl-20 '
+                        className='pl-5 flex flex-row iphone:py-8 iphone:pl-20 '
                     >
                         <text>{index + 1}</text>
                         <img
                             src={IMAGES.User}
-                            className='w-7 mx-3'
+                            className='w-3 h-3 mx-1 iphone:w-7 iphone:h-7 iphone:mx-3'
                         />
                         <text>
                             {row.id.slice(0, 5) +
@@ -145,7 +145,7 @@ export default function Factor(): JSX.Element {
 
                     </a>
 
-                    <div className='pl-20 text-lg my-auto'>
+                    <div className='pl-5 iphone:pl-20 iphone:text-lg my-auto'>
                         {handleNumberFormat(row.delegatedVotes)}
 
                     </div>
@@ -244,10 +244,10 @@ export default function Factor(): JSX.Element {
             <div className='grid grid-cols-2 py-10'>
                 <div className='mx-auto'>
                     <Link to='/'>
-                        <img className='w-11rem ' src={IMAGES.BitDao} />
+                        <img className='w-full iphone:w-11rem ' src={IMAGES.BitDao} />
                     </Link>
                 </div>
-                <div className='mx-auto my-auto'>
+                <div className=' mx-auto my-auto'>
                     <WalletButton
                         provider={provider}
                         loadWeb3Modal={loadWeb3Modal}
@@ -257,17 +257,17 @@ export default function Factor(): JSX.Element {
                 </div>
             </div>
             {/* body part */}
-            <div className='flex flex-col w-1/2 mx-auto py-20 min-w-490px'>
+            <div className='flex flex-col mx-auto py-20 px-5 ipad:min-w-490px ipad:w-1/2 '>
                 {/* 主标题 */}
                 <div className=' text-center flex flex-col mb-10'>
-                    <text className='text-blue font-normal text-5xl mb-2'>DELEGATE VOTES</text>
+                    <text className='text-3xl text-blue font-normal iphone:text-5xl mb-2'>DELEGATE VOTES</text>
 
-                    <text className='text-2xl'>For multisig wallets, see instructions
+                    <text className='text-lg iphone:text-2xl'>For multisig wallets, see instructions
                         <a
                             href={`${process.env.REACT_APP_BITDAO_LEARNMORE}`}
                             target="_blank"
                         >
-                            <text className='text-2xl text-red'> Here.</text>
+                            <text className='text-lg iphone:text-2xl text-red'> Here.</text>
                         </a>
                     </text>
                 </div>
@@ -279,7 +279,7 @@ export default function Factor(): JSX.Element {
                     <hr />
                     <div className='flex flex-row px-9 py-10'>
                         <text className='text-lightBlue text-lg'> BIT Balance</text>
-                        <text className='ml-32 mr-5 font-mono text-2xl'>
+                        <text className='ml-10 mr-5 iphone:ml-32 my-auto iphone:mr-5 font-mono iphone:text-2xl'>
                             {accounts == undefined ? ('-') : (getDisplayBitBalance())}
                         </text>
                         <img src={IMAGES.BitDaoLogo} className='w-7'/>
@@ -333,7 +333,7 @@ export default function Factor(): JSX.Element {
                             <text className={styles.subSectionTitle}>
                                 Setup Voting
                             </text>
-                            <text className='mt-5 text-lg text-gray'>
+                            <text className='text-sm mt-5 iphone:text-lg text-gray'>
                                 You can either vote or create proposals yourself or delegate your
                                 votes to a thrid party. Delegation can be given to one address at
                                 a time. Note that delegation does not lock or transfer tokens.
@@ -342,10 +342,10 @@ export default function Factor(): JSX.Element {
                                 href={`${process.env.REACT_APP_BITDAO_DOCS}`}
                                 target="_blank"
                             >
-                                <text className='text-lg text-red'> Learn More.</text>
+                                <text className='test-sm iphone:text-lg text-red'> Learn More.</text>
                             </a>
                             <button className='mx-auto bg-red rounded-xl py-5 my-3 shadow-2xl w-2/3' onClick={connected ? handleOpen : handleWallet}>
-                                <text className='text-white font-mono text-2xl'>Get Started</text>
+                                <text className='text-lg text-white font-mono iphone:text-2xl'>Get Started</text>
                             </button>
                         </div>
                     )}
@@ -357,8 +357,8 @@ export default function Factor(): JSX.Element {
                     </div>
                     <hr />
                     <div className='grid grid-cols-2 py-4'>
-                        <text className='text-lg text-lightBlue pl-20'>Rank</text>
-                        <text className='text-lg text-lightBlue pl-20'>Votes</text>
+                        <text className='pl-5 text-lightBlue iphone:pl-20 iphone:text-lg'>Rank</text>
+                        <text className='pl-5 text-lightBlue iphone:pl-20 iphone:text-lg'>Votes</text>
                     </div>
                     <hr />
                     {generateTopAddressList()}
@@ -396,5 +396,5 @@ export default function Factor(): JSX.Element {
 
 const styles = {
     root:'w-full bg-gradient-to-r from-pageStart to-pageEnd',
-    subSectionTitle : 'font-mono text-2xl'
+    subSectionTitle : 'text-lg font-mono iphone:text-2xl'
 }

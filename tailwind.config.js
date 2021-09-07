@@ -2,6 +2,10 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    screens:{
+      'iphone':'425px',
+      'ipad':'770px'
+    },
     extend: {
       width:{
         '11rem':'11rem',

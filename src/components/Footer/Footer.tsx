@@ -3,20 +3,25 @@ import * as IMAGES from '../../constant/Images'
 
 export default function Footer() {
   return (
-    <div className="py-5 flex flex-row justify-center font-mono text-gray">
-        <a className='mx-10' target="_blank" href={`${process.env.REACT_APP_BITDAO_DISCORD}`}>
+    <div className={styles.container}>
+        <a className={styles.option} target="_blank" href={`${process.env.REACT_APP_BITDAO_DISCORD}`}>
           Discord
         </a>
-        <a className='mx-10'target="_blank" href={`${process.env.REACT_APP_BITDAO_GOVERNANCE}`}>
+        <a className={styles.option} target="_blank" href={`${process.env.REACT_APP_BITDAO_GOVERNANCE}`}>
           Governance Forum
         </a>
-        <a className='mx-10'target="_blank" href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`}>
+        <a className={styles.option} target="_blank" href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`}>
           Snapshot Voting
         </a>
-        <a className='mx-10'target="_blank" href={`${process.env.REACT_APP_BITDAO_DOCS}`}>
+        <a className={styles.option} target="_blank" href={`${process.env.REACT_APP_BITDAO_DOCS}`}>
           Docs
         </a>
-        <img src={IMAGES.ENLanguage} className="w-18 h-7 -mt-1 mx-10" />
+        <img src={IMAGES.ENLanguage} className="w-18 h-7 mx-4 ipad:w-18 h-7 -mt-1 mx-10" />
     </div>
   );
+}
+
+const styles = {
+  container:'w-screen ipad:py-5 ipad:flex ipad:flex-row ipad:justify-center ipad:font-mono ipad:text-gray',
+  option:'ipad:mx-10'
 }
