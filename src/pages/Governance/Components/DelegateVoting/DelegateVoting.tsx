@@ -83,36 +83,36 @@ export default function DelegateVoting({
     >
       <div className="w-3/4 max-w-720px rounded-xl bg-white mx-auto mt-10%">
         <div className="py-7 text-center relative">
-          <text className="text-lightBlue font-mono text-lg w-3/4">
+          <text className="text-lightBlue font-mono text-md iphone:text-lg w-3/4">
             Delegate Voting
           </text>
           <button
             onClick={() => {
               handleClose();
             }}
-            className='absolute right-5 top-7'
+            className='absolute right-5 top-6 iphone:top-7'
           >
             <text className="text-gray text-2xl">x</text>
           </button>
         </div>
         <hr />
         <div className="flex flex-col px-7 py-7">
-          <text className="font-mono text-black text-lg">
+          <text className="font-mono text-black iphone:text-lg">
             {" "}
             Select an Address
           </text>
-          <text className="my-2 font-mono text-lg text-gray">
+          <text className="my-2 font-mono text-sm iphone:text-lg text-gray">
             You can delegate your voting power to any address including your
             own. All your voting power will be delegated. Delegation will not
             lock or transfer your BIT tokens.
           </text>
           <div className="mt-2">
             <div className="relative flex flex-row mb-4">
-              <text className="font-mono text-black text-lg w-96">
+              <text className="font-mono text-black iphone:text-lg iphone:w-96">
                 Delegate Address
               </text>
-              <button className="absolute right-2" onClick={handleOwnDegelationAddr}>
-                <text className="font-mono text-red">Delegate To Yourself</text>
+              <button className="iphone:absolute iphone:right-2" onClick={handleOwnDegelationAddr}>
+                <text className="font-mono text-red text-xs iphone:text-lg">Delegate To Yourself</text>
               </button>
             </div>
 

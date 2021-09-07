@@ -16,12 +16,12 @@ export default function Footer() {
         <a className={styles.option} target="_blank" href={`${process.env.REACT_APP_BITDAO_DOCS}`}>
           Docs
         </a>
-        <img src={IMAGES.ENLanguage} className="w-18 h-7 mx-4 ipad:w-18 h-7 -mt-1 mx-10" />
+        <img src={IMAGES.ENLanguage} className="w-12 h-5 iphone:w-20 iphone:h-7 iphone:mx-4 iphone:w-18 iphone:h-7 iphone:-mt-1 iphone:mx-10" />
     </div>
   );
 }
 
 const styles = {
-  container:'w-screen ipad:py-5 ipad:flex ipad:flex-row ipad:justify-center ipad:font-mono ipad:text-gray',
-  option:'ipad:mx-10'
+  container:'w-screen grid grid-cols-5 iphone:py-5 iphone:flex iphone:flex-row iphone:justify-center font-mono iphone:text-gray',
+  option:'text-xs overflow-hidden text-center iphone:px-10 iphone:text-lg'
 }
