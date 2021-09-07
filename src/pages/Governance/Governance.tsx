@@ -135,7 +135,7 @@ export default function Factor(): JSX.Element {
                         <text>{index + 1}</text>
                         <img
                             src={IMAGES.User}
-                            className='w-6 mx-3'
+                            className='w-7 mx-3'
                         />
                         <text>
                             {row.id.slice(0, 5) +
