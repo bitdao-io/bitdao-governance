@@ -33,7 +33,7 @@ function Governance({}) {
 
   const [arrayLength, setArrayLength] = React.useState(15);
   const [connected, setConnected] = React.useState(false);
-  const [bitBalance, setBitBalance]: any = React.useState("0");
+  const [bitBalance, setBitBalance]: any = React.useState("10");
   const [open, setOpen] = React.useState(false);
   const [openDelegate, setOpenDelegate] = React.useState(false);
   const [confirmTx, setConfirmTx] = React.useState(false);
@@ -200,7 +200,9 @@ function Governance({}) {
               `,
         }
       );
-      const allDelegators = data.data.delegates;
+      const allDelegators = data.data.delegates.filter(
+        (b: any) => b.delegatedVotes != 0
+      );
       setAddrWithVotes(allDelegators);
 
       const allVotes = data.data.delegates.map(
@@ -385,7 +387,7 @@ function Governance({}) {
                   >
                     <img
                       src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"}
-                      style={{ height: "27px" }}
+                      style={{ height: "27px", paddingLeft: "5px" }}
                     />
                   </span>
                 </>
@@ -406,7 +408,7 @@ function Governance({}) {
                       </span>
                     </>
                   ) : (
-                    <span className={classes.messageAlign}>{bitBalance}</span>
+                    <span className={classes.messageAlign}>{bitBalance} </span>
                   )}
 
                   <span
@@ -415,7 +417,7 @@ function Governance({}) {
                   >
                     <img
                       src={process.env.REACT_APP_CLOUDFRONT + "bitballogo.png"}
-                      style={{ height: "16px" }}
+                      style={{ height: "16px", paddingLeft: "5px" }}
                     />
                   </span>
                 </>
@@ -554,6 +556,7 @@ function Governance({}) {
             <>
               {/* if user is new */}
               {/* check for use balance */}
+
               {Number(bitBalance) > 0 ? (
                 <>
                   <Paper className={classes.votingWalletMidBottom}>
