@@ -104,7 +104,6 @@ function Governance({}) {
   // };
 
   const handleWallet = () => {
-    console.log("handle wallet");
     if (!provider) {
       loadWeb3Modal();
     } else {
@@ -115,7 +114,7 @@ function Governance({}) {
     const data = addrWithVotes.filter(
       (item: any) => item.id.toLowerCase() == address.toLowerCase()
     );
-    console.log("handleMatchAddress", data.length);
+
     if (data.length > 0) {
       const voteWeight = (data[0].delegatedVotes / totalTokenSupply) * 100;
       return voteWeight;
@@ -137,7 +136,7 @@ function Governance({}) {
     } else {
       const formatedBal =
         toformat.toString().split(".")[0].split("$")[1] + "." + splitbal[1];
-      console.log();
+
       return formatedBal;
     }
   };
@@ -145,7 +144,6 @@ function Governance({}) {
     if (contracts != undefined) {
       try {
         const balance = await contracts.methods.balanceOf(accounts).call();
-        // console.log(process.env.REACT_APP_NETWORK_ID)
 
         if (balance > 0) {
           const v = Number(balance.toString()) / 10 ** 18;
@@ -164,7 +162,6 @@ function Governance({}) {
               setTxHash(txhash);
             })
             .on("receipt", function (receipt: any) {
-              console.log("confirmation", receipt);
               setPendingTx(false);
               setConfirmedTx(true);
               setOpen(false);
@@ -180,10 +177,9 @@ function Governance({}) {
               setPendingTx(false);
             });
         } else {
-          console.log("insufficient balance");
           setinsufficientBal(true);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error.message);
       }
     }
@@ -226,7 +222,7 @@ function Governance({}) {
         setNewUser(false);
       }
       return allDelegators;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
       return [];
     }
