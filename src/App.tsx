@@ -17,8 +17,14 @@ const THEME = createMuiTheme({
 });
 
 function App() {
-  const [provider, loadWeb3Modal, logoutOfWeb3Modal, contracts, accounts,networkId] =
-  useWeb3Modal();
+  const [
+    provider,
+    loadWeb3Modal,
+    logoutOfWeb3Modal,
+    contracts,
+    accounts,
+    networkId,
+  ] = useWeb3Modal();
   const [winSize, setWinSize] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -26,11 +32,10 @@ function App() {
   };
   React.useEffect(() => {
     const { innerWidth: width, innerHeight: height } = window;
-    if(width<768){
+    if (width < 768) {
       setOpen(true);
       setWinSize(width);
-    }
-    else{
+    } else {
       setOpen(false);
       setWinSize(width);
     }
@@ -38,15 +43,17 @@ function App() {
   return (
     <div className="App">
       <MuiThemeProvider theme={THEME}>
-        
         {winSize < 768 ? (
-          <NotifyPopup open={open} handleClose={handleClose} text={`Please visit this page on desktop`} />
+          <NotifyPopup
+            open={open}
+            handleClose={handleClose}
+            text={`Please visit this page on desktop`}
+          />
         ) : (
           <>
-           
             <Router>
               <Switch>
-                <Route exact path="/governance" component={Governance}></Route>
+                <Route exact path="/" component={Governance}></Route>
               </Switch>
             </Router>
 
