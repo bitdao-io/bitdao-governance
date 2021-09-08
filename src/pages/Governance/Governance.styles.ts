@@ -1,24 +1,21 @@
-
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    rootContainer:{
-     
-      
-        paddingLeft: "300px", 
-        paddingRight: "300px",
-      
-      [theme.breakpoints.down('md')]: {
-        paddingLeft: "150px", 
+    rootContainer: {
+      paddingLeft: "300px",
+      paddingRight: "300px",
+
+      [theme.breakpoints.down("md")]: {
+        paddingLeft: "150px",
         paddingRight: "150px",
       },
-     
-      [theme.breakpoints.down('sm')]: {
-        paddingLeft: "70px", 
+
+      [theme.breakpoints.down("sm")]: {
+        paddingLeft: "70px",
         paddingRight: "70px",
       },
-      [theme.breakpoints.down('xs')]: {
-        paddingLeft: "0px", 
+      [theme.breakpoints.down("xs")]: {
+        paddingLeft: "0px",
         paddingRight: "0px",
       },
     },
@@ -31,11 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       flexGrow: 1,
       padding: "40px 70px 0 70px",
-      height: "100%",
       backgroundImage: "linear-gradient(to right, #ECF8FF, #FFF6F8)",
       //   backgroundImage: "linear-gradient(to left, #,#FFFFFF)"
       textAlign: "left",
-      
     },
     heading: {
       //computer
@@ -44,11 +39,11 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down("sm")]: {},
       fontFamily: "SpaceGroteskRegular !important",
       fontSize: "48px",
-      fontWeight:'normal',
+      fontWeight: "normal",
       margin: "20px",
       marginLeft: "0px",
       letterSpacing: "-1px",
-      textAlign:"center",
+      textAlign: "center",
       color: "#2D82B7",
     },
     connectButton: {
@@ -78,23 +73,24 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "#121212",
       fontWeight: 400,
       fontSize: "24px",
-      textAlign:"center",
+      textAlign: "center",
       ["@media (max-width:420px)"]: {
         fontSize: "15px !important",
       },
     },
-    subHeadingLink:{
-      color:"#E84F7D", textDecoration:'none'
+    subHeadingLink: {
+      color: "#E84F7D",
+      textDecoration: "none",
     },
     subHeading2: {
       fontFamily: "SpaceGroteskRegular !important",
       color: "#121212",
       fontWeight: 400,
-      textAlign:"center",
+      textAlign: "center",
       fontSize: "18px",
     },
     tableHead: {
-      marginTop:"20px",
+      marginTop: "20px",
       padding: "22px 30px 22px 30px",
       borderRadius: "15px 15px 0px 0px",
       fontFamily: "ABeeZeeRegular !important",
@@ -110,78 +106,79 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "#0E47EF",
       fontSize: "18px",
       fontWeight: 400,
-      display:'flex',flexGrow:1,
+      display: "flex",
+      flexGrow: 1,
       boxShadow: "inset -1px 0px 2px #ECECEC",
     },
-    votingWalletMidVotes:{
-    padding: "30px",
+    votingWalletMidVotes: {
+      padding: "30px",
       borderRadius: "0px 0px 15px 15px",
       fontFamily: "ABeeZeeRegular !important",
       color: "#0E47EF",
       fontSize: "18px",
       fontWeight: 400,
-      display:'flex',flexGrow:1,
+      display: "flex",
+      flexGrow: 1,
       boxShadow: "inset -1px -4px 2px #ECECEC",
     },
-    votingWalletMidText:{
+    votingWalletMidText: {
       fontFamily: "SpaceGroteskRegular !important",
     },
-    votingWalletMidBal:{
+    votingWalletMidBal: {
       color: "#121212",
     },
-    votingWalletMidBottom:{
+    votingWalletMidBottom: {
       borderRadius: " 0px 0px 15px 15px",
       padding: "30px",
       fontFamily: "ABeeZeeRegular !important",
       color: "#0E47EF",
       fontSize: "24px",
       fontWeight: 400,
-      textAlign:"left",
+      textAlign: "left",
       boxShadow: "inset -1px -4px 2px #ECECEC",
     },
-    votingWalletMidBottomSetup:{
-      marginTop:"0px",
+    votingWalletMidBottomSetup: {
+      marginTop: "0px",
       borderRadius: "0px",
       fontFamily: "ABeeZeeRegular !important",
       color: "#121212",
       fontSize: "24px",
       fontWeight: 400,
     },
-    votingWalletMidBottomStartText:{
-      color:'#919191',
+    votingWalletMidBottomStartText: {
+      color: "#919191",
       fontFamily: "ABeeZeeRegular !important",
       fontSize: "18px",
       fontWeight: 400,
     },
-    buttonContainer:{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center !important',
-      alignItems: 'center',
+    buttonContainer: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center !important",
+      alignItems: "center",
     },
     startButton: {
-      
       fontFamily: "ABeeZeeRegular !important",
-      width: '419px',
-      height: '72px',
+      width: "419px",
+      height: "72px",
       padding: "12px",
       boxShadow: "0px 0px -1px rgba(0, 0, 0, 0.25)",
       borderRadius: "16px",
-      color:"#ffffff",
-      textAlign:"center",
-      fontSize:"18px",
+      color: "#ffffff",
+      textAlign: "center",
+      fontSize: "18px",
       backgroundColor: "#E84F7D",
-      border:"none",cursor:"pointer"
+      border: "none",
+      cursor: "pointer",
     },
     tableContainer: {
       // borderColor:"inherit",
-      borderTop:"0.1px solid #E5E5E5",
+      borderTop: "0.1px solid #E5E5E5",
       borderRadius: "0px 0px 15px 15px",
       boxShadow: "inset -1px -3px 1px #ECECEC",
       fontSize: "2vw",
-      marginBottom:'100px',
+      marginBottom: "100px",
       fontFamily: "SpaceGroteskRegular !important",
-     
     },
     tableBottom: {
       fontFamily: "SpaceGroteskRegular !important",
@@ -199,16 +196,17 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     tabelCell: {
-      padding:"25px 0px 25px 0px",
+      padding: "18px 0px 18spx 0px",
       fontFamily: "ABeeZeeRegular !important",
-      
+
       "& a": {
-        textDecoration:"none",color:"#121212"
-      }
+        textDecoration: "none",
+        color: "#121212",
+      },
     },
     headtabelCell: {
-      padding:"10px 0px 10px 0px",
-      color:"#0E47EF",
+      padding: "10px 0px 10px 0px",
+      color: "#0E47EF",
       fontFamily: "ABeeZeeRegular !important",
     },
     votingWalletContainer: {
@@ -228,7 +226,6 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "40px",
       color: "#0E47EF",
     },
-    
     buttonWrapper: {
       //computer
       [theme.breakpoints.up("lg")]: {
@@ -255,23 +252,21 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "18px",
       color: "#999999",
       cursor: "pointer",
-      
     },
     appbar: {
-      backgroundColor:"transparent",  
+      backgroundColor: "transparent",
       backgroundImage: "linear-gradient(to right, #ECF8FF, #FFF6F8)",
       display: "block-inline",
       boxShadow: "none !important",
       zIndex: 0,
-      border:"none !important",
-      [theme.breakpoints.down('md')]: {
+      border: "none !important",
+      [theme.breakpoints.down("md")]: {
         backgroundImage: "linear-gradient(to right, #ECF8FF, #FFF6F8)",
         display: "block-inline",
         boxShadow: "none !important",
         zIndex: 0,
-        border:"none !important",
+        border: "none !important",
       },
-    
     },
     title: {
       flexGrows: 1,
@@ -292,7 +287,6 @@ const useStyles = makeStyles((theme: Theme) =>
         marginRight: "50px !important",
 
         textDecoration: "none",
-        
       },
     },
 
@@ -307,35 +301,33 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       justifyContent: "space-between",
     },
-    addressChangeText:{
-        color:"#E64072",
-        margin:'0px', 
-        textAlign:'right',
-        cursor:"pointer",
-        
+    addressChangeText: {
+      color: "#E64072",
+      margin: "0px",
+      textAlign: "right",
+      cursor: "pointer",
     },
-   
-    voteChangeText:{
-        margin:'0px', textAlign:'right',
-        
-        cursor:"pointer",
-        "& a":{
-            color:"#5CC7F2",
-            textDecoration:"none"
-        }
+
+    voteChangeText: {
+      margin: "0px",
+      textAlign: "right",
+
+      cursor: "pointer",
+      "& a": {
+        color: "#5CC7F2",
+        textDecoration: "none",
+      },
     },
-    imageAlign:{
-     
-      marginTop:"-1px",
-      float: 'left'
+    imageAlign: {
+      marginTop: "-1px",
+      float: "left",
     },
-    messageAlign:{
-      fontSize:"18px",
-    float: 'left'
+    messageAlign: {
+      fontSize: "18px",
+      float: "left",
     },
-    separator:{color:'rgb(190,190,190)'},
-    onlyBorder:{borderRadius: "15px 15px 0px 0px"}
-  }),
-  
+    separator: { color: "rgb(190,190,190)" },
+    onlyBorder: { borderRadius: "15px 15px 0px 0px" },
+  })
 );
- export  default useStyles;
+export default useStyles;
