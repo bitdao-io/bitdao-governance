@@ -1,0 +1,22 @@
+body {
+  font-family: "SpaceGroteskRegular";
+}
+
+@font-face {
+  font-family: "SpaceGroteskRegular";
+  src: local("SpaceGroteskRegular"),
+    url("./fontFamily/SpaceGrotesk-Regular.ttf") format("truetype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "SpaceGroteskBold";
+  src: local("SpaceGroteskBold"),
+    url("./fontFamily/SpaceGrotesk-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "ABeeZeeRegular";
+  src: local("ABeeZeeRegular"),
+    url("./fontFamily/ABeeZee-Regular.ttf") format("truetype");
+}
