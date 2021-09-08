@@ -653,7 +653,10 @@ function Governance({}) {
                         </Paper>
                       ) : (
                         <Paper className={classes.votingWalletMidBottom}>
-                          <p className={classes.votingWalletMidBottomSetup}>
+                          <p
+                            className={classes.votingWalletMidBottomSetup}
+                            style={{ textAlign: "center" }}
+                          >
                             You don't have any BIT in your wallet!
                           </p>
                           <p className={classes.buttonContainer}>

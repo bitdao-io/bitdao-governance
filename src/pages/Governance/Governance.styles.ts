@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       flexGrow: 1,
       padding: "40px 70px 0 70px",
+      height: "100%",
       backgroundImage: "linear-gradient(to right, #ECF8FF, #FFF6F8)",
       //   backgroundImage: "linear-gradient(to left, #,#FFFFFF)"
       textAlign: "left",
