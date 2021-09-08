@@ -11,7 +11,8 @@ type ModalProps = {
   handleDelegateSubmit: any;
   ownAccount: any;
   handleMatchAddress: any;
-  insufficientBal:any;delegationClicked:any;
+  insufficientBal: any;
+  delegationClicked: any;
 };
 
 function rand() {
@@ -57,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px 20px 0px 20px",
     color: "#1049F0",
     fontSize: "24px",
-    
   },
   icon: {
     border: "1px dotted #0E47EF",
@@ -91,9 +91,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "145px",
     paddingTop: "4px",
     color: "#E84F7D",
-    cursor:"pointer",
+    cursor: "pointer",
   },
- 
+
   delegateButton: {
     width: "100%",
     padding: "12px",
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     fontSize: "14px",
     cursor: "pointer",
-    fontFamily:"SpaceGroteskRegular !important"
+    fontFamily: "SpaceGroteskRegular !important",
   },
   closeButton: {
     position: "absolute",
@@ -117,29 +117,28 @@ const useStyles = makeStyles((theme) => ({
     color: "#E84F7D",
     margin: "0px",
   },
-  disableButton:{
+  disableButton: {
     width: "100%",
     padding: "12px",
     borderRadius: "10px",
-    backgroundColor:"#C7D0D8",
+    backgroundColor: "#C7D0D8",
     border: "none",
     fontSize: "14px",
     cursor: "pointer",
-    color:"#ffffff",
-    fontFamily:"SpaceGroteskRegular !important"
+    color: "#ffffff",
+    fontFamily: "SpaceGroteskRegular !important",
   },
-  delegateVoteHead:{
-   
+  delegateVoteHead: {
     textAlign: "center",
     fontWeight: 400,
     padding: "25px",
     color: "#1049F0",
     fontSize: "24px",
-    borderRadius:"15px 15px 0px 0px",
+    borderRadius: "15px 15px 0px 0px",
     boxShadow: "inset 0px -1px 0px #ECECEC",
     // background: "linear-gradient(180deg, #FFF7F8 0%, #FFFFFF 12.97%)",
-    backgroundImage: "linear-gradient(to  top, #ffffff, #FFF7F8)"
-  }
+    backgroundImage: "linear-gradient(to  top, #ffffff, #FFF7F8)",
+  },
 }));
 function DelegateVoting({
   open,
@@ -148,7 +147,7 @@ function DelegateVoting({
   ownAccount,
   handleMatchAddress,
   insufficientBal,
-  delegationClicked
+  delegationClicked,
 }: ModalProps) {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
@@ -164,36 +163,35 @@ function DelegateVoting({
   const validateAddress = (event: any) => {
     event.preventDefault();
     const addr = event.target.value;
-    console.log(addr)
+
     setDelegationAddr(addr);
     setNameLabel({
-      name:"",
+      name: "",
       votingWeight: 0,
       // ensAddr: "",
     });
     if (addr.length < 42 || addr.length > 42) {
       setLabel("Invalid Address");
-      setDisabled(true)
-      
+      setDisabled(true);
     } else {
       if (addr == ownAccount) {
         setDelegationAddr(addr);
         const result = handleMatchAddress(addr);
         setLabel("");
-        setDisabled(false)
+        setDisabled(false);
         setNameLabel({
-          name:addr == ownAccount?"You":addr,
+          name: addr == ownAccount ? "You" : addr,
           votingWeight: result.toFixed(4),
           // ensAddr: result[0].EnsAddr,
         });
-      }else{
+      } else {
         setDelegationAddr(addr);
         const result = handleMatchAddress(addr);
-        
-        setDisabled(false)
+
+        setDisabled(false);
         setLabel("");
         setNameLabel({
-          name:addr.slice(0,4)+'...'+addr.slice(-4),
+          name: addr.slice(0, 4) + "..." + addr.slice(-4),
           votingWeight: result.toFixed(4),
           // ensAddr: result[0].EnsAddr,
         });
@@ -204,14 +202,14 @@ function DelegateVoting({
   const handleOwnDegelationAddr = async () => {
     setDelegationAddr(ownAccount);
     const result = handleMatchAddress(ownAccount);
-        console.log(result);
-        setLabel("");
-        setDisabled(false)
-        setNameLabel({
-          name:"You",
-          votingWeight: result.toFixed(4),
-          // ensAddr: result[0].EnsAddr,
-        });
+
+    setLabel("");
+    setDisabled(false);
+    setNameLabel({
+      name: "You",
+      votingWeight: result.toFixed(4),
+      // ensAddr: result[0].EnsAddr,
+    });
   };
 
   return (
@@ -223,18 +221,19 @@ function DelegateVoting({
     >
       <div style={modalStyle} className={classes.paper}>
         <Grid container spacing={3}>
-          <Grid item xs={12} className={classes.heading} >
-          <Paper className={classes.delegateVoteHead}> Delegate Voting
-          
-          <span
+          <Grid item xs={12} className={classes.heading}>
+            <Paper className={classes.delegateVoteHead}>
+              {" "}
+              Delegate Voting
+              <span
                 style={{ cursor: "pointer" }}
                 className={classes.closeButton}
                 onClick={handleClose}
               >
                 x
               </span>
-          </Paper>
-         
+            </Paper>
+
             {/* <h3 className={classes.heading}>
               Delegate Voting
               
@@ -247,7 +246,7 @@ function DelegateVoting({
           <Grid item xs={12}>
             <p>Select an Address</p>
             <p style={{ color: "#919191", fontSize: "14px" }}>
-            If you know the address you wish to delegate to, enter it below.
+              If you know the address you wish to delegate to, enter it below.
             </p>
           </Grid>
           <Grid item xs={12} style={{ paddingTop: "0px" }}>
@@ -259,38 +258,52 @@ function DelegateVoting({
               >
                 Delegate to yourself
               </p>
-              
             </div>
 
             <p>
               <input
                 className={classes.inputBox}
                 placeholder="Enter a 0x address"
-                
                 value={delegationAddr}
                 onChange={validateAddress}
               />
-              <p className={classes.msgLabel}>{label} 
-              
-              {insufficientBal?'Insufficient balance to vote':(
-                <>
-                    {nameLabel.name != ''?
-                    <>
-                    <span style={{color:"#4FC78D"}}>{ nameLabel.name}</span><span style={{color:"#919191"}}> - Voting Weight: {nameLabel.votingWeight!=undefined?nameLabel.votingWeight:'0'}%</span>
-                    </> :null 
-                    }</>
-              )}
-              
-             
-              </p> 
+              <p className={classes.msgLabel}>
+                {label}
+
+                {insufficientBal ? (
+                  "Insufficient balance to vote"
+                ) : (
+                  <>
+                    {nameLabel.name != "" ? (
+                      <>
+                        <span style={{ color: "#4FC78D" }}>
+                          {nameLabel.name}
+                        </span>
+                        <span style={{ color: "#919191" }}>
+                          {" "}
+                          - Voting Weight:{" "}
+                          {nameLabel.votingWeight != undefined
+                            ? nameLabel.votingWeight
+                            : "0"}
+                          %
+                        </span>
+                      </>
+                    ) : null}
+                  </>
+                )}
+              </p>
             </p>
             <p>
               <button
-                className={disable || delegationClicked?classes.disableButton:classes.delegateButton}
-                disabled={disable||delegationClicked}
+                className={
+                  disable || delegationClicked
+                    ? classes.disableButton
+                    : classes.delegateButton
+                }
+                disabled={disable || delegationClicked}
                 onClick={() => handleDelegateSubmit(delegationAddr)}
               >
-                {delegationClicked?'Delegating vote...':'Delegate Votes'}
+                {delegationClicked ? "Delegating vote..." : "Delegate Votes"}
               </button>
             </p>
           </Grid>
