@@ -200,9 +200,7 @@ function Governance({}) {
               `,
         }
       );
-      const allDelegators = data.data.delegates.filter(
-        (b: any) => b.delegatedVotes != 0
-      );
+      const allDelegators = data.data.delegates;
       setAddrWithVotes(allDelegators);
 
       const allVotes = data.data.delegates.map(
@@ -387,7 +385,7 @@ function Governance({}) {
                   >
                     <img
                       src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"}
-                      style={{ height: "27px", paddingLeft: "5px" }}
+                      style={{ height: "27px" }}
                     />
                   </span>
                 </>
@@ -408,7 +406,7 @@ function Governance({}) {
                       </span>
                     </>
                   ) : (
-                    <span className={classes.messageAlign}>{bitBalance} </span>
+                    <span className={classes.messageAlign}>{bitBalance}</span>
                   )}
 
                   <span
@@ -417,7 +415,7 @@ function Governance({}) {
                   >
                     <img
                       src={process.env.REACT_APP_CLOUDFRONT + "bitballogo.png"}
-                      style={{ height: "16px", paddingLeft: "5px" }}
+                      style={{ height: "16px" }}
                     />
                   </span>
                 </>
@@ -556,7 +554,6 @@ function Governance({}) {
             <>
               {/* if user is new */}
               {/* check for use balance */}
-
               {Number(bitBalance) > 0 ? (
                 <>
                   <Paper className={classes.votingWalletMidBottom}>
@@ -719,6 +716,10 @@ function Governance({}) {
                       </a>
                     </TableCell>
                     <TableCell className={classes.tabelCell} align="center">
+                      {console.log(
+                        "check number",
+                        typeof handleNumberFormat(row.delegatedVotes)
+                      )}
                       {Number.isInteger(
                         Number(
                           handleNumberFormat(row.delegatedVotes).replace(
