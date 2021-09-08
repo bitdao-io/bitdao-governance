@@ -43,8 +43,8 @@ function WalletButton({
         <text
           className={
             !provider
-              ? "text-blue font-mono iphone:text-2xl"
-              : "text-white font-mono iphone:text-2xl"
+              ? "text-blue font-mono text-sm iphone:text-2xl"
+              : "text-white font-mono text-sm iphone:text-2xl"
           }
         >
           {!provider
