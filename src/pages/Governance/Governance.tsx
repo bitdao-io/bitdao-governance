@@ -200,9 +200,7 @@ function Governance({}) {
               `,
         }
       );
-      const allDelegators = data.data.delegates.filter(
-        (b: any) => b.delegatedVotes != 0
-      );
+      const allDelegators = data.data.delegates;
       setAddrWithVotes(allDelegators);
 
       const allVotes = data.data.delegates.map(
@@ -387,7 +385,7 @@ function Governance({}) {
                   >
                     <img
                       src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"}
-                      style={{ height: "27px", paddingLeft: "5px" }}
+                      style={{ height: "27px" }}
                     />
                   </span>
                 </>
@@ -408,7 +406,7 @@ function Governance({}) {
                       </span>
                     </>
                   ) : (
-                    <span className={classes.messageAlign}>{bitBalance} </span>
+                    <span className={classes.messageAlign}>{bitBalance}</span>
                   )}
 
                   <span
@@ -417,7 +415,7 @@ function Governance({}) {
                   >
                     <img
                       src={process.env.REACT_APP_CLOUDFRONT + "bitballogo.png"}
-                      style={{ height: "16px", paddingLeft: "5px" }}
+                      style={{ height: "16px" }}
                     />
                   </span>
                 </>
@@ -556,7 +554,6 @@ function Governance({}) {
             <>
               {/* if user is new */}
               {/* check for use balance */}
-
               {Number(bitBalance) > 0 ? (
                 <>
                   <Paper className={classes.votingWalletMidBottom}>
@@ -589,85 +586,16 @@ function Governance({}) {
                   </Paper>
                 </>
               ) : (
-                <>
-                  {connected == false ? (
-                    <Paper className={classes.votingWalletMidBottom}>
-                      <p className={classes.votingWalletMidBottomSetup}>
-                        Set Up Voting
-                      </p>
-                      <p className={classes.votingWalletMidBottomStartText}>
-                        You can delegate your votes to a third party here.
-                        Delegation can be given to one address at a time. Note
-                        that delegation does not lock or transfer tokens.
-                        <a
-                          href={`${process.env.REACT_APP_BITDAO_DOCS}`}
-                          target="_blank"
-                          className={classes.subHeadingLink}
-                        >
-                          <span className={classes.subHeadingLink}>
-                            {" "}
-                            Learn More.
-                          </span>
-                        </a>
-                      </p>
-                      <p className={classes.buttonContainer}>
-                        <button
-                          className={classes.startButton}
-                          onClick={connected ? handleOpen : handleWallet}
-                        >
-                          Get Started
-                        </button>
-                      </p>
-                    </Paper>
-                  ) : (
-                    <>
-                      {connected && parseInt(bitBalance) > 0 ? (
-                        <Paper className={classes.votingWalletMidBottom}>
-                          <p className={classes.votingWalletMidBottomSetup}>
-                            Set Up Voting
-                          </p>
-                          <p className={classes.votingWalletMidBottomStartText}>
-                            You can delegate your votes to a third party here.
-                            Delegation can be given to one address at a time.
-                            Note that delegation does not lock or transfer
-                            tokens.
-                            <a
-                              href={`${process.env.REACT_APP_BITDAO_DOCS}`}
-                              target="_blank"
-                              className={classes.subHeadingLink}
-                            >
-                              <span className={classes.subHeadingLink}>
-                                {" "}
-                                Learn More.
-                              </span>
-                            </a>
-                          </p>
-                          <p className={classes.buttonContainer}>
-                            <button
-                              className={classes.startButton}
-                              onClick={connected ? handleOpen : handleWallet}
-                            >
-                              Get Started
-                            </button>
-                          </p>
-                        </Paper>
-                      ) : (
-                        <Paper className={classes.votingWalletMidBottom}>
-                          <p className={classes.votingWalletMidBottomSetup}>
-                            You don't have any BIT in your wallet!
-                          </p>
-                          <p className={classes.buttonContainer}>
-                            <a href={`${process.env.REACT_APP_SUSHI_POOL}`}>
-                              <button className={classes.startButton}>
-                                Buy BIT
-                              </button>
-                            </a>
-                          </p>
-                        </Paper>
-                      )}
-                    </>
-                  )}
-                </>
+                <Paper className={classes.votingWalletMidBottom}>
+                  <p className={classes.votingWalletMidBottomSetup}>
+                    You don't have any BIT in your wallet!
+                  </p>
+                  <p className={classes.buttonContainer}>
+                    <a href={`${process.env.REACT_APP_SUSHI_POOL}`}>
+                      <button className={classes.startButton}>Buy BIT</button>
+                    </a>
+                  </p>
+                </Paper>
               )}
             </>
           )}
@@ -716,6 +644,10 @@ function Governance({}) {
                       </a>
                     </TableCell>
                     <TableCell className={classes.tabelCell} align="center">
+                      {console.log(
+                        "check number",
+                        typeof handleNumberFormat(row.delegatedVotes)
+                      )}
                       {Number.isInteger(
                         Number(
                           handleNumberFormat(row.delegatedVotes).replace(
