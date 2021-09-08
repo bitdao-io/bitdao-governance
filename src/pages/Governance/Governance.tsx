@@ -589,16 +589,51 @@ function Governance({}) {
                   </Paper>
                 </>
               ) : (
-                <Paper className={classes.votingWalletMidBottom}>
-                  <p className={classes.votingWalletMidBottomSetup}>
-                    You don't have any BIT in your wallet!
-                  </p>
-                  <p className={classes.buttonContainer}>
-                    <a href={`${process.env.REACT_APP_SUSHI_POOL}`}>
-                      <button className={classes.startButton}>Buy BIT</button>
-                    </a>
-                  </p>
-                </Paper>
+                <>
+                  {!connected ? (
+                    <Paper className={classes.votingWalletMidBottom}>
+                      <p className={classes.votingWalletMidBottomSetup}>
+                        Set Up Voting
+                      </p>
+                      <p className={classes.votingWalletMidBottomStartText}>
+                        You can delegate your votes to a third party here.
+                        Delegation can be given to one address at a time. Note
+                        that delegation does not lock or transfer tokens.
+                        <a
+                          href={`${process.env.REACT_APP_BITDAO_DOCS}`}
+                          target="_blank"
+                          className={classes.subHeadingLink}
+                        >
+                          <span className={classes.subHeadingLink}>
+                            {" "}
+                            Learn More.
+                          </span>
+                        </a>
+                      </p>
+                      <p className={classes.buttonContainer}>
+                        <button
+                          className={classes.startButton}
+                          onClick={connected ? handleOpen : handleWallet}
+                        >
+                          Get Started
+                        </button>
+                      </p>
+                    </Paper>
+                  ) : (
+                    <Paper className={classes.votingWalletMidBottom}>
+                      <p className={classes.votingWalletMidBottomSetup}>
+                        You don't have any BIT in your wallet!
+                      </p>
+                      <p className={classes.buttonContainer}>
+                        <a href={`${process.env.REACT_APP_SUSHI_POOL}`}>
+                          <button className={classes.startButton}>
+                            Buy BIT
+                          </button>
+                        </a>
+                      </p>
+                    </Paper>
+                  )}
+                </>
               )}
             </>
           )}
