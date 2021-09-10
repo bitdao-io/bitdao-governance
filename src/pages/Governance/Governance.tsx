@@ -17,6 +17,7 @@ import DelegateVoting from "./DelegateVoting";
 import ConfiramtionPopup from "./ConfirmationPopup";
 import NotifyPopup from "./NotifyPopup";
 import useStyles from "./Governance.styles";
+import { ClassSharp } from "@material-ui/icons";
 
 function createData(
   Rank: string,
@@ -300,7 +301,10 @@ function Governance({}) {
             <Toolbar component="div">
               <Grid item md={6} xs={6}>
                 <Typography variant="h4" className={classes.title}>
-                  <img src={process.env.REACT_APP_CLOUDFRONT + "bitlogo.png"} />
+                  <img
+                    src={process.env.REACT_APP_CLOUDFRONT + "bitlogo.png"}
+                    className={classes.logoSize}
+                  />
                 </Typography>
               </Grid>
               <Grid item md={6} xs={6}>

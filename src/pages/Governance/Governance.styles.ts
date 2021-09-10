@@ -328,6 +328,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     separator: { color: "rgb(190,190,190)" },
     onlyBorder: { borderRadius: "15px 15px 0px 0px" },
+    logoSize: { width: "190px" },
   })
 );
 export default useStyles;
