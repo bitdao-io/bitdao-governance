@@ -431,7 +431,7 @@ function Governance({}) {
             <Grid item md={4} xs={4}></Grid>
           </Paper>
           {console.log("newUser", newUser)}
-          {newUser ? (
+          {!newUser ? (
             <>
               <Paper className={classes.votingWalletMid}>
                 <Grid
