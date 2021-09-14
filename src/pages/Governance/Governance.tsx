@@ -430,8 +430,8 @@ function Governance({}) {
             </Grid>
             <Grid item md={1} xs={12}></Grid>
           </Paper>
-
-          {!newUser ? (
+          {console.log("newUser", newUser)}
+          {newUser ? (
             <>
               <Paper className={classes.votingWalletMid}>
                 <Grid
@@ -470,9 +470,12 @@ function Governance({}) {
                   </p>
                 </Grid>
               </Paper>
+              {console.log("accoutns", accounts)}
+              {console.log(delegationToAddr.toLowerCase())}
               {delegationToAddr.toLowerCase() ==
               "0x0000000000000000000000000000000000000000" ? (
                 <Paper className={classes.votingWalletMidBottom}>
+                  {console.log("line478")}
                   <p className={classes.votingWalletMidBottomSetup}>
                     Set Up Voting
                   </p>
@@ -502,6 +505,7 @@ function Governance({}) {
                 </Paper>
               ) : (
                 <Paper className={classes.votingWalletMidVotes}>
+                  {console.log("line 509")}
                   <Grid
                     item
                     md={4}
