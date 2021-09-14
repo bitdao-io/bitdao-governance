@@ -215,15 +215,15 @@ function Governance({}) {
       );
       setTotalVotes(sumOfAllVotes);
 
-      const changeDis = allDelegators.map(
-        (item: any) => item.id.toLowerCase() == accounts.toLowerCase()
-      );
+      // const changeDis = allDelegators.map(
+      //   (item: any) => item.id.toLowerCase() == accounts.toLowerCase()
+      // );
 
-      if (!changeDis.includes(true)) {
-        setNewUser(true);
-      } else {
-        setNewUser(false);
-      }
+      // if (changeDis.includes(true)) {
+      //   setNewUser(true);
+      // } else {
+      //   setNewUser(false);
+      // }
       return allDelegators;
     } catch (error: any) {
       console.log(error.message);
@@ -253,12 +253,14 @@ function Governance({}) {
 
   React.useEffect(() => {
     if (contracts != undefined) {
+      let checkBitBal;
       contracts.methods
         .balanceOf(accounts)
         .call()
         .then((res: any) => {
           const bal = Number(res.toString()) / 10 ** 18;
           const formatedBal = handleNumberFormat(bal);
+          checkBitBal = formatedBal;
           setBitBalance(formatedBal);
         })
         .catch((err: any) => {
@@ -274,14 +276,27 @@ function Governance({}) {
           setCurrentVotes(formatedVotes);
         })
         .catch((err: any) => console.log(err));
-
+      let checkDelegateAddr;
       contracts.methods
         .delegates(accounts)
         .call()
         .then((res: any) => {
+          console.log("delegates", res);
+          checkDelegateAddr = res;
           setDelegationToAddr(res);
         })
         .catch((err: any) => console.log(err));
+
+      if (
+        checkDelegateAddr === "0x0000000000000000000000000000000000000000" &&
+        checkBitBal === 0
+      ) {
+        console.log("line 294");
+        setNewUser(true);
+      } else {
+        console.log("line 293");
+        setNewUser(false);
+      }
     }
   }, [contracts, accounts, refetchVotes]);
 
@@ -431,7 +446,7 @@ function Governance({}) {
             <Grid item md={4} xs={4}></Grid>
           </Paper>
           {console.log("newUser", newUser)}
-          {newUser ? (
+          {!newUser ? (
             <>
               <Paper className={classes.votingWalletMid}>
                 <Grid
@@ -476,8 +491,7 @@ function Governance({}) {
                   </p>
                 </Grid>
               </Paper>
-              {console.log("accoutns", accounts)}
-              {console.log(delegationToAddr.toLowerCase())}
+
               {delegationToAddr.toLowerCase() ==
               "0x0000000000000000000000000000000000000000" ? (
                 <Paper className={classes.votingWalletMidBottom}>
