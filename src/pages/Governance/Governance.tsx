@@ -163,12 +163,12 @@ function Governance({}) {
               setTxHash(txhash);
             })
             .on("receipt", function (receipt: any) {
-              setPendingTx(false);
-              setConfirmedTx(true);
-              setOpen(false);
-              setDelegationClicked(false);
               setDelegationToAddr(address);
               setRefetchVotes(true);
+              setConfirmedTx(true);
+              setPendingTx(false);
+              setOpen(false);
+              setDelegationClicked(false);
             })
             .on("error", () => {
               setOpen(false);
@@ -399,6 +399,7 @@ function Governance({}) {
                 <>
                   {/* {console.log(bitBalance.match(/.{1,3}/g))} */}
                   {/* replace(/\d(?=(\d{3})+\.)/g, "$&,") */}
+
                   {bitBalance.indexOf(".") && bitBalance.indexOf(".") > 0 ? (
                     <>
                       <span className={classes.messageAlign}>
