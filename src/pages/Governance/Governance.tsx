@@ -370,12 +370,12 @@ function Governance({}) {
             <Grid
               item
               md={4}
-              xs={12}
+              xs={4}
               className={` ${classes.votingWalletMidText}`}
             >
               BIT Balance
             </Grid>
-            <Grid item md={7} xs={12} className={classes.votingWalletMidBal}>
+            <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
               {accounts == undefined ? (
                 <>
                   <span
@@ -428,7 +428,7 @@ function Governance({}) {
                 </>
               )}
             </Grid>
-            <Grid item md={1} xs={12}></Grid>
+            <Grid item md={4} xs={4}></Grid>
           </Paper>
           {console.log("newUser", newUser)}
           {newUser ? (
@@ -462,7 +462,13 @@ function Governance({}) {
                   ) : null}
                   &nbsp;
                 </Grid>
-                <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
+                <Grid
+                  item
+                  md={4}
+                  xs={4}
+                  className={classes.votingWalletMidBal}
+                  style={{ justifyContent: "right" }}
+                >
                   <p className={classes.addressChangeText} onClick={handleOpen}>
                     <span>
                       <EditIcon style={{ height: "18px" }} />
@@ -544,6 +550,7 @@ function Governance({}) {
                     md={4}
                     xs={4}
                     className={classes.votingWalletMidBal}
+                    style={{ justifyContent: "right" }}
                   >
                     <p className={classes.voteChangeText}>
                       <a

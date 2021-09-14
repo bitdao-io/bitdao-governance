@@ -123,9 +123,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     votingWalletMidText: {
       fontFamily: "SpaceGroteskRegular !important",
+      display: "flex",
+      justifyContent: "left",
     },
     votingWalletMidBal: {
       color: "#121212",
+      display: "flex",
+      justifyContent: "center",
     },
     votingWalletMidBottom: {
       borderRadius: " 0px 0px 15px 15px",
