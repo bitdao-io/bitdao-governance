@@ -163,12 +163,12 @@ function Governance({}) {
               setTxHash(txhash);
             })
             .on("receipt", function (receipt: any) {
-              setPendingTx(false);
-              setConfirmedTx(true);
-              setOpen(false);
-              setDelegationClicked(false);
               setDelegationToAddr(address);
               setRefetchVotes(true);
+              setConfirmedTx(true);
+              setPendingTx(false);
+              setOpen(false);
+              setDelegationClicked(false);
             })
             .on("error", () => {
               setOpen(false);
@@ -287,7 +287,7 @@ function Governance({}) {
 
   React.useEffect(() => {
     getAllAddresses().then((res) => {});
-  }, [connected, refetchVotes]);
+  }, [connected, refetchVotes, accounts]);
 
   return (
     <Grid container spacing={4} className={classes.root}>
@@ -399,6 +399,7 @@ function Governance({}) {
                 <>
                   {/* {console.log(bitBalance.match(/.{1,3}/g))} */}
                   {/* replace(/\d(?=(\d{3})+\.)/g, "$&,") */}
+
                   {bitBalance.indexOf(".") && bitBalance.indexOf(".") > 0 ? (
                     <>
                       <span className={classes.messageAlign}>
@@ -429,8 +430,8 @@ function Governance({}) {
             </Grid>
             <Grid item md={1} xs={12}></Grid>
           </Paper>
-
-          {!newUser ? (
+          {console.log("newUser", newUser)}
+          {newUser ? (
             <>
               <Paper className={classes.votingWalletMid}>
                 <Grid
@@ -469,9 +470,12 @@ function Governance({}) {
                   </p>
                 </Grid>
               </Paper>
+              {console.log("accoutns", accounts)}
+              {console.log(delegationToAddr.toLowerCase())}
               {delegationToAddr.toLowerCase() ==
               "0x0000000000000000000000000000000000000000" ? (
                 <Paper className={classes.votingWalletMidBottom}>
+                  {console.log("line478")}
                   <p className={classes.votingWalletMidBottomSetup}>
                     Set Up Voting
                   </p>
@@ -501,6 +505,7 @@ function Governance({}) {
                 </Paper>
               ) : (
                 <Paper className={classes.votingWalletMidVotes}>
+                  {console.log("line 509")}
                   <Grid
                     item
                     md={4}
