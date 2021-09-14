@@ -287,7 +287,7 @@ function Governance({}) {
 
   React.useEffect(() => {
     getAllAddresses().then((res) => {});
-  }, [connected, refetchVotes]);
+  }, [connected, refetchVotes, accounts]);
 
   return (
     <Grid container spacing={4} className={classes.root}>
