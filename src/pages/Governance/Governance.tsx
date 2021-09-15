@@ -279,7 +279,6 @@ function Governance({}) {
         .delegates(accounts)
         .call()
         .then((res: any) => {
-          console.log("delegates", res);
           setDelegationToAddr(res);
         })
         .catch((err: any) => console.log(err));
@@ -362,7 +361,6 @@ function Governance({}) {
           {bitBalance > 0 && (
             <Paper className={classes.tableHead}>Voting Wallet</Paper>
           )}
-
           <Paper
             className={`${classes.votingWalletMid} ${
               Number(bitBalance) == 0 && classes.onlyBorder
@@ -431,12 +429,7 @@ function Governance({}) {
             </Grid>
             <Grid item md={4} xs={4}></Grid>
           </Paper>
-
-          {/* if user is not a new user */}
-          {console.log(
-            delegationToAddr !== "0x0000000000000000000000000000000000000000",
-            parseInt(bitBalance) > 0
-          )}
+          {/* if user is not a new user */}s
           {delegationToAddr !== "0x0000000000000000000000000000000000000000" &&
           parseInt(bitBalance) > 0 ? (
             <>
@@ -499,7 +492,6 @@ function Governance({}) {
               {delegationToAddr.toLowerCase() ==
               "0x0000000000000000000000000000000000000000" ? (
                 <Paper className={classes.votingWalletMidBottom}>
-                  {console.log("line478")}
                   <p className={classes.votingWalletMidBottomSetup}>
                     Set Up Voting
                   </p>
@@ -589,10 +581,9 @@ function Governance({}) {
             <>
               {/* if user is new */}
               {/* check for use balance */}
-              {console.log("he is a new user")}
+
               {Number(bitBalance) > 0 ? (
                 <>
-                  {console.log("line 603")}
                   <Paper className={classes.votingWalletMidBottom}>
                     <p className={classes.votingWalletMidBottomSetup}>
                       Set Up Voting
@@ -657,7 +648,6 @@ function Governance({}) {
                     <>
                       {connected && parseInt(bitBalance) > 0 ? (
                         <Paper className={classes.votingWalletMidBottom}>
-                          {console.log("line 670")}
                           <p className={classes.votingWalletMidBottomSetup}>
                             Set Up Voting
                           </p>
@@ -688,7 +678,6 @@ function Governance({}) {
                         </Paper>
                       ) : (
                         <Paper className={classes.votingWalletMidBottom}>
-                          {console.log("buy modal line 699")}
                           <p className={classes.votingWalletMidBottomSetup}>
                             You don't have any BIT in your wallet!
                           </p>
