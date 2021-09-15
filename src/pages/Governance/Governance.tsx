@@ -429,7 +429,7 @@ function Governance({}) {
             </Grid>
             <Grid item md={4} xs={4}></Grid>
           </Paper>
-          {/* if user is not a new user */}s
+          {/* if user is not a new user */}
           {delegationToAddr !== "0x0000000000000000000000000000000000000000" &&
           parseInt(bitBalance) > 0 ? (
             <>
