@@ -433,8 +433,8 @@ function Governance({}) {
           {delegationToAddr !== "0x0000000000000000000000000000000000000000" &&
           parseInt(bitBalance) > 0 ? (
             <>
-              {delegationToAddr.toLowerCase() ===
-              accounts.toLowerCase() ? null : (
+              {delegationToAddr.toLowerCase() === accounts.toLowerCase() &&
+              parseInt(bitBalance) === 0 ? null : (
                 <Paper className={classes.votingWalletMid}>
                   <Grid
                     item
