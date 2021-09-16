@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     // padding: theme.spacing(2, 4, 3),
     ["@media (max-width:414px)"]: {
       width: 300,
-    },
+    }
   },
   heading: {
     fontFamily: "ABeeZeeRegular !important",
@@ -220,7 +220,7 @@ function DelegateVoting({
       aria-describedby="simple-modal-description"
     >
       <div style={modalStyle} className={classes.paper}>
-        <Grid container spacing={3}>
+        <Grid container>
           <Grid item xs={12} className={classes.heading}>
             <Paper className={classes.delegateVoteHead}>
               {" "}
@@ -249,7 +249,7 @@ function DelegateVoting({
               If you know the address you wish to delegate to, enter it below.
             </p>
           </Grid>
-          <Grid item xs={12} style={{ paddingTop: "0px" }}>
+          <Grid item xs={12}>
             <div className={classes.delegateHead}>
               <p style={{ fontFamily: "ABeeZeeRegular" }}>Delegate Address</p>
               <p
@@ -266,9 +266,10 @@ function DelegateVoting({
                 placeholder="Enter a 0x address"
                 value={delegationAddr}
                 onChange={validateAddress}
+                autoFocus={true}
               />
               <p className={classes.msgLabel}>
-                {label}
+                {label&&label}
 
                 {insufficientBal ? (
                   "Insufficient balance to vote"
