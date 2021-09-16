@@ -253,14 +253,12 @@ function Governance({}) {
 
   React.useEffect(() => {
     if (contracts != undefined) {
-      let checkBitBal;
       contracts.methods
         .balanceOf(accounts)
         .call()
         .then((res: any) => {
           const bal = Number(res.toString()) / 10 ** 18;
           const formatedBal = handleNumberFormat(bal);
-          checkBitBal = formatedBal;
           setBitBalance(formatedBal);
         })
         .catch((err: any) => {
@@ -276,27 +274,14 @@ function Governance({}) {
           setCurrentVotes(formatedVotes);
         })
         .catch((err: any) => console.log(err));
-      let checkDelegateAddr;
+
       contracts.methods
         .delegates(accounts)
         .call()
         .then((res: any) => {
-          console.log("delegates", res);
-          checkDelegateAddr = res;
           setDelegationToAddr(res);
         })
         .catch((err: any) => console.log(err));
-
-      if (
-        checkDelegateAddr === "0x0000000000000000000000000000000000000000" &&
-        checkBitBal === 0
-      ) {
-        console.log("line 294");
-        setNewUser(true);
-      } else {
-        console.log("line 293");
-        setNewUser(false);
-      }
     }
   }, [contracts, accounts, refetchVotes]);
 
@@ -376,7 +361,6 @@ function Governance({}) {
           {bitBalance > 0 && (
             <Paper className={classes.tableHead}>Voting Wallet</Paper>
           )}
-
           <Paper
             className={`${classes.votingWalletMid} ${
               Number(bitBalance) == 0 && classes.onlyBorder
@@ -445,57 +429,69 @@ function Governance({}) {
             </Grid>
             <Grid item md={4} xs={4}></Grid>
           </Paper>
-          {console.log("newUser", newUser)}
-          {!newUser ? (
+          {/* if user is not a new user */}
+          {delegationToAddr !== "0x0000000000000000000000000000000000000000" &&
+          parseInt(bitBalance) > 0 ? (
             <>
-              <Paper className={classes.votingWalletMid}>
-                <Grid
-                  item
-                  md={4}
-                  xs={4}
-                  className={classes.votingWalletMidText}
-                >
-                  Delegating To
-                </Grid>
-                <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
-                  {accounts != undefined ? (
-                    <>
-                      {delegationToAddr.toLowerCase() ==
-                      "0x0000000000000000000000000000000000000000" ? (
-                        "Undelegated"
-                      ) : (
-                        <span className={classes.messageAlign}>
-                          {delegationToAddr.toLowerCase() ==
-                          accounts.toLowerCase()
-                            ? "Self"
-                            : delegationToAddr.slice(0, 4) +
-                              "..." +
-                              delegationToAddr.slice(-4)}
-                        </span>
-                      )}
-                    </>
-                  ) : null}
-                  &nbsp;
-                </Grid>
-                <Grid
-                  item
-                  md={4}
-                  xs={4}
-                  className={classes.votingWalletMidBal}
-                  style={{ justifyContent: "right" }}
-                >
-                  <p className={classes.addressChangeText} onClick={handleOpen}>
-                    <span>
-                      <EditIcon style={{ height: "18px" }} />
-                    </span>
-                  </p>
-                </Grid>
-              </Paper>
+              {delegationToAddr.toLowerCase() === accounts.toLowerCase() &&
+              parseInt(bitBalance) === 0 ? null : (
+                <Paper className={classes.votingWalletMid}>
+                  <Grid
+                    item
+                    md={4}
+                    xs={4}
+                    className={classes.votingWalletMidText}
+                  >
+                    Delegating To
+                  </Grid>
 
+                  <Grid
+                    item
+                    md={4}
+                    xs={4}
+                    className={classes.votingWalletMidBal}
+                  >
+                    {accounts != undefined ? (
+                      <>
+                        {delegationToAddr.toLowerCase() ===
+                        "0x0000000000000000000000000000000000000000" ? (
+                          "Undelegated"
+                        ) : (
+                          <span className={classes.messageAlign}>
+                            {delegationToAddr.toLowerCase() ==
+                            accounts.toLowerCase()
+                              ? "Self"
+                              : delegationToAddr.slice(0, 4) +
+                                "..." +
+                                delegationToAddr.slice(-4)}
+                          </span>
+                        )}
+                      </>
+                    ) : null}
+                    &nbsp;
+                  </Grid>
+
+                  <Grid
+                    item
+                    md={4}
+                    xs={4}
+                    className={classes.votingWalletMidBal}
+                    style={{ justifyContent: "right" }}
+                  >
+                    <p
+                      className={classes.addressChangeText}
+                      onClick={handleOpen}
+                    >
+                      <span>
+                        <EditIcon style={{ height: "18px" }} />
+                      </span>
+                    </p>
+                  </Grid>
+                </Paper>
+              )}
               {delegationToAddr.toLowerCase() ==
               "0x0000000000000000000000000000000000000000" ? (
                 <Paper className={classes.votingWalletMidBottom}>
-                  {console.log("line478")}
                   <p className={classes.votingWalletMidBottomSetup}>
                     Set Up Voting
                   </p>
@@ -525,7 +521,6 @@ function Governance({}) {
                 </Paper>
               ) : (
                 <Paper className={classes.votingWalletMidVotes}>
-                  {console.log("line 509")}
                   <Grid
                     item
                     md={4}
