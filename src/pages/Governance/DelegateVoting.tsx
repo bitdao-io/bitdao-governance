@@ -26,7 +26,7 @@ function getModalStyle() {
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
-    ["@media (max-width:414px)"]: {
+    ["@media (maxWidth:414px)"]: {
       top: "30%",
       left: "35%",
     },
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     // backgroundImage: "linear-gradient(to  top, #ECF8FF, #FFF6F8)"
     boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
-    ["@media (max-width:414px)"]: {
+    ["@media (maxWidth:414px)"]: {
       width: 300,
     },
   },
@@ -260,7 +260,7 @@ function DelegateVoting({
               </p>
             </div>
 
-            <p>
+            <div>
               <input
                 className={classes.inputBox}
                 placeholder="Enter a 0x address"
@@ -292,7 +292,7 @@ function DelegateVoting({
                   </>
                 )}
               </p>
-            </p>
+            </div>
             <p>
               <button
                 className={

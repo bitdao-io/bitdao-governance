@@ -2,12 +2,6 @@ import React from "react";
 import axios from "axios";
 import EditIcon from "@material-ui/icons/Edit";
 import Typography from "@material-ui/core/Typography";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Container, Toolbar, AppBar } from "@material-ui/core";
@@ -16,7 +10,9 @@ import useWeb3Modal from "../../hooks/useWeb3Modal";
 import DelegateVoting from "./DelegateVoting";
 import ConfiramtionPopup from "./ConfirmationPopup";
 import NotifyPopup from "./NotifyPopup";
+import DelegateList from "./DelegateList";
 import useStyles from "./Governance.styles";
+import handleNumberFormat from "../../helpers/handleNumberFormat";
 import { ClassSharp } from "@material-ui/icons";
 
 function createData(
@@ -124,23 +120,6 @@ function Governance({}) {
     }
   };
 
-  const handleNumberFormat = (number: any) => {
-    const splitbal = number.toString().split(".");
-    const toformatfun = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-    const toformat = toformatfun.format(Number(splitbal[0]));
-    if (splitbal[1] == undefined) {
-      const formatedBal = toformat.toString().split(".")[0].split("$")[1];
-      return formatedBal;
-    } else {
-      const formatedBal =
-        toformat.toString().split(".")[0].split("$")[1] + "." + splitbal[1];
-
-      return formatedBal;
-    }
-  };
   const handleDelegateSubmit = async (address: any) => {
     if (contracts != undefined) {
       try {
@@ -702,75 +681,7 @@ function Governance({}) {
           <Paper className={classes.tableHead}>
             Top Addresses by Voting Weight
           </Paper>
-          <TableContainer component={Paper} className={classes.tableContainer}>
-            {/* sx={{ minWidth: 650 }} */}
-            <Table aria-label="simple table" style={{ tableLayout: "fixed" }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell className={classes.headtabelCell} align="center">
-                    Rank
-                  </TableCell>
-                  <TableCell className={classes.headtabelCell} align="center">
-                    Votes
-                  </TableCell>
-                  {/* <TableCell className={classes.headtabelCell} align="right">
-                      Vote Weight
-                    </TableCell> */}
-                  {/* <TableCell className={classes.headtabelCell} align="right">
-                      Proposals Voted
-                    </TableCell> */}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* sx={{ "&:last-child td, &:last-child th": { border: 0 } }} */}
-                {addrWithVotes.map((row: any, index: any) => (
-                  <TableRow key={index}>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      className={classes.tabelCell}
-                      align="center"
-                    >
-                      <a
-                        href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
-                        target="_blank"
-                      >
-                        {index + 1}&nbsp;
-                        <span className={classes.separator}>|</span> &nbsp;
-                        {row.id.slice(0, 5) + "..." + row.id.slice(-5)}
-                      </a>
-                    </TableCell>
-                    <TableCell className={classes.tabelCell} align="center">
-                      {Number.isInteger(
-                        Number(
-                          handleNumberFormat(row.delegatedVotes).replace(
-                            /,/g,
-                            ""
-                          )
-                        )
-                      )
-                        ? handleNumberFormat(row.delegatedVotes)
-                        : handleNumberFormat(
-                            Number(
-                              handleNumberFormat(row.delegatedVotes).replace(
-                                /,/g,
-                                ""
-                              )
-                            ).toFixed(2)
-                          )}
-                    </TableCell>
-                    {/* <TableCell className={classes.tabelCell} align="right">
-                          {console.log("total votes", totalVotes)}
-                          {((row.vote / totalVotes) * 100).toFixed(2)}%
-                        </TableCell> */}
-                    {/* <TableCell className={classes.tabelCell} align="right" style={{boxShadow: "inset -1px 0px 2px #ECECEC",}}>
-                          {row.vote.toFixed(2)}
-                        </TableCell> */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <DelegateList delegates={addrWithVotes} />
         </Grid>
 
         {open && (

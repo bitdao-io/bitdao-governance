@@ -61,10 +61,10 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "#ffff",
       fontSize: "48px",
       fontWeight: 700,
-      ["@media (max-width:619px)"]: {
+      ["@media (maxWidth:619px)"]: {
         fontSize: "24px !important",
       },
-      ["@media (max-width:420px)"]: {
+      ["@media (maxWidth:420px)"]: {
         fontSize: "18px !important",
       },
     },
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 400,
       fontSize: "24px",
       textAlign: "center",
-      ["@media (max-width:420px)"]: {
+      ["@media (maxWidth:420px)"]: {
         fontSize: "15px !important",
       },
     },
@@ -282,7 +282,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       textDecoration: "none",
-      ["@media (max-width:800px)"]: {
+      ["@media (maxWidth:800px)"]: {
         display: "flex",
       },
       "& a": {
