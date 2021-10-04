@@ -16,9 +16,27 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: curl http://deploy:11f610cce366bf21f13c595aec95a00fa0@52.23.209.207/job/bitdao_main_net/build?token=K1uZJd1HDJ11aJdjJDKO
+
+      - name: Install node package
+        run: yarn install
+
+      - name: Build static website
+        run: yarn run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BITDAO_DELEGATE_S3_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.BITDAO_DELEGATE_S3_SECRET }}
+          aws-region: us-east-1
+
+      - name: Copy files to the test website with the AWS CLI
+        run: aws s3 cp build/ s3://${{ secrets.BITDAO_DELEGATE_S3_BUCKET }} --recursive
+
+      - name: Create cloudfront invalidation
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.BITDAO_DELEGATE_CLOUDFRONT_ID }} --path "/*"
