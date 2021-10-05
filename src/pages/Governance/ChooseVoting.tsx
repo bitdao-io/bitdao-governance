@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     width: 450,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    ['@media (max-width:414px)']: {
+    ['@media (maxWidth:414px)']: {
       width:300
     },
     // padding: theme.spacing(2, 4, 3),
@@ -66,12 +66,12 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "100%",
     padding: "25px",
     backgroundImage: "linear-gradient(to top, #ffffff, #FFF6F8)",
-    ['@media (max-width:414px)']: {
+    ['@media (maxWidth:414px)']: {
       padding:'15px'
     },
   },
   iconSize1:{
-    ['@media (max-width:414px)']: {
+    ['@media (maxWidth:414px)']: {
       width:'25px',
       position:'absolute',
       top:'76px',
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   iconSize2:{
-    ['@media (max-width:414px)']: {
+    ['@media (maxWidth:414px)']: {
       width:'25px',
       position:'absolute',
       top:'224px',
