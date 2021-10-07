@@ -6,8 +6,6 @@ import useWeb3Modal from "./hooks/useWeb3Modal";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "./fontFamily/SpaceGrotesk-Regular.ttf";
 import "./fontFamily/SpaceGrotesk-Bold.ttf";
-
-import NotifyPopup from "./pages/Governance/NotifyPopup";
 import "./App.css";
 declare let window: any;
 const THEME = createMuiTheme({
@@ -25,41 +23,15 @@ function App() {
     accounts,
     networkId,
   ] = useWeb3Modal();
-  const [winSize, setWinSize] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  React.useEffect(() => {
-    const { innerWidth: width, innerHeight: height } = window;
-    if (width < 768) {
-      setOpen(true);
-      setWinSize(width);
-    } else {
-      setOpen(false);
-      setWinSize(width);
-    }
-  }, [winSize]);
+  
   return (
     <div className="App">
       <MuiThemeProvider theme={THEME}>
-        {winSize < 768 ? (
-          <NotifyPopup
-            open={open}
-            handleClose={handleClose}
-            text={`Please visit this page on desktop`}
-          />
-        ) : (
-          <>
-            <Router>
-              <Switch>
-                <Route exact path="/" component={Governance}></Route>
-              </Switch>
-            </Router>
-
-            {/* <Footer /> */}
-          </>
-        )}
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Governance}></Route>
+          </Switch>
+        </Router>
       </MuiThemeProvider>
     </div>
   );

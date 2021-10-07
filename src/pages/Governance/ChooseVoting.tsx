@@ -1,7 +1,8 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 import { useEffect } from "react";
 declare let window: any;
 
@@ -11,19 +12,7 @@ type ModalProps = {
   handleDelegateVoting: any;
   handleManualVoting: any;
 };
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
-function getModalStyle() {
-  const top = 30;
-  const left = 42;
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 const useStyles = makeStyles((theme) => ({
   modal: {
     fontFamily: "SpaceGroteskRegular !important",
@@ -33,6 +22,16 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     fontFamily: "SpaceGroteskRegular !important",
+    position: "relative",
+    right: 0,
+    bottom: 0,
+    top: '20%',
+    left: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    margin: 'auto',
+    maxWidth: 450,
     //computer
     [theme.breakpoints.up('lg')]: {
      
@@ -108,7 +107,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 function ChooseVoting({ open, handleClose, handleDelegateVoting, handleManualVoting }: ModalProps) {
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
   const [winSize, setWinSize] = React.useState(0);
 
   return (
@@ -118,7 +116,7 @@ function ChooseVoting({ open, handleClose, handleDelegateVoting, handleManualVot
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-      <div style={modalStyle} className={classes.paper}>
+      <Box className={classes.paper}>
         <Grid container spacing={3}>
           <Grid item xs={12} className={classes.heading}>
             <h3 className={classes.heading}>Choose Delegation Voting
@@ -167,7 +165,7 @@ function ChooseVoting({ open, handleClose, handleDelegateVoting, handleManualVot
             <p className={classes.arrow} onClick={handleDelegateVoting}>{">"}</p>
           </Grid>
         </Grid>
-      </div>
+      </Box>
     </Modal>
   );
 }

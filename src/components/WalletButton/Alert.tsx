@@ -1,32 +1,16 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Box from "@material-ui/core/Box";
+
 type ModalProps = {
   open: any;
   handleClose: any;
   handleWalletDisconnect:any
 };
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
-function getModalStyle() {
-  const top = 35;
-  const left = 45;
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-    ["@media (maxWidth:414px)"]: {
-      top: "30%",
-      left: "35%",
-    },
-  };
-}
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -36,15 +20,20 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     fontFamily: "ABeeZeeRegular !important",
     borderRadius: "16px",
-    position: "absolute",
-    width: 450,
+    position: "relative",
+    right: 0,
+    bottom: 0,
+    top: '20%',
+    left: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    margin: 'auto',
+    maxWidth: 450,
     backgroundColor: theme.palette.background.paper,
     // backgroundImage: "linear-gradient(to  top, #ECF8FF, #FFF6F8)"
     boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
-    ["@media (maxWidth:414px)"]: {
-      width: 300,
-    },
   },
   heading: {
     fontFamily: "ABeeZeeRegular !important",
@@ -97,8 +86,6 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
 
   },
- 
-  
   delegateVoteHead: {
     textAlign: "center",
     fontWeight: 400,
@@ -117,8 +104,6 @@ function Alert({
   handleWalletDisconnect
 }: ModalProps) {
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
-  
 
   return (
     <Modal
@@ -127,7 +112,7 @@ function Alert({
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-      <div style={modalStyle} className={classes.paper}>
+      <Box className={classes.paper}>
         <Grid container spacing={3}>
           <Grid item xs={12} className={classes.heading}>
             <Paper className={classes.delegateVoteHead}>
@@ -153,7 +138,7 @@ function Alert({
           </Grid>
           
         </Grid>
-      </div>
+      </Box>
     </Modal>
   );
 }

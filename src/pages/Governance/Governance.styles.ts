@@ -163,7 +163,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     startButton: {
       fontFamily: "ABeeZeeRegular !important",
-      width: "419px",
+      maxWidth: "419px",
+      width: "100%",
+      display: "block",
       height: "72px",
       padding: "12px",
       boxShadow: "0px 0px -1px rgba(0, 0, 0, 0.25)",
@@ -187,7 +189,6 @@ const useStyles = makeStyles((theme: Theme) =>
     tableBottom: {
       fontFamily: "SpaceGroteskRegular !important",
       // color: "#121212",
-
       fontSize: "18px",
       padding: "20px",
       borderRadius: "0px 0px 15px 15px",
@@ -200,7 +201,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     tabelCell: {
-      padding: "18px 0px 18spx 0px",
+      padding: "18px 0px 18px 0px",
       fontFamily: "ABeeZeeRegular !important",
 
       "& a": {
