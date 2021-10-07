@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     fontFamily: "SpaceGroteskRegular !important",
+    borderRadius: "16px",
     position: "relative",
     right: 0,
     bottom: 0,
@@ -32,20 +33,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     margin: 'auto',
     maxWidth: 450,
-    //computer
-    [theme.breakpoints.up('lg')]: {
-     
-    },
-    //iphone
-    [theme.breakpoints.down('sm')]: {
-      top: '65vw',
-      left: '35vw'
-    },
-    borderRadius: "16px",
-    position: "absolute",
-    top: '65vw',
-      left: '35vw',
-    width: 450,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     ['@media (maxWidth:414px)']: {
