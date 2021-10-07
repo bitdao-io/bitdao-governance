@@ -269,7 +269,7 @@ function Governance({}) {
   }, [connected, refetchVotes, accounts]);
 
   return (
-    <Grid container spacing={4} className={classes.root}>
+    <Grid container className={classes.root}>
       <Container className={classes.rootContainer}>
         <Grid item lg={12} md={12}>
           <AppBar
@@ -327,6 +327,7 @@ function Governance({}) {
                 <a
                   href={`${process.env.REACT_APP_BITDAO_LEARNMORE}`}
                   target="_blank"
+                  rel="noreferrer"
                   className={classes.subHeadingLink}
                 >
                   <span className={classes.subHeadingLink}>Here</span>
