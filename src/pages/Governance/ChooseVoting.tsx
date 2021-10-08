@@ -107,7 +107,7 @@ function ChooseVoting({ open, handleClose, handleDelegateVoting, handleManualVot
         <Grid container spacing={3}>
           <Grid item xs={12} className={classes.heading}>
             <h3 className={classes.heading}>Choose Delegation Voting
-            <span style={{cursor:'pointer'}}className={classes.closeButton} onClick={handleClose}>x</span>
+            <span style={{cursor:'pointer'}} className={classes.closeButton} onClick={handleClose}>x</span>
             </h3>
           </Grid>
         </Grid>

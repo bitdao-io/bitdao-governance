@@ -43,10 +43,11 @@ function useWeb3Modal(config = {}) {
 
     const web3: any = new Web3(newProvider);
     const net = await web3.eth.net.getId();
+    const ethereum = window.ethereum;
    
     setNetworkId(net);
     const contracts = await getContracts(web3);
-    const accounts = await web3.eth.getAccounts();
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
     setAccounts(accounts[0]);
     setProvider(web3);
     setContracts(contracts);

@@ -57,26 +57,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
       backgroundImage: "linear-gradient(to  right, #0E47EF, #6288F7)",
     },
-    votingNumbers: {
-      color: "#ffff",
-      fontSize: "48px",
-      fontWeight: 700,
-      ["@media (maxWidth:619px)"]: {
-        fontSize: "24px !important",
-      },
-      ["@media (maxWidth:420px)"]: {
-        fontSize: "18px !important",
-      },
-    },
     subHeading: {
       fontFamily: "ABeeZeeRegular !important",
       color: "#121212",
       fontWeight: 400,
       fontSize: "24px",
       textAlign: "center",
-      ["@media (maxWidth:420px)"]: {
+      [theme.breakpoints.down("xs")]: {
         fontSize: "15px !important",
       },
+      
     },
     subHeadingLink: {
       color: "#E84F7D",
@@ -244,13 +234,8 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "flex-end",
     },
     votesWrapper: {
-      //computer
-      [theme.breakpoints.up("lg")]: {},
-      //iphone
-      [theme.breakpoints.down("sm")]: {
-        paddingTop: "7vw",
-        paddingBottom: "7vw",
-      },
+      paddingTop: "2em",
+      paddingBottom: "2em",
     },
     changeButton: {
       textAlign: "right",
@@ -283,16 +268,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       textDecoration: "none",
-      ["@media (maxWidth:800px)"]: {
-        display: "flex",
-      },
-      "& a": {
-        fontSize: "14px",
-        fontWeight: 700,
-        marginRight: "50px !important",
-
-        textDecoration: "none",
-      },
     },
 
     headerleft: {
@@ -304,7 +279,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: "100%",
       display: "flex",
       alignItems: "center",
-      justifyContent: "space-between",
+      justifyContent: "end",
     },
     addressChangeText: {
       color: "#E64072",

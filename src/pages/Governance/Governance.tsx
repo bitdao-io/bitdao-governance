@@ -13,22 +13,9 @@ import NotifyPopup from "./NotifyPopup";
 import DelegateList from "./DelegateList";
 import useStyles from "./Governance.styles";
 import handleNumberFormat from "../../helpers/handleNumberFormat";
-import { ClassSharp } from "@material-ui/icons";
 
-function createData(
-  Rank: string,
-  EnsAddr: string,
-  Votes: string,
-  VoteWeight: string,
-  ProposalsVoted: string
-) {
-  return { Rank, EnsAddr, Votes, VoteWeight, ProposalsVoted };
-}
-
-function Governance({}) {
+function Governance() {
   const classes = useStyles();
-
-  const [arrayLength, setArrayLength] = React.useState(15);
   const [connected, setConnected] = React.useState(false);
   const [bitBalance, setBitBalance]: any = React.useState("0");
   const [open, setOpen] = React.useState(false);
@@ -36,7 +23,6 @@ function Governance({}) {
   const [confirmTx, setConfirmTx] = React.useState(false);
   const [delegationToAddr, setDelegationToAddr] = React.useState("");
   const [txHash, setTxHash] = React.useState("");
-  const [newUser, setNewUser] = React.useState(true);
   const [insufficientBal, setinsufficientBal] = React.useState(false);
   const [network, setNetwork] = React.useState(false);
   const [delegationClicked, setDelegationClicked] = React.useState(false);
@@ -44,11 +30,7 @@ function Governance({}) {
   const [votesDelegated, setVotesDelegated] = React.useState("0");
   const [pendingTx, setPendingTx] = React.useState(false);
   const [confirmedTx, setConfirmedTx] = React.useState(false);
-  const [allAddressesWithVotes, setAllAddressesWithVotes]: any = React.useState(
-    []
-  );
-  const [addressesWithDelegates, setAddressesWithDelegates]: any =
-    React.useState([]);
+
   const [
     provider,
     loadWeb3Modal,
@@ -109,7 +91,7 @@ function Governance({}) {
   };
   const handleMatchAddress = (address: any) => {
     const data = addrWithVotes.filter(
-      (item: any) => item.id.toLowerCase() == address.toLowerCase()
+      (item: any) => item.id.toLowerCase() === address.toLowerCase()
     );
 
     if (data.length > 0) {
@@ -121,7 +103,7 @@ function Governance({}) {
   };
 
   const handleDelegateSubmit = async (address: any) => {
-    if (contracts != undefined) {
+    if (contracts !== undefined) {
       try {
         const balance = await contracts.methods.balanceOf(accounts).call();
 
@@ -181,7 +163,7 @@ function Governance({}) {
         }
       );
       const allDelegators = data.data.delegates.filter(
-        (b: any) => b.delegatedVotes != 0
+        (b: any) => b.delegatedVotes !== 0
       );
       setAddrWithVotes(allDelegators);
 
@@ -193,16 +175,6 @@ function Governance({}) {
         0
       );
       setTotalVotes(sumOfAllVotes);
-
-      // const changeDis = allDelegators.map(
-      //   (item: any) => item.id.toLowerCase() == accounts.toLowerCase()
-      // );
-
-      // if (changeDis.includes(true)) {
-      //   setNewUser(true);
-      // } else {
-      //   setNewUser(false);
-      // }
       return allDelegators;
     } catch (error: any) {
       console.log(error.message);
@@ -213,12 +185,12 @@ function Governance({}) {
   const [currentVotes, setCurrentVotes] = React.useState("0");
   const [totalTokenSupply, setTotalTokenSupply] = React.useState(0);
   React.useEffect(() => {
-    if (provider != undefined) {
+    if (provider !== undefined) {
       setConnected(true);
     }
   }, [provider]);
   React.useEffect(() => {
-    if (contracts != undefined) {
+    if (contracts !== undefined) {
       contracts.methods
         .totalSupply()
         .call()
@@ -231,7 +203,7 @@ function Governance({}) {
   }, [contracts]);
 
   React.useEffect(() => {
-    if (contracts != undefined) {
+    if (contracts !== undefined) {
       contracts.methods
         .balanceOf(accounts)
         .call()
@@ -281,23 +253,14 @@ function Governance({}) {
               <Grid item md={6} xs={6}>
                 <Typography variant="h4" className={classes.title}>
                   <img
+                    alt="BitDAO logo"
                     src={process.env.REACT_APP_CLOUDFRONT + "bitlogo.png"}
                     className={classes.logoSize}
                   />
                 </Typography>
               </Grid>
               <Grid item md={6} xs={6}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                  }}
-                  role="presentation"
-                ></div>
-
                 <div className={classes.headercontainer}>
-                  <a href="/" className={classes.headerleft}></a>
                   <div className={classes.headerright}>
                     <WalletButton
                       provider={provider}
@@ -343,7 +306,7 @@ function Governance({}) {
           )}
           <Paper
             className={`${classes.votingWalletMid} ${
-              Number(bitBalance) == 0 && classes.onlyBorder
+              Number(bitBalance) === 0 && classes.onlyBorder
             }`}
           >
             <Grid
@@ -355,7 +318,7 @@ function Governance({}) {
               BIT Balance
             </Grid>
             <Grid item md={4} xs={4} className={classes.votingWalletMidBal}>
-              {accounts == undefined ? (
+              {accounts === undefined ? (
                 <>
                   <span
                     className={classes.messageAlign}
@@ -369,6 +332,7 @@ function Governance({}) {
                     style={{ marginTop: "-6px" }}
                   >
                     <img
+                      alt=""
                       src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"}
                       style={{ height: "27px", paddingLeft: "5px" }}
                     />
@@ -400,6 +364,7 @@ function Governance({}) {
                     style={{ marginTop: "1px" }}
                   >
                     <img
+                      alt=""
                       src={process.env.REACT_APP_CLOUDFRONT + "bitballogo.png"}
                       style={{ height: "16px", paddingLeft: "5px" }}
                     />
@@ -431,14 +396,14 @@ function Governance({}) {
                     xs={4}
                     className={classes.votingWalletMidBal}
                   >
-                    {accounts != undefined ? (
+                    {accounts !== undefined ? (
                       <>
                         {delegationToAddr.toLowerCase() ===
                         "0x0000000000000000000000000000000000000000" ? (
                           "Undelegated"
                         ) : (
                           <span className={classes.messageAlign}>
-                            {delegationToAddr.toLowerCase() ==
+                            {delegationToAddr.toLowerCase() ===
                             accounts.toLowerCase()
                               ? "Self"
                               : delegationToAddr.slice(0, 4) +
@@ -469,7 +434,7 @@ function Governance({}) {
                   </Grid>
                 </Paper>
               )}
-              {delegationToAddr.toLowerCase() ==
+              {delegationToAddr.toLowerCase() ===
               "0x0000000000000000000000000000000000000000" ? (
                 <Paper className={classes.votingWalletMidBottom}>
                   <p className={classes.votingWalletMidBottomSetup}>
@@ -482,6 +447,7 @@ function Governance({}) {
                     <a
                       href={`${process.env.REACT_APP_BITDAO_DOCS}`}
                       target="_blank"
+                      rel="noreferrer"
                       className={classes.subHeadingLink}
                     >
                       <span className={classes.subHeadingLink}>
@@ -545,8 +511,9 @@ function Governance({}) {
                       <a
                         href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`}
                         target="_blank"
+                        rel="noreferrer"
                       >
-                        {currentVotes.length == 1 ? (
+                        {currentVotes.length === 1 ? (
                           <span style={{ color: "#919191" }}>Vote &rarr;</span>
                         ) : (
                           <span>Vote &rarr;</span>
@@ -575,6 +542,7 @@ function Governance({}) {
                       <a
                         href={`${process.env.REACT_APP_BITDAO_DOCS}`}
                         target="_blank"
+                        rel="noreferrer"
                         className={classes.subHeadingLink}
                       >
                         <span className={classes.subHeadingLink}>
@@ -595,7 +563,7 @@ function Governance({}) {
                 </>
               ) : (
                 <>
-                  {connected == false ? (
+                  {connected === false ? (
                     <Paper className={classes.votingWalletMidBottom}>
                       <p className={classes.votingWalletMidBottomSetup}>
                         Set Up Voting
@@ -607,6 +575,7 @@ function Governance({}) {
                         <a
                           href={`${process.env.REACT_APP_BITDAO_DOCS}`}
                           target="_blank"
+                          rel="noreferrer"
                           className={classes.subHeadingLink}
                         >
                           <span className={classes.subHeadingLink}>
@@ -639,6 +608,7 @@ function Governance({}) {
                             <a
                               href={`${process.env.REACT_APP_BITDAO_DOCS}`}
                               target="_blank"
+                              rel="noreferrer"
                               className={classes.subHeadingLink}
                             >
                               <span className={classes.subHeadingLink}>

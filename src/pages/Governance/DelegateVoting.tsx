@@ -38,9 +38,6 @@ const useStyles = makeStyles((theme) => ({
     // backgroundImage: "linear-gradient(to  top, #ECF8FF, #FFF6F8)"
     boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
-    ["@media (maxWidth:414px)"]: {
-      width: 300,
-    },
   },
   heading: {
     fontFamily: "ABeeZeeRegular !important",
@@ -164,13 +161,13 @@ function DelegateVoting({
       setLabel("Invalid Address");
       setDisabled(true);
     } else {
-      if (addr == ownAccount) {
+      if (addr.toLowerCase() === ownAccount.toLowerCase()) {
         setDelegationAddr(addr);
         const result = handleMatchAddress(addr);
         setLabel("");
         setDisabled(false);
         setNameLabel({
-          name: addr == ownAccount ? "You" : addr,
+          name: addr.toLowerCase() === ownAccount.toLowerCase() ? "You" : addr,
           votingWeight: result.toFixed(4),
           // ensAddr: result[0].EnsAddr,
         });
@@ -264,7 +261,7 @@ function DelegateVoting({
                   "Insufficient balance to vote"
                 ) : (
                   <>
-                    {nameLabel.name != "" ? (
+                    {nameLabel.name !== "" ? (
                       <>
                         <span style={{ color: "#4FC78D" }}>
                           {nameLabel.name}
@@ -272,7 +269,7 @@ function DelegateVoting({
                         <span style={{ color: "#919191" }}>
                           {" "}
                           - Voting Weight:{" "}
-                          {nameLabel.votingWeight != undefined
+                          {nameLabel.votingWeight !== undefined
                             ? nameLabel.votingWeight
                             : "0"}
                           %

@@ -1,6 +1,5 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 import Alert from "./Alert"
 const useStyles = makeStyles(() =>
@@ -40,7 +39,7 @@ function WalletButton({
   accounts,
 }) {
   const classes = useStyles();
-  const [balance, setBalance] = React.useState("");
+  // const [balance, setBalance] = React.useState("");
 
   const [openAlert, setOpenAlert] = React.useState(false);
 

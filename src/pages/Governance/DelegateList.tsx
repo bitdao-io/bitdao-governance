@@ -49,6 +49,7 @@ function DelegateList({ delegates }: DelegateListProps) {
               <a
                 href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
                 target="_blank"
+                rel="noreferrer"
               >
                 {index + 1}&nbsp;
                 <span className={classes.separator}>|</span> &nbsp;
