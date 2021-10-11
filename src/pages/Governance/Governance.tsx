@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Container, Toolbar, AppBar } from "@material-ui/core";
-import WalletButton from "../../components/WalletButton/WalletButton";
+import WalletButton from "../../components/WalletButton";
 import useWeb3Modal from "../../hooks/useWeb3Modal";
 import DelegateVoting from "./DelegateVoting";
 import ConfiramtionPopup from "./ConfirmationPopup";
@@ -13,6 +13,8 @@ import NotifyPopup from "./NotifyPopup";
 import DelegateList from "./DelegateList";
 import useStyles from "./Governance.styles";
 import handleNumberFormat from "../../helpers/handleNumberFormat";
+import Alert from '@material-ui/core/Alert';
+import Stack from '@material-ui/core/Stack';
 
 function Governance() {
   const classes = useStyles();
@@ -105,7 +107,7 @@ function Governance() {
   const handleDelegateSubmit = async (address: any) => {
     if (contracts !== undefined) {
       try {
-        const balance = await contracts.methods.balanceOf(accounts).call();
+        const balance = await contracts.balanceOf(accounts);
 
         if (balance > 0) {
           const v = Number(balance.toString()) / 10 ** 18;
@@ -115,29 +117,38 @@ function Governance() {
           setVotesDelegated(formatedVote);
           setConfirmTx(true);
           setOpen(false);
-          const receipt = contracts.methods
-            .delegate(address)
-            .send({ from: accounts, gas: 300000 })
-            .on("transactionHash", async (txhash: string) => {
-              setPendingTx(true);
-              setDelegationClicked(false);
-              setTxHash(txhash);
-            })
-            .on("receipt", function (receipt: any) {
-              setDelegationToAddr(address);
-              setRefetchVotes(true);
-              setConfirmedTx(true);
-              setPendingTx(false);
-              setOpen(false);
-              setDelegationClicked(false);
-            })
-            .on("error", () => {
-              setOpen(false);
-              setConfirmTx(false);
-              setConfirmedTx(false);
-              setDelegationClicked(false);
-              setPendingTx(false);
-            });
+          const tx = await contracts.delegate(address)
+          setPendingTx(true);
+          setDelegationClicked(false);
+          const receipt = await tx.wait();
+          setTxHash(receipt.transactionHash);
+          setDelegationToAddr(address);
+          setRefetchVotes(true);
+          setConfirmedTx(true);
+          setPendingTx(false);
+          setOpen(false);
+          setDelegationClicked(false);
+
+            // .on("transactionHash", async (txhash: string) => {
+            //   setPendingTx(true);
+            //   setDelegationClicked(false);
+            //   setTxHash(txhash);
+            // })
+            // .on("receipt", function (receipt: any) {
+            //   setDelegationToAddr(address);
+            //   setRefetchVotes(true);
+            //   setConfirmedTx(true);
+            //   setPendingTx(false);
+            //   setOpen(false);
+            //   setDelegationClicked(false);
+            // })
+            // .on("error", () => {
+            //   setOpen(false);
+            //   setConfirmTx(false);
+            //   setConfirmedTx(false);
+            //   setDelegationClicked(false);
+            //   setPendingTx(false);
+            // });
         } else {
           setinsufficientBal(true);
         }
@@ -191,9 +202,7 @@ function Governance() {
   }, [provider]);
   React.useEffect(() => {
     if (contracts !== undefined) {
-      contracts.methods
-        .totalSupply()
-        .call()
+      contracts.totalSupply()
         .then((res: any) => {
           const bal = Number(res.toString()) / 10 ** 18;
           setTotalTokenSupply(bal);
@@ -204,9 +213,7 @@ function Governance() {
 
   React.useEffect(() => {
     if (contracts !== undefined) {
-      contracts.methods
-        .balanceOf(accounts)
-        .call()
+      contracts.balanceOf(accounts)
         .then((res: any) => {
           const bal = Number(res.toString()) / 10 ** 18;
           const formatedBal = handleNumberFormat(bal);
@@ -216,9 +223,7 @@ function Governance() {
           console.log(err);
         });
 
-      contracts.methods
-        .getCurrentVotes(accounts)
-        .call()
+      contracts.getCurrentVotes(accounts)
         .then((res: any) => {
           const bal = Number(res.toString()) / 10 ** 18;
           const formatedVotes = handleNumberFormat(bal);
@@ -226,9 +231,7 @@ function Governance() {
         })
         .catch((err: any) => console.log(err));
 
-      contracts.methods
-        .delegates(accounts)
-        .call()
+      contracts.delegates(accounts)
         .then((res: any) => {
           setDelegationToAddr(res);
         })

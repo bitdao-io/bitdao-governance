@@ -245,18 +245,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     appbar: {
       backgroundColor: "transparent",
-      backgroundImage: "linear-gradient(to right, #ECF8FF, #FFF6F8)",
       display: "block-inline",
       boxShadow: "none !important",
       zIndex: 0,
       border: "none !important",
-      [theme.breakpoints.down("md")]: {
-        backgroundImage: "linear-gradient(to right, #ECF8FF, #FFF6F8)",
-        display: "block-inline",
-        boxShadow: "none !important",
-        zIndex: 0,
-        border: "none !important",
-      },
     },
     title: {
       flexGrows: 1,

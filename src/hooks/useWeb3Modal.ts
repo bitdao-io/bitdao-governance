@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 // import { Web3Provider } from "@ethersproject/providers";
-import Web3 from "web3";
+import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import COMPABI from "../abi/Comp.json";
 // Enter a valid infura key here to avoid being rate limited
 // You can get a key for free at https://infura.io/register
 const INFURA_ID = process.env.REACT_APP_INFURA_KEY;
+const CONTRACT_ADDR = process.env.REACT_APP_CONTRACT_ADDR;
+
 
 const NETWORK_NAME = `${process.env.REACT_APP_NETWORK_NAME}`;
 
@@ -20,6 +22,7 @@ function useWeb3Modal(config = {}) {
     autoLoad = true,
     infuraId = INFURA_ID,
     NETWORK = NETWORK_NAME,
+    contractAddr = CONTRACT_ADDR,
   }: any = config;
 
   // Web3Modal also supports many other wallets.
@@ -41,20 +44,47 @@ function useWeb3Modal(config = {}) {
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();
 
-    const web3: any = new Web3(newProvider);
-    const net = await web3.eth.net.getId();
+    const provider: any = new ethers.providers.Web3Provider(newProvider, 'any');
+    const net = await provider.getNetwork();
+    const chainId = net.chainId
+
+    provider.on("network", (network: any, oldNetwork: any) => {
+      
+      console.log(network.chainId);
+      console.log(`test network ${network.chainId}`);
+  });
+
+    console.log(net)
+
     const ethereum = window.ethereum;
    
     setNetworkId(net);
-    const contracts = await getContracts(web3);
+    const contracts = await getContracts(provider);
     const accounts = await ethereum.request({ method: 'eth_accounts' });
     setAccounts(accounts[0]);
-    setProvider(web3);
+    setProvider(provider);
     setContracts(contracts);
 
     window.ethereum.on("accountsChanged", function (accounts: any) {
       setAccounts(accounts[0]);
     });
+
+    if (window.ethereum?.on) {
+      window.ethereum.on('chainChanged', (chainId: number) => {
+        console.log(`chain changed to ${chainId}! updating providers`);
+      
+        setNetworkId(chainId);
+      });
+      window.ethereum.on('accountsChanged', () => {
+        console.log(`account changed!`);
+        
+      });
+      
+
+      window.ethereum.on('disconnect', (code: any, reason: any) => {
+        console.log(code, reason);
+      });
+    }
 
   }, [web3Modal, accounts]);
 
@@ -66,22 +96,26 @@ function useWeb3Modal(config = {}) {
     [web3Modal]
   );
   const getContracts = async (provider: any) => {
-    const networkId: any = await provider.eth.net.getId();
+    const networkId: number = await provider.getNetwork();
 
     //const deployedNetwork:any = COMPABI.networks[networkId];
 
-    const comp = new provider.eth.Contract(
+    const comp = new ethers.Contract(
+      contractAddr,
       COMPABI.abi,
-      process.env.REACT_APP_CONTRACT_ADDR
+      provider.getSigner()
     );
 
     return comp;
   };
   // If autoLoad is enabled and the the wallet had been loaded before, load it automatically now.
   useEffect(() => {
+    console.log('outside')
+
     if (autoLoad && !autoLoaded && web3Modal.cachedProvider) {
       loadWeb3Modal();
       setAutoLoaded(true);
+      console.log('inside')
     }
   }, [
     autoLoad,
@@ -89,6 +123,7 @@ function useWeb3Modal(config = {}) {
     loadWeb3Modal,
     setAutoLoaded,
     web3Modal.cachedProvider,
+    networkId
   ]);
 
   return [provider, loadWeb3Modal, logoutOfWeb3Modal, contracts, accounts, networkId];

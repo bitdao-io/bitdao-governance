@@ -2,6 +2,14 @@ import React from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 import Alert from "./Alert"
+
+type WalletProps = {
+  provider: any;
+  loadWeb3Modal: any;
+  logoutOfWeb3Modal: any;
+  accounts: any,
+};
+
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
@@ -37,7 +45,7 @@ function WalletButton({
   loadWeb3Modal,
   logoutOfWeb3Modal,
   accounts,
-}) {
+}: WalletProps) {
   const classes = useStyles();
   // const [balance, setBalance] = React.useState("");
 

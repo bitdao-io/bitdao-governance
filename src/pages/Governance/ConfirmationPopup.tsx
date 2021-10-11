@@ -182,14 +182,7 @@ function ConfiramtionPopup({
               {delegationClicked?'Confirm the transaction':'Transaction Broadcast'}
             </p>
             
-            {pendingTx && (
-              <p>
-              <button className={classes.delegateButton}>
-                <a href={`${process.env.REACT_APP_ETHERSCAN}${txHash}`} target="_blank">View on Etherscan</a>
-              </button>
-            </p>
-            )}
-            {confirmedTx && (
+            {txHash && (
               <p>
               <button className={classes.delegateButton}>
                 <a href={`${process.env.REACT_APP_ETHERSCAN}${txHash}`} target="_blank">View on Etherscan</a>
