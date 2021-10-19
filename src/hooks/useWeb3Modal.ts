@@ -11,6 +11,19 @@ const CONTRACT_ADDR = process.env.REACT_APP_CONTRACT_ADDR;
 
 
 const NETWORK_NAME = `${process.env.REACT_APP_NETWORK_NAME}`;
+const APP_NETWORK_ID = `${process.env.REACT_APP_NETWORK_ID}`;
+const web3Modal = new Web3Modal({
+  network: NETWORK_NAME,
+  cacheProvider: true,
+  providerOptions: {
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        INFURA_ID,
+      },
+    },
+  },
+});
 
 function useWeb3Modal(config = {}) {
   const [provider, setProvider] = useState();
@@ -22,23 +35,13 @@ function useWeb3Modal(config = {}) {
     autoLoad = true,
     infuraId = INFURA_ID,
     NETWORK = NETWORK_NAME,
+    appNetworkId = APP_NETWORK_ID,
     contractAddr = CONTRACT_ADDR,
   }: any = config;
 
   // Web3Modal also supports many other wallets.
   // You can see other options at https://github.com/Web3Modal/web3modal
-  const web3Modal = new Web3Modal({
-    network: NETWORK,
-    cacheProvider: true,
-    providerOptions: {
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          infuraId,
-        },
-      },
-    },
-  });
+  
 
   // Open wallet selection modal.
   const loadWeb3Modal = useCallback(async () => {
@@ -48,17 +51,24 @@ function useWeb3Modal(config = {}) {
     const net = await provider.getNetwork();
     const chainId = net.chainId
 
+    
+    console.log(net.chainId)
+    
+    const ethereum = window.ethereum;
+    
+    setNetworkId(net.chainId);
     provider.on("network", (network: any, oldNetwork: any) => {
       
       console.log(network.chainId);
       console.log(`test network ${network.chainId}`);
-  });
+      setNetworkId(network.chainId);
+      if (network.chainId != appNetworkId) {
+        console.log(`wrong network please change to ${network.chainId} ${appNetworkId} ${NETWORK}`);
+        return;
+      }
+      // loadWeb3Modal();
 
-    console.log(net)
-
-    const ethereum = window.ethereum;
-   
-    setNetworkId(net);
+    });
     const contracts = await getContracts(provider);
     const accounts = await ethereum.request({ method: 'eth_accounts' });
     setAccounts(accounts[0]);
@@ -86,14 +96,14 @@ function useWeb3Modal(config = {}) {
       });
     }
 
-  }, [web3Modal, accounts]);
+  }, []);
 
   const logoutOfWeb3Modal = useCallback(
     async function () {
       await web3Modal.clearCachedProvider();
       window.location.reload();
     },
-    [web3Modal]
+    []
   );
   const getContracts = async (provider: any) => {
     const networkId: number = await provider.getNetwork();
@@ -118,12 +128,11 @@ function useWeb3Modal(config = {}) {
       console.log('inside')
     }
   }, [
-    autoLoad,
+    
     autoLoaded,
-    loadWeb3Modal,
-    setAutoLoaded,
-    web3Modal.cachedProvider,
-    networkId
+    
+    networkId,
+    setNetworkId
   ]);
 
   return [provider, loadWeb3Modal, logoutOfWeb3Modal, contracts, accounts, networkId];

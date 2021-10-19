@@ -1,7 +1,7 @@
 import React from "react";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-
 import Alert from "./Alert"
+import addressTruncate from "../../helpers/addressTruncate";
+
 
 type WalletProps = {
   provider: any;
@@ -10,43 +10,12 @@ type WalletProps = {
   accounts: any,
 };
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      fontFamily: "sans-serif !important",
-      borderRadius: "16px",
-      backgroundColor: "#EEF6FF",
-      marginRight: "10px",
-      padding:'20px',
-      color: "#2D82B7",
-     cursor:"pointer",
-      flex: "none",
-      fontWeight:400,
-      boxShadow: "0px 0px 20px rgba(55, 156, 206, 0.2)",
-      border:"none"
-    },
-    onConnect:{
-      backgroundColor:'#57A2D1',
-      color:"#ffffff",
-      fontFamily: "sans-serif !important",
-      borderRadius: "16px",
-      marginRight: "10px",
-      padding: "20px",
-      cursor:"pointer",
-      flex: "none",
-      boxShadow: "0px 0px 20px rgba(55, 156, 206, 0.2)",
-      border:"none"
-
-    }
-  })
-);
 function WalletButton({
   provider,
   loadWeb3Modal,
   logoutOfWeb3Modal,
   accounts,
 }: WalletProps) {
-  const classes = useStyles();
   // const [balance, setBalance] = React.useState("");
 
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -63,7 +32,11 @@ function WalletButton({
     <>
      
       <button
-        className={!provider?classes.root:classes.onConnect}
+        className={
+          !provider
+          ? "bg-connectedButton rounded-xl shadow-xl p-4 text-brandblue text-sm"
+          : "bg-unconnectedButton text-white rounded-xl shadow-xl py-4 px-5 text-sm"
+        }
         color="primary"
         onClick={() => {
           if (!provider) {
@@ -75,10 +48,10 @@ function WalletButton({
         }}
       >
         
-          {!provider
-            ? "Connect wallet"
-            : accounts.slice(0, 4) + "..." + accounts.slice(-4)}{" "}
-        
+        {!provider
+          ? "Connect wallet"
+          : addressTruncate(accounts)
+        }{" "}
       </button>
 
       {openAlert && (

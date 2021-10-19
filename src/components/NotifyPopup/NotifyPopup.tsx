@@ -1,26 +1,18 @@
 import React from "react";
 import { Dialog, Transition } from '@headlessui/react'
-import addressTruncate from "../../helpers/addressTruncate";
-
 
 type ModalProps = {
   open: any;
   handleClose: any;
-
-  delegatingToAddr: any;
-  txHash:any;votesDelegated:any;
-  delegationClicked:any;
-  pendingTx:any;confirmedTx:any;
+  text: any;
+  title: any;
 };
 
-function ConfiramtionPopup({
+function NotifyPopup({
   open,
   handleClose,
-  delegatingToAddr,
-  txHash,
-  votesDelegated,
-  delegationClicked,
-  pendingTx,confirmedTx
+  text,
+  title
 }: ModalProps) {
   const cancelButtonRef = React.useRef(null)
 
@@ -59,39 +51,24 @@ function ConfiramtionPopup({
                 <div className="">
                   <div className="mt-3 text-center sm:mt-0">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                      {pendingTx?'Transaction Pending':(<>{confirmedTx?'Transaction Confirmed':'Confirm Transaction'}</>)}
+                      {title}
                     </Dialog.Title>
                     <div className="mt-5">
-                      
-                      <p className="text-blue-500">{votesDelegated} Votes</p>
-                      <p>
-                        Delegating to {addressTruncate(delegatingToAddr)}
-                      </p>
-                      <p>
-
-                        {confirmedTx?(
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mx-auto my-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        ):(
-                          <img src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"} className="m-auto" style={{width:'45px'}}/>
-                        )}
-                      </p>
-                      
+                      <p>{text}</p>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:px-6">
-                <p style={{ textAlign: "center",color: "#919191", fontSize:"14px"}}>
-                  {delegationClicked?'Confirm the transaction':'Transaction Broadcast'}
-                </p>
-                
-                {txHash && (
-                  <p>
-                    <a href={`${process.env.REACT_APP_ETHERSCAN}${txHash}`} target="_blank" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brandpink text-base font-medium text-white hover:bg-brandpink-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mt-3 sm:text-sm">View on Etherscan</a>
-                  </p>
-                )}
+              <button
+                  type="button"
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  ref={cancelButtonRef}
+                  onClick={() => handleClose()}
+
+                >
+                  ok
+                </button>
                 
               </div>
             </div>
@@ -99,8 +76,7 @@ function ConfiramtionPopup({
         </div>
       </Dialog>
     </Transition.Root>
-
   );
 }
 
-export default ConfiramtionPopup;
+export default NotifyPopup;
