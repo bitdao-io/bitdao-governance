@@ -67,16 +67,7 @@ function Governance() {
   const closeNotifyPopup = () => {
     setNetwork(false);
   };
-  // const handleDelegateVoting = () => {
-  //   setOpen(false);
-  //   setOpenDelegate(true);
-  //   setManualVoting(false);
-  // };
-  // const handleManualVoting = () => {
-  //   setManualVoting(true);
-  //   setOpen(false);
-  // };
-
+  
   const handleWallet = () => {
     if (!provider) {
       loadWeb3Modal();
@@ -121,27 +112,6 @@ function Governance() {
           setPendingTx(false);
           setOpen(false);
           setDelegationClicked(false);
-
-            // .on("transactionHash", async (txhash: string) => {
-            //   setPendingTx(true);
-            //   setDelegationClicked(false);
-            //   setTxHash(txhash);
-            // })
-            // .on("receipt", function (receipt: any) {
-            //   setDelegationToAddr(address);
-            //   setRefetchVotes(true);
-            //   setConfirmedTx(true);
-            //   setPendingTx(false);
-            //   setOpen(false);
-            //   setDelegationClicked(false);
-            // })
-            // .on("error", () => {
-            //   setOpen(false);
-            //   setConfirmTx(false);
-            //   setConfirmedTx(false);
-            //   setDelegationClicked(false);
-            //   setPendingTx(false);
-            // });
         } else {
           setinsufficientBal(true);
         }

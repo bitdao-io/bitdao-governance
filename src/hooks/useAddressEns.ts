@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 
 
 const UseAddressEns = async (provider: any, address: string) => {
-  // console.log(provider, address, utils.isAddress(address));
-  // console.log(utils)
   if (utils.isAddress(address)) {
     try {
       // Accuracy of reverse resolution is not enforced.

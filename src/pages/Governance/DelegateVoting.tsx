@@ -1,4 +1,4 @@
-import React from "react";
+import { useCallback, useState, useRef, Fragment }  from "react";
 import { Dialog, Transition } from '@headlessui/react'
 import addressTruncate from "../../helpers/addressTruncate";
 import UseAddressEns from "../../hooks/useAddressEns";
@@ -26,17 +26,16 @@ function DelegateVoting({
   delegationClicked,
   provider,
 }: ModalProps) {
-  const [delegationAddr, setDelegationAddr] = React.useState("");
-  const [inputAddrorEns, setInputAddrorEns] = React.useState("");
-  const [label, setLabel] = React.useState("");
-  const [disable, setDisabled] = React.useState(true);
-  const [nameLabel, setNameLabel] = React.useState({
+  const [delegationAddr, setDelegationAddr] = useState("");
+  const [inputAddrorEns, setInputAddrorEns] = useState("");
+  const [label, setLabel] = useState("");
+  const [nameLabel, setNameLabel] = useState({
     name: "",
     votingWeight: 0,
     // ensAddr: "",
   });
 
-  const validateAddress = async (event: any) => {
+  const validateAddress = useCallback(async (event: any) => {
     event.preventDefault();
     const addrOrEns = event.target.value;
     setInputAddrorEns(addrOrEns)
@@ -54,13 +53,11 @@ function DelegateVoting({
     
     if (!resolvedAddress || addr.length < 42 || addr.length > 42) {
       setLabel("Invalid Address");
-      setDisabled(true);
     } else {
       if (addr.toLowerCase() === ownAccount.toLowerCase()) {
         setDelegationAddr(addr);
         const result = handleMatchAddress(addr);
         setLabel("");
-        setDisabled(false);
         setNameLabel({
           name: addr.toLowerCase() === ownAccount.toLowerCase() ? "You" : addr,
           votingWeight: result.toFixed(4),
@@ -69,8 +66,6 @@ function DelegateVoting({
       } else {
         setDelegationAddr(addr);
         const result = handleMatchAddress(addr);
-
-        setDisabled(false);
         setLabel("");
         setNameLabel({
           name: addressTruncate(addr),
@@ -80,7 +75,7 @@ function DelegateVoting({
       }
     }
 
-  };
+  }, [provider]);
 
   const handleOwnDegelationAddr = async () => {
     setDelegationAddr(ownAccount);
@@ -89,7 +84,6 @@ function DelegateVoting({
     const result = handleMatchAddress(ownAccount);
 
     setLabel("");
-    setDisabled(false);
     setNameLabel({
       name: "You",
       votingWeight: result.toFixed(4),
@@ -97,13 +91,13 @@ function DelegateVoting({
     });
   };
 
-  const cancelButtonRef = React.useRef(null)
+  const cancelButtonRef = useRef(null)
   return (
-    <Transition.Root show={open} as={React.Fragment}>
+    <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={handleClose}>
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
-            as={React.Fragment}
+            as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0"
             enterTo="opacity-100"
@@ -119,7 +113,7 @@ function DelegateVoting({
             &#8203;
           </span>
           <Transition.Child
-            as={React.Fragment}
+            as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             enterTo="opacity-100 translate-y-0 sm:scale-100"

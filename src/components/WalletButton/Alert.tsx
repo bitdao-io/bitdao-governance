@@ -13,7 +13,6 @@ function Alert({
   handleClose,
   handleWalletDisconnect
 }: ModalProps) {
-  // const classes = useStyles();
   const cancelButtonRef = React.useRef(null)
 
   return (

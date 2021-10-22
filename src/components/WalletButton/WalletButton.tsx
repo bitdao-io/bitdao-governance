@@ -16,7 +16,6 @@ function WalletButton({
   logoutOfWeb3Modal,
   accounts,
 }: WalletProps) {
-  // const [balance, setBalance] = React.useState("");
 
   const [openAlert, setOpenAlert] = React.useState(false);
 

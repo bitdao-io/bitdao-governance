@@ -49,25 +49,16 @@ function useWeb3Modal(config = {}) {
 
     const provider: any = new ethers.providers.Web3Provider(newProvider, 'any');
     const net = await provider.getNetwork();
-    const chainId = net.chainId
-
-    
-    console.log(net.chainId)
-    
+    const chainId = net.chainId    
     const ethereum = window.ethereum;
     
     setNetworkId(net.chainId);
-    provider.on("network", (network: any, oldNetwork: any) => {
-      
-      console.log(network.chainId);
-      console.log(`test network ${network.chainId}`);
+    provider.on("network", (network: any) => {
       setNetworkId(network.chainId);
       if (network.chainId != appNetworkId) {
         console.log(`wrong network please change to ${network.chainId} ${appNetworkId} ${NETWORK}`);
         return;
       }
-      // loadWeb3Modal();
-
     });
     const contracts = await getContracts(provider);
     const accounts = await ethereum.request({ method: 'eth_accounts' });
@@ -89,8 +80,6 @@ function useWeb3Modal(config = {}) {
         console.log(`account changed!`);
         
       });
-      
-
       window.ethereum.on('disconnect', (code: any, reason: any) => {
         console.log(code, reason);
       });
@@ -107,9 +96,6 @@ function useWeb3Modal(config = {}) {
   );
   const getContracts = async (provider: any) => {
     const networkId: number = await provider.getNetwork();
-
-    //const deployedNetwork:any = COMPABI.networks[networkId];
-
     const comp = new ethers.Contract(
       contractAddr,
       COMPABI.abi,
@@ -120,12 +106,9 @@ function useWeb3Modal(config = {}) {
   };
   // If autoLoad is enabled and the the wallet had been loaded before, load it automatically now.
   useEffect(() => {
-    console.log('outside')
-
     if (autoLoad && !autoLoaded && web3Modal.cachedProvider) {
       loadWeb3Modal();
       setAutoLoaded(true);
-      console.log('inside')
     }
   }, [
     

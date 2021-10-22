@@ -39,14 +39,6 @@ module.exports = {
         'connectedButton' : '#EEF6FF',
         'unconnectedButton' : '#57A2D1',
       },
-      // textColor:{
-      //   'blue' : '#2D82B7',
-      //   'lightBlue' : '#0E47EF',
-      //   'gray' : '#919191',
-      //   'black' : '#121212',
-      //   'red' : '#E84F7D',
-      //   'skyBlue' : '#5CC7F2'
-      // },
       minWidth:{
         '490px':'490px'
       },
