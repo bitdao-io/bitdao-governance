@@ -1,14 +1,29 @@
 import { useCallback, useEffect, useState } from "react";
 // import { Web3Provider } from "@ethersproject/providers";
-import Web3 from "web3";
+import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import COMPABI from "../abi/Comp.json";
 // Enter a valid infura key here to avoid being rate limited
 // You can get a key for free at https://infura.io/register
 const INFURA_ID = process.env.REACT_APP_INFURA_KEY;
+const CONTRACT_ADDR = process.env.REACT_APP_CONTRACT_ADDR;
+
 
 const NETWORK_NAME = `${process.env.REACT_APP_NETWORK_NAME}`;
+const APP_NETWORK_ID = `${process.env.REACT_APP_NETWORK_ID}`;
+const web3Modal = new Web3Modal({
+  network: NETWORK_NAME,
+  cacheProvider: true,
+  providerOptions: {
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        INFURA_ID,
+      },
+    },
+  },
+});
 
 function useWeb3Modal(config = {}) {
   const [provider, setProvider] = useState();
@@ -20,58 +35,71 @@ function useWeb3Modal(config = {}) {
     autoLoad = true,
     infuraId = INFURA_ID,
     NETWORK = NETWORK_NAME,
+    appNetworkId = APP_NETWORK_ID,
+    contractAddr = CONTRACT_ADDR,
   }: any = config;
 
   // Web3Modal also supports many other wallets.
   // You can see other options at https://github.com/Web3Modal/web3modal
-  const web3Modal = new Web3Modal({
-    network: NETWORK,
-    cacheProvider: true,
-    providerOptions: {
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          infuraId,
-        },
-      },
-    },
-  });
+  
 
   // Open wallet selection modal.
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();
 
-    const web3: any = new Web3(newProvider);
-    const net = await web3.eth.net.getId();
-   
-    setNetworkId(net);
-    const contracts = await getContracts(web3);
-    const accounts = await web3.eth.getAccounts();
+    const provider: any = new ethers.providers.Web3Provider(newProvider, 'any');
+    const net = await provider.getNetwork();
+    const chainId = net.chainId    
+    const ethereum = window.ethereum;
+    
+    setNetworkId(net.chainId);
+    provider.on("network", (network: any) => {
+      setNetworkId(network.chainId);
+      if (network.chainId != appNetworkId) {
+        console.log(`wrong network please change to ${network.chainId} ${appNetworkId} ${NETWORK}`);
+        return;
+      }
+    });
+    const contracts = await getContracts(provider);
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
     setAccounts(accounts[0]);
-    setProvider(web3);
+    setProvider(provider);
     setContracts(contracts);
 
     window.ethereum.on("accountsChanged", function (accounts: any) {
       setAccounts(accounts[0]);
     });
 
-  }, [web3Modal, accounts]);
+    if (window.ethereum?.on) {
+      window.ethereum.on('chainChanged', (chainId: number) => {
+        console.log(`chain changed to ${chainId}! updating providers`);
+      
+        setNetworkId(chainId);
+      });
+      window.ethereum.on('accountsChanged', () => {
+        console.log(`account changed!`);
+        
+      });
+      window.ethereum.on('disconnect', (code: any, reason: any) => {
+        console.log(code, reason);
+      });
+    }
+
+  }, []);
 
   const logoutOfWeb3Modal = useCallback(
     async function () {
       await web3Modal.clearCachedProvider();
       window.location.reload();
     },
-    [web3Modal]
+    []
   );
   const getContracts = async (provider: any) => {
-    const networkId: any = await provider.eth.net.getId();
-
-    //const deployedNetwork:any = COMPABI.networks[networkId];
-
-    const comp = new provider.eth.Contract(
+    const networkId: number = await provider.getNetwork();
+    const comp = new ethers.Contract(
+      contractAddr,
       COMPABI.abi,
-      process.env.REACT_APP_CONTRACT_ADDR
+      provider.getSigner()
     );
 
     return comp;
@@ -83,11 +111,11 @@ function useWeb3Modal(config = {}) {
       setAutoLoaded(true);
     }
   }, [
-    autoLoad,
+    
     autoLoaded,
-    loadWeb3Modal,
-    setAutoLoaded,
-    web3Modal.cachedProvider,
+    
+    networkId,
+    setNetworkId
   ]);
 
   return [provider, loadWeb3Modal, logoutOfWeb3Modal, contracts, accounts, networkId];

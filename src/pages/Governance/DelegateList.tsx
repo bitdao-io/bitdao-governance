@@ -1,91 +1,64 @@
-import React from "react";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import useStyles from "./Governance.styles";
 import handleNumberFormat from "../../helpers/handleNumberFormat";
+import addressTruncate from "../../helpers/addressTruncate";
 
 type DelegateListProps = {
     delegates: any;
 }
 
 function DelegateList({ delegates }: DelegateListProps) {
-  const classes = useStyles();
+  
 
   return (
-    <TableContainer component={Paper} className={classes.tableContainer}>
-      {/* sx={{ minWidth: 650 }} */}
-      <Table aria-label="simple table" style={{ tableLayout: "fixed" }}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.headtabelCell} align="center">
-                Rank
-            </TableCell>
-            <TableCell className={classes.headtabelCell} align="center">
-                Votes
-            </TableCell>
-            {/* <TableCell className={classes.headtabelCell} align="right">
-                Vote Weight
-                </TableCell> */}
-            {/* <TableCell className={classes.headtabelCell} align="right">
-                Proposals Voted
-                </TableCell> */}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {/* sx={{ "&:last-child td, &:last-child th": { border: 0 } }} */}
-          {delegates.map((row: any, index: any) => (
-          <TableRow key={index}>
-            <TableCell
-            component="th"
-            scope="row"
-            className={classes.tabelCell}
-            align="center"
-            >
-              <a
-                href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
-                target="_blank"
-              >
-                {index + 1}&nbsp;
-                <span className={classes.separator}>|</span> &nbsp;
-                {row.id.slice(0, 5) + "..." + row.id.slice(-5)}
-              </a>
-            </TableCell>
-            <TableCell className={classes.tabelCell} align="center">
-              {Number.isInteger(
-                  Number(
-                  handleNumberFormat(row.delegatedVotes).replace(
-                      /,/g,
-                      ""
-                  )
-                  )
-              )
-                  ? handleNumberFormat(row.delegatedVotes)
-                  : handleNumberFormat(
-                      Number(
-                      handleNumberFormat(row.delegatedVotes).replace(
-                          /,/g,
-                          ""
-                      )
-                      ).toFixed(2)
-                  )}
-            </TableCell>
-              {/* <TableCell className={classes.tabelCell} align="right">
-                  {console.log("total votes", totalVotes)}
-                  {((row.vote / totalVotes) * 100).toFixed(2)}%
-                  </TableCell> */}
-              {/* <TableCell className={classes.tabelCell} align="right" style={{boxShadow: "inset -1px 0px 2px #ECECEC",}}>
-                  {row.vote.toFixed(2)}
-                  </TableCell> */}
-          </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <div className="flex flex-col">
+        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div className="shadow overflow-hidden border-b border-gray-200 rounded-b-2xl">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-white">
+                  <tr>
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Rank
+                    </th>
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Votes
+                    </th>
+                    
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                {delegates.map((row: any, index: any) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-500">
+                        <a
+                        href={`${process.env.REACT_APP_ETHERSCAN_ADDRESS}${row.id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {index + 1}&nbsp;
+                        <span>|</span> &nbsp;
+                        {addressTruncate(row.id)}
+                      </a>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      {handleNumberFormat(row.delegatedVotes)}
+                      </span>
+                    </td>
+                  </tr>
+
+                ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+
+    </div>
   )
 }
 
