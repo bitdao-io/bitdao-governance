@@ -10,7 +10,8 @@ type ModalProps = {
   delegatingToAddr: any;
   txHash:any;votesDelegated:any;
   delegationClicked:any;
-  pendingTx:any;confirmedTx:any;
+  pendingTx:any;
+  confirmedTx:any;
 };
 
 function ConfiramtionPopup({
@@ -20,7 +21,8 @@ function ConfiramtionPopup({
   txHash,
   votesDelegated,
   delegationClicked,
-  pendingTx,confirmedTx
+  pendingTx,
+  confirmedTx
 }: ModalProps) {
   const cancelButtonRef = React.useRef(null)
 
