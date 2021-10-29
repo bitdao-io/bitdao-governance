@@ -4,17 +4,18 @@ import axios from "axios";
 import WalletButton from "../../components/WalletButton";
 import useWeb3Modal from "../../hooks/useWeb3Modal";
 import DelegateVoting from "./DelegateVoting";
-import ConfiramtionPopup from "./ConfirmationPopup";
+import ConfirmationPopup from "./ConfirmationPopup";
 import DelegateList from "./DelegateList";
 import handleNumberFormat from "../../helpers/handleNumberFormat";
 import addressTruncate from "../../helpers/addressTruncate";
 import NotifyPopup from "../../components/NotifyPopup";
+import Loading from "../../components/Loading";
+
 
 function Governance() {
   const [connected, setConnected] = React.useState(false);
   const [bitBalance, setBitBalance]: any = React.useState("0");
   const [open, setOpen] = React.useState(false);
-  const [openDelegate, setOpenDelegate] = React.useState(false);
   const [confirmTx, setConfirmTx] = React.useState(false);
   const [delegationToAddr, setDelegationToAddr] = React.useState("");
   const [txHash, setTxHash] = React.useState("");
@@ -25,6 +26,8 @@ function Governance() {
   const [votesDelegated, setVotesDelegated] = React.useState("0");
   const [pendingTx, setPendingTx] = React.useState(false);
   const [confirmedTx, setConfirmedTx] = React.useState(false);
+  const [loadingDelegates, setLoadingDelegates] = React.useState(true);
+  const [prefillAddress, setPrefillAddress] = React.useState("");
 
   const [
     provider,
@@ -39,7 +42,16 @@ function Governance() {
 
   const [totalVotes, setTotalVotes]: any = React.useState(0);
 
+  const handleOpenDelegation = (address?:any) => {
+    if (address) {
+      console.log('handleOpenDelegation', address);
+      setPrefillAddress(address);
+    }
+    setOpen(true);
+  };
+
   const handleOpen = () => {
+    setPrefillAddress("");
     setOpen(true);
   };
 
@@ -50,7 +62,6 @@ function Governance() {
   const handleCloseDelegate = () => {
     setOpen(false);
     setinsufficientBal(false);
-    setOpenDelegate(false);
     setDelegationClicked(false);
   };
   const handleConfirmClose = () => {
@@ -89,7 +100,8 @@ function Governance() {
   };
 
   const handleDelegateSubmit = async (address: any) => {
-    if (contracts !== undefined) {
+    if (contracts !== undefined && address) {
+      console.log(address)
       try {
         const balance = await contracts.balanceOf(accounts);
 
@@ -99,8 +111,8 @@ function Governance() {
           setDelegationToAddr(address);
           setDelegationClicked(true);
           setVotesDelegated(formatedVote);
-          setConfirmTx(true);
           setOpen(false);
+          setConfirmTx(true);
           const tx = await contracts.delegate(address)
           setPendingTx(true);
           setDelegationClicked(false);
@@ -110,7 +122,8 @@ function Governance() {
           setRefetchVotes(true);
           setConfirmedTx(true);
           setPendingTx(false);
-          setOpen(false);
+          
+          handleCloseDelegate()
           setDelegationClicked(false);
         } else {
           setinsufficientBal(true);
@@ -128,7 +141,7 @@ function Governance() {
         {
           query: `
           {
-            delegates(first: 15, orderBy: delegatedVotes, orderDirection: desc) {
+            delegates(first: 150, orderBy: delegatedVotes, orderDirection: desc) {
               id
               delegatedVotes
             }
@@ -140,7 +153,7 @@ function Governance() {
         (b: any) => b.delegatedVotes !== 0
       );
       setAddrWithVotes(allDelegators);
-
+      setLoadingDelegates(false);
       const allVotes = data.data.delegates.map(
         (item: any) => item.delegatedVotes
       );
@@ -151,6 +164,8 @@ function Governance() {
       setTotalVotes(sumOfAllVotes);
       return allDelegators;
     } catch (error: any) {
+      setLoadingDelegates(false);
+
       console.log(error.message);
       return [];
     }
@@ -204,7 +219,7 @@ function Governance() {
 
   React.useEffect(() => {
     getAllAddresses().then((res) => {});
-  }, [connected, refetchVotes, accounts]);
+  }, [refetchVotes]);
 
   function setupInstructions(){
     return (
@@ -229,6 +244,7 @@ function Governance() {
       </div>
     )
   }
+  console.log(open)
 
   return (
     <div className="bg-gradient-to-r from-brandblue-light to-brandpink-light">
@@ -363,7 +379,7 @@ function Governance() {
               {Number(bitBalance.replace(/\D/g,'')) > 0 || !accounts ? 
                   setupInstructions()
                  : (
-                  <div className="py-6 px-7 shadow rounded-b-2xl bg-white">
+                  <div className="py-6 px-7 rounded-b-2xl bg-white">
                     <p className="mb-4">
                       You don't have any BIT in your wallet!
                     </p>
@@ -385,9 +401,12 @@ function Governance() {
           <div className="py-6 px-7 text-2xl shadow rounded-t-2xl bg-white border-b">
             Top Addresses by Voting Weight
           </div>
-          <DelegateList delegates={addrWithVotes} />
+          {addrWithVotes?.length > 0 && !loadingDelegates? (
+            <DelegateList delegates={addrWithVotes} totalVotes={totalVotes} handleOpenDelegation={handleOpenDelegation}/>
+          ):(
+            <div><Loading color="#e84f7d" className="mx-auto my-3 w-1/12"/></div>
+          )}
         </div>
-
         {open && (
           <DelegateVoting
             open={open}
@@ -398,10 +417,11 @@ function Governance() {
             insufficientBal={insufficientBal}
             delegationClicked={delegationClicked}
             provider={provider}
+            prefillAddress={prefillAddress}
           />
         )}
         {confirmTx && (
-          <ConfiramtionPopup
+          <ConfirmationPopup
             open={confirmTx}
             handleClose={handleConfirmClose}
             delegatingToAddr={delegationToAddr}

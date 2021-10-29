@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, Fragment }  from "react";
+import { useCallback, useState, useRef, Fragment, useEffect }  from "react";
 import { Dialog, Transition } from '@headlessui/react'
 import addressTruncate from "../../helpers/addressTruncate";
 import UseAddressEns from "../../hooks/useAddressEns";
@@ -14,6 +14,7 @@ type ModalProps = {
   insufficientBal: any;
   delegationClicked: any;
   provider: any;
+  prefillAddress?: any;
 };
 
 function DelegateVoting({
@@ -25,6 +26,7 @@ function DelegateVoting({
   insufficientBal,
   delegationClicked,
   provider,
+  prefillAddress
 }: ModalProps) {
   const [delegationAddr, setDelegationAddr] = useState("");
   const [inputAddrorEns, setInputAddrorEns] = useState("");
@@ -34,6 +36,27 @@ function DelegateVoting({
     votingWeight: 0,
     // ensAddr: "",
   });
+  useEffect( ()=> {
+    if (prefillAddress) {
+      console.log("prefillAddress", prefillAddress);
+      setInputAddrorEns(prefillAddress);
+      fetchVotes(prefillAddress);
+    }
+
+  }, [prefillAddress])
+
+
+  const fetchVotes = (address:string) => {
+    console.log("fetchVotes", address);
+    setDelegationAddr(address);
+    const result = handleMatchAddress(address);
+    setLabel("");
+    setNameLabel({
+      name: address.toLowerCase() === ownAccount.toLowerCase() ? "You" : addressTruncate(address),
+      votingWeight: result.toFixed(4),
+      // ensAddr: result[0].EnsAddr,
+    });
+  }
 
   const validateAddress = useCallback(async (event: any) => {
     event.preventDefault();
@@ -54,28 +77,19 @@ function DelegateVoting({
     if (!resolvedAddress || addr.length < 42 || addr.length > 42) {
       setLabel("Invalid Address");
     } else {
-      if (addr.toLowerCase() === ownAccount.toLowerCase()) {
-        setDelegationAddr(addr);
-        const result = handleMatchAddress(addr);
-        setLabel("");
-        setNameLabel({
-          name: addr.toLowerCase() === ownAccount.toLowerCase() ? "You" : addr,
-          votingWeight: result.toFixed(4),
-          // ensAddr: result[0].EnsAddr,
-        });
-      } else {
-        setDelegationAddr(addr);
-        const result = handleMatchAddress(addr);
-        setLabel("");
-        setNameLabel({
-          name: addressTruncate(addr),
-          votingWeight: result.toFixed(4),
-          // ensAddr: result[0].EnsAddr,
-        });
-      }
+      fetchVotes(addr)
+        // setDelegationAddr(addr);
+        // const result = handleMatchAddress(addr);
+        // setLabel("");
+        // setNameLabel({
+        //   name: addr.toLowerCase() === ownAccount.toLowerCase() ? "You" : addressTruncate(addr),
+        //   votingWeight: result.toFixed(4),
+        //   // ensAddr: result[0].EnsAddr,
+        // });
+      
     }
 
-  }, [provider]);
+  }, [provider, prefillAddress]);
 
   const handleOwnDegelationAddr = async () => {
     setDelegationAddr(ownAccount);
