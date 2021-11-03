@@ -254,7 +254,7 @@ function Governance() {
 
         <div>
           <h1 className="font-serif text-brandblue text-center text-5xl my-5">
-            DELEGATE VOTES TEST
+            DELEGATE VOTES
           </h1>
           <p className="text-2xl text-center">
             For multisig wallets, see instructions{" "}
