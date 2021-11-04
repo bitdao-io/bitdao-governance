@@ -7,7 +7,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: staging
-    
+    env:
+      REACT_APP_CONTRACT_ADDR: ${{ secrets.REACT_APP_CONTRACT_ADDR }}
+      REACT_APP_INFURA_KEY: ${{ secrets.REACT_APP_INFURA_KEY }}
+      REACT_APP_NETWORK_NAME: ${{ secrets.REACT_APP_NETWORK_NAME }}
+      REACT_APP_NETWORK_ID: ${{ secrets.REACT_APP_NETWORK_ID }}
+      REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+      REACT_APP_GTM_ID: ${{ secrets.REACT_APP_GTM_ID }}
+      REACT_APP_SUBGRAPH_API: ${{ secrets.REACT_APP_SUBGRAPH_API }}
+      REACT_APP_ETHERSCAN: ${{ secrets.REACT_APP_ETHERSCAN }}
+      REACT_APP_ETHERSCAN_ADDRESS: ${{ secrets.REACT_APP_ETHERSCAN_ADDRESS }}
+      REACT_APP_BITDAO_DOCS: ${{ secrets.REACT_APP_BITDAO_DOCS }}
+      REACT_APP_BITDAO_SNAPSHOT: ${{ secrets.REACT_APP_BITDAO_SNAPSHOT }}
+      REACT_APP_BITDAO_LEARNMORE: ${{ secrets.REACT_APP_BITDAO_LEARNMORE }}
+      REACT_APP_BITDAO_GOVERNANCE: ${{ secrets.REACT_APP_BITDAO_GOVERNANCE }}
+      REACT_APP_SUSHI_POOL: ${{ secrets.REACT_APP_SUSHI_POOL }}
+      REACT_APP_SNAPSHOT_API: ${{ secrets.REACT_APP_SNAPSHOT_API }}
     strategy:
       matrix:
         node-version: [14.x]
