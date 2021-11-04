@@ -1,7 +1,7 @@
 import { useCallback, useState, useRef, Fragment }  from "react";
 import { Dialog, Transition } from '@headlessui/react'
 import addressTruncate from "../../helpers/addressTruncate";
-import UseAddressEns from "../../hooks/useAddressEns";
+// import UseAddressEns from "../../hooks/useAddressEns";
 import UseEnsAddress from "../../hooks/useEnsAddress";
 
 
@@ -75,7 +75,7 @@ function DelegateVoting({
       }
     }
 
-  }, [provider]);
+  }, [provider, handleMatchAddress, ownAccount]);
 
   const handleOwnDegelationAddr = async () => {
     setDelegationAddr(ownAccount);

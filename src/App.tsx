@@ -5,12 +5,9 @@ import Governance from "./pages/Governance";
 import "./fontFamily/SpaceGrotesk-Regular.ttf";
 import "./fontFamily/SpaceGrotesk-Bold.ttf";
 import "./App.css";
-declare let window: any;
-
 
 function App() {
-  
-  
+    
   return (
     <div className="App">
       <Router>

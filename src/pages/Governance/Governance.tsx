@@ -8,18 +8,18 @@ import ConfiramtionPopup from "./ConfirmationPopup";
 import DelegateList from "./DelegateList";
 import handleNumberFormat from "../../helpers/handleNumberFormat";
 import addressTruncate from "../../helpers/addressTruncate";
-import NotifyPopup from "../../components/NotifyPopup";
+// import NotifyPopup from "../../components/NotifyPopup";
 
 function Governance() {
   const [connected, setConnected] = React.useState(false);
   const [bitBalance, setBitBalance]: any = React.useState("0");
   const [open, setOpen] = React.useState(false);
-  const [openDelegate, setOpenDelegate] = React.useState(false);
+  // const [openDelegate, setOpenDelegate] = React.useState(false);
   const [confirmTx, setConfirmTx] = React.useState(false);
   const [delegationToAddr, setDelegationToAddr] = React.useState("");
   const [txHash, setTxHash] = React.useState("");
   const [insufficientBal, setinsufficientBal] = React.useState(false);
-  const [network, setNetwork] = React.useState(true);
+  // const [network, setNetwork] = React.useState(true);
   const [delegationClicked, setDelegationClicked] = React.useState(false);
   const [refetchVotes, setRefetchVotes] = React.useState(false);
   const [votesDelegated, setVotesDelegated] = React.useState("0");
@@ -37,20 +37,20 @@ function Governance() {
 
   const [addrWithVotes, setAddrWithVotes]: any[] = React.useState([]);
 
-  const [totalVotes, setTotalVotes]: any = React.useState(0);
+  // const [totalVotes, setTotalVotes]: any = React.useState(0);
 
   const handleOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const handleCloseDelegate = () => {
     setOpen(false);
     setinsufficientBal(false);
-    setOpenDelegate(false);
+    // setOpenDelegate(false);
     setDelegationClicked(false);
   };
   const handleConfirmClose = () => {
@@ -61,12 +61,12 @@ function Governance() {
     setConfirmedTx(false);
   };
 
-  const openNotifyPopup = () => {
-    setNetwork(true);
-  };
-  const closeNotifyPopup = () => {
-    setNetwork(false);
-  };
+  // const openNotifyPopup = () => {
+    // setNetwork(true);
+  // };
+  // const closeNotifyPopup = () => {
+    // setNetwork(false);
+  // };
   
   const handleWallet = () => {
     if (!provider) {
@@ -141,14 +141,14 @@ function Governance() {
       );
       setAddrWithVotes(allDelegators);
 
-      const allVotes = data.data.delegates.map(
-        (item: any) => item.delegatedVotes
-      );
-      const sumOfAllVotes = allVotes.reduce(
-        (a: any, b: any) => parseInt(a) + parseInt(b),
-        0
-      );
-      setTotalVotes(sumOfAllVotes);
+      // const allVotes = data.data.delegates.map(
+      //   (item: any) => item.delegatedVotes
+      // );
+      // const sumOfAllVotes = allVotes.reduce(
+      //   (a: any, b: any) => parseInt(a) + parseInt(b),
+      //   0
+      // );
+      // setTotalVotes(sumOfAllVotes);
       return allDelegators;
     } catch (error: any) {
       console.log(error.message);

@@ -33,7 +33,6 @@ function useWeb3Modal(config = {}) {
   const [networkId, setNetworkId]: any = useState(undefined);
   const {
     autoLoad = true,
-    infuraId = INFURA_ID,
     NETWORK = NETWORK_NAME,
     appNetworkId = APP_NETWORK_ID,
     contractAddr = CONTRACT_ADDR,
@@ -42,20 +41,30 @@ function useWeb3Modal(config = {}) {
   // Web3Modal also supports many other wallets.
   // You can see other options at https://github.com/Web3Modal/web3modal
   
-
+  
   // Open wallet selection modal.
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();
-
+    
     const provider: any = new ethers.providers.Web3Provider(newProvider, 'any');
     const net = await provider.getNetwork();
-    const chainId = net.chainId    
+    // const chainId = net.chainId    
     const ethereum = window.ethereum;
+    const getContracts = async (provider: any) => {
+      // const networkId: number = await provider.getNetwork();
+      const comp = new ethers.Contract(
+        contractAddr,
+        COMPABI.abi,
+        provider.getSigner()
+      );
+  
+      return comp;
+    };
     
     setNetworkId(net.chainId);
     provider.on("network", (network: any) => {
       setNetworkId(network.chainId);
-      if (network.chainId != appNetworkId) {
+      if (network.chainId !== appNetworkId) {
         console.log(`wrong network please change to ${network.chainId} ${appNetworkId} ${NETWORK}`);
         return;
       }
@@ -85,25 +94,16 @@ function useWeb3Modal(config = {}) {
       });
     }
 
-  }, []);
+  }, [ NETWORK, appNetworkId, contractAddr]);
 
   const logoutOfWeb3Modal = useCallback(
     async function () {
-      await web3Modal.clearCachedProvider();
+      web3Modal.clearCachedProvider();
       window.location.reload();
     },
     []
   );
-  const getContracts = async (provider: any) => {
-    const networkId: number = await provider.getNetwork();
-    const comp = new ethers.Contract(
-      contractAddr,
-      COMPABI.abi,
-      provider.getSigner()
-    );
-
-    return comp;
-  };
+  
   // If autoLoad is enabled and the the wallet had been loaded before, load it automatically now.
   useEffect(() => {
     if (autoLoad && !autoLoaded && web3Modal.cachedProvider) {
@@ -111,11 +111,11 @@ function useWeb3Modal(config = {}) {
       setAutoLoaded(true);
     }
   }, [
-    
+    autoLoad,
     autoLoaded,
-    
     networkId,
-    setNetworkId
+    setNetworkId,
+    loadWeb3Modal
   ]);
 
   return [provider, loadWeb3Modal, logoutOfWeb3Modal, contracts, accounts, networkId];

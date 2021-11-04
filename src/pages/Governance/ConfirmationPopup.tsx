@@ -74,7 +74,7 @@ function ConfiramtionPopup({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         ):(
-                          <img src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"} className="m-auto" style={{width:'45px'}}/>
+                          <img alt="" src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"} className="m-auto" style={{width:'45px'}}/>
                         )}
                       </p>
                       
@@ -89,7 +89,7 @@ function ConfiramtionPopup({
                 
                 {txHash && (
                   <p>
-                    <a href={`${process.env.REACT_APP_ETHERSCAN}${txHash}`} target="_blank" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brandpink text-base font-medium text-white hover:bg-brandpink-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mt-3 sm:text-sm">View on Etherscan</a>
+                    <a href={`${process.env.REACT_APP_ETHERSCAN}${txHash}`} target="_blank" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brandpink text-base font-medium text-white hover:bg-brandpink-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mt-3 sm:text-sm" rel="noreferrer">View on Etherscan</a>
                   </p>
                 )}
                 
