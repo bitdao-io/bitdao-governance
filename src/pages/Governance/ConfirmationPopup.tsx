@@ -74,7 +74,7 @@ function ConfiramtionPopup({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         ):(
-                          <img alt="" src={process.env.REACT_APP_CLOUDFRONT + "balLogo.png"} className="m-auto" style={{width:'45px'}}/>
+                          <img alt="" src="balLogo.png" className="m-auto" style={{width:'45px'}}/>
                         )}
                       </p>
                       

@@ -237,7 +237,7 @@ function Governance() {
           <h4>
             <img
               alt="BitDAO logo"
-              src={process.env.REACT_APP_CLOUDFRONT + "bitlogo.png"}
+              src="bitlogo.png"
             />
           </h4>
             
@@ -281,7 +281,7 @@ function Governance() {
               {accounts ? (
                 <>
                   <span>{bitBalance} </span>
-                  <img alt="" src={process.env.REACT_APP_CLOUDFRONT + "bitballogo.png"} style={{ paddingLeft: "5px" }} />
+                  <img alt="" src="bitballogo.png" style={{ paddingLeft: "5px" }} />
                 </>
               ) : (
                 <span>Connect your wallet</span>
