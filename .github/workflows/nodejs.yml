@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [main]
+    branches: [develop]
 
 jobs:
   build:
@@ -21,4 +21,4 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: curl http://deploy:11f610cce366bf21f13c595aec95a00fa0@52.23.209.207/job/bitdao_main_net/build?token=K1uZJd1HDJ11aJdjJDKO
+      - run: curl http://deploy:11f610cce366bf21f13c595aec95a00fa0@52.23.209.207/job/bitdao_test_net/build?token=JDKOK1ud1HDJ1JdjZJ1a

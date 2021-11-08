@@ -13,7 +13,6 @@ declare global {
     APP_ID: any;
   }
 }
-const BUILD_ENV = process.env.NODE_ENV;
 window.APP_ID = 10004;
 // storeChannelInfo(BUILD_ENV);
 // addGtmListener();
