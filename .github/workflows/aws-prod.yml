@@ -1,0 +1,62 @@
+name: Production Build
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      REACT_APP_CONTRACT_ADDR: ${{ secrets.REACT_APP_CONTRACT_ADDR }}
+      REACT_APP_INFURA_KEY: ${{ secrets.REACT_APP_INFURA_KEY }}
+      REACT_APP_NETWORK_NAME: ${{ secrets.REACT_APP_NETWORK_NAME }}
+      REACT_APP_NETWORK_ID: ${{ secrets.REACT_APP_NETWORK_ID }}
+      REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+      REACT_APP_GTM_ID: ${{ secrets.REACT_APP_GTM_ID }}
+      REACT_APP_SUBGRAPH_API: ${{ secrets.REACT_APP_SUBGRAPH_API }}
+      REACT_APP_ETHERSCAN: ${{ secrets.REACT_APP_ETHERSCAN }}
+      REACT_APP_ETHERSCAN_ADDRESS: ${{ secrets.REACT_APP_ETHERSCAN_ADDRESS }}
+      REACT_APP_BITDAO_DOCS: ${{ secrets.REACT_APP_BITDAO_DOCS }}
+      REACT_APP_BITDAO_SNAPSHOT: ${{ secrets.REACT_APP_BITDAO_SNAPSHOT }}
+      REACT_APP_BITDAO_LEARNMORE: ${{ secrets.REACT_APP_BITDAO_LEARNMORE }}
+      REACT_APP_BITDAO_GOVERNANCE: ${{ secrets.REACT_APP_BITDAO_GOVERNANCE }}
+      REACT_APP_SUSHI_POOL: ${{ secrets.REACT_APP_SUSHI_POOL }}
+      REACT_APP_SNAPSHOT_API: ${{ secrets.REACT_APP_SNAPSHOT_API }}
+    strategy:
+      matrix:
+        node-version: [14.x]
+        
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Yarn Install
+      run: |
+        yarn install
+    - name: Production Build
+      run: |
+        yarn build
+    - name: Unit Tests
+      run: |
+        yarn test
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --delete
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_PRODUCTION_BUCKET_NAME }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        SOURCE_DIR: "build"
+    - name: invalidate
+      uses: chetan/invalidate-cloudfront-action@v2
+      env:
+        PATHS: '/index.html'
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        DISTRIBUTION: ${{ secrets.AWS_PRODUCTION_DISTRIBUTION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
