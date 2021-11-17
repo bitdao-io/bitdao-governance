@@ -26,3 +26,6 @@ yarn-error.log*
 
 .env
 .npmrc
+
+# Intellij IDE
+.idea
