@@ -16,6 +16,9 @@ module.exports = {
           light: '#FFF6F8',
           dark: '#e71554',
         },
+        brandgreen: {
+          DEFAULT: '#adff00',
+        },
         skyBlue: {
           DEFAULT: '#5CC7F2',
 
@@ -36,8 +39,8 @@ module.exports = {
         'pageEnd' : '#FFF6F8'
       },
       backgroundColor:{
-        'connectedButton' : '#EEF6FF',
-        'unconnectedButton' : '#57A2D1',
+        'connectedButton' : '#000000',
+        'unconnectedButton' : '#ADFF00',
       },
       minWidth:{
         '490px':'490px'

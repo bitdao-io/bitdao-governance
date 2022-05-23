@@ -67,7 +67,7 @@ function Governance() {
   // const closeNotifyPopup = () => {
     // setNetwork(false);
   // };
-  
+
   const handleWallet = () => {
     if (!provider) {
       loadWeb3Modal();
@@ -208,39 +208,40 @@ function Governance() {
 
   function setupInstructions(){
     return (
-      <div className="bg-white p-7 rounded-b-2xl">
+      <div className="bg-white p-7">
         <p className="text-2xl mb-4">
           Set Up Voting
         </p>
         <p className="text-gray-500 text-xl">
-          You can delegate your votes to a third party here. Delegation can be given to one address at a time. Note that delegation does not lock or transfer tokens. <a href={`${process.env.REACT_APP_BITDAO_DOCS}`} target="_blank" rel="noreferrer" className="text-brandpink">
+          You can delegate your votes to a third party here. Delegation can be given to one address at a time. Note that delegation does not lock or transfer tokens. <a href={`${process.env.REACT_APP_BITDAO_DOCS}`} target="_blank" rel="noreferrer" className="underline">
             Learn More.
           </a>
         </p>
         <div className="text-center pt-5">
           <button
-            className="bg-brandpink rounded-2xl text-white text-base p-5 w-full max-w-xs"
+            className="btn-primary text-base p-5 w-full max-w-xs"
             onClick={connected ? handleOpen : handleWallet}
             >
             Get Started
           </button>
         </div>
-        
+
       </div>
     )
   }
 
   return (
-    <div className="bg-gradient-to-r from-brandblue-light to-brandpink-light">
+    <div className="">
       <div className="max-w-screen-md p-10 mx-auto">
-        <header className="flex justify-between items-center">
+        <header className="flex justify-between items-center p-3 mb-14">
           <h4>
             <img
               alt="BitDAO logo"
-              src="bitlogo.png"
+              src="logo.svg"
+              className="h-16"
             />
           </h4>
-            
+
           <div>
             <WalletButton
               provider={provider}
@@ -250,10 +251,10 @@ function Governance() {
             />
           </div>
         </header>
-        
 
-        <div>
-          <h1 className="font-serif text-brandblue text-center text-5xl my-5">
+
+        <div className="my-28">
+          <h1 className="font-serif text-black text-center text-5xl my-5 circle-decoration">
             DELEGATE VOTES
           </h1>
           <p className="text-2xl text-center">
@@ -262,18 +263,18 @@ function Governance() {
               href={`${process.env.REACT_APP_BITDAO_LEARNMORE}`}
               target="_blank"
               rel="noreferrer"
-              className="text-brandpink"
+              className="underline"
             >
               Here
             </a>
           </p>
         </div>
 
-        <div className="shadow rounded-2xl my-7">
-          
-          <div className="py-6 px-7 text-2xl rounded-t-2xl bg-white border-b border-opacity-40">Voting Wallet</div>
-          
-          <div className="flex p-7 bg-white border-b border-opacity-40 justify-between">
+        <div className="border border-black my-7">
+
+          <div className="py-6 px-7 text-2xl bg-white border-b border-black">Voting Wallet</div>
+
+          <div className="flex p-7 bg-white border-b border-black justify-between">
             <div>
               BIT Balance
             </div>
@@ -297,7 +298,7 @@ function Governance() {
             <>
               {delegationToAddr.toLowerCase() === accounts.toLowerCase() &&
               parseInt(bitBalance) === 0 ? null : (
-                <div className="flex p-7 bg-white border-b border-opacity-40 justify-between">
+                <div className="flex p-7 bg-white border-b border-black justify-between">
                   <div>
                     Delegating To
                   </div>
@@ -323,20 +324,20 @@ function Governance() {
                   </div>
 
                   <div>
-                    <button className="text-brandpink hover:text-current" onClick={handleOpen}>
+                    <button className="hover:text-current" onClick={handleOpen}>
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                         <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
-                      </svg>    
+                      </svg>
                     </button>
                   </div>
                 </div>
               )}
               {delegationToAddr.toLowerCase() ===
-              "0x0000000000000000000000000000000000000000" ? 
+              "0x0000000000000000000000000000000000000000" ?
                 setupInstructions()
                 : (
-                <div className="flex p-7 bg-white border-b border-opacity-40 justify-between rounded-b-2xl">
+                <div className="flex p-7 bg-white border-b border-black justify-between">
                   <div>
                     Current Votes
                   </div>
@@ -348,7 +349,7 @@ function Governance() {
                       href={`${process.env.REACT_APP_BITDAO_SNAPSHOT}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-skyBlue"
+                      className="underline"
                     >
                       Vote &rarr;
                     </a>
@@ -360,16 +361,16 @@ function Governance() {
             <>
               {/* if user is new */}
               {/* check for use balance */}
-              {Number(bitBalance.replace(/\D/g,'')) > 0 || !accounts ? 
+              {Number(bitBalance.replace(/\D/g,'')) > 0 || !accounts ?
                   setupInstructions()
                  : (
-                  <div className="py-6 px-7 shadow rounded-b-2xl bg-white">
+                  <div className="py-6 px-7 bg-white">
                     <p className="mb-4">
                       You don't have any BIT in your wallet!
                     </p>
                     <p className="flex items-center justify-center">
                       <a href={`${process.env.REACT_APP_SUSHI_POOL}`}>
-                        <button className="bg-brandpink rounded-2xl text-white text-base p-5 w-full max-w-xs">
+                        <button className="btn-primary text-base p-5 w-full max-w-xs">
                           Buy BIT
                         </button>
                       </a>
@@ -381,8 +382,8 @@ function Governance() {
           )}
         </div>
 
-        <div>
-          <div className="py-6 px-7 text-2xl shadow rounded-t-2xl bg-white border-b">
+        <div className="border border-black">
+          <div className="py-6 px-7 text-2xl bg-white border-b border-black">
             Top Addresses by Voting Weight
           </div>
           <DelegateList delegates={addrWithVotes} />
@@ -400,7 +401,7 @@ function Governance() {
             provider={provider}
           />
         )}
-        {confirmTx && (
+        {!open && confirmTx && (
           <ConfiramtionPopup
             open={confirmTx}
             handleClose={handleConfirmClose}
