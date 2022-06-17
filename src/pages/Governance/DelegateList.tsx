@@ -6,16 +6,16 @@ type DelegateListProps = {
 }
 
 function DelegateList({ delegates }: DelegateListProps) {
-  
+
 
   return (
     <div>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 rounded-b-2xl">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-white">
+            <div className="overflow-hidden ">
+              <table className="min-w-full">
+                <thead className="bg-white border-b border-black">
                   <tr>
                     <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Rank
@@ -23,10 +23,10 @@ function DelegateList({ delegates }: DelegateListProps) {
                     <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Votes
                     </th>
-                    
+
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-black border-b border-black">
                 {delegates.map((row: any, index: any) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -43,7 +43,7 @@ function DelegateList({ delegates }: DelegateListProps) {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-brandgreen ">
                       {handleNumberFormat(row.delegatedVotes)}
                       </span>
                     </td>
@@ -56,7 +56,7 @@ function DelegateList({ delegates }: DelegateListProps) {
           </div>
         </div>
       </div>
-   
+
 
     </div>
   )

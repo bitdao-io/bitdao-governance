@@ -54,15 +54,15 @@ function ConfiramtionPopup({
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" >
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4" ref={cancelButtonRef}>
                 <div className="">
                   <div className="mt-3 text-center sm:mt-0">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
                       {pendingTx?'Transaction Pending':(<>{confirmedTx?'Transaction Confirmed':'Confirm Transaction'}</>)}
                     </Dialog.Title>
                     <div className="mt-5">
-                      
+
                       <p className="text-blue-500">{votesDelegated} Votes</p>
                       <p>
                         Delegating to {addressTruncate(delegatingToAddr)}
@@ -74,10 +74,10 @@ function ConfiramtionPopup({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         ):(
-                          <img alt="" src="balLogo.png" className="m-auto" style={{width:'45px'}}/>
+                          <img alt="" src="bit-logo.png" className="m-auto" style={{width:'45px'}}/>
                         )}
                       </p>
-                      
+
                     </div>
                   </div>
                 </div>
@@ -86,13 +86,13 @@ function ConfiramtionPopup({
                 <p style={{ textAlign: "center",color: "#919191", fontSize:"14px"}}>
                   {delegationClicked?'Confirm the transaction':'Transaction Broadcast'}
                 </p>
-                
+
                 {txHash && (
                   <p>
                     <a href={`${process.env.REACT_APP_ETHERSCAN}${txHash}`} target="_blank" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brandpink text-base font-medium text-white hover:bg-brandpink-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mt-3 sm:text-sm" rel="noreferrer">View on Etherscan</a>
                   </p>
                 )}
-                
+
               </div>
             </div>
           </Transition.Child>

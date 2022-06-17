@@ -29,12 +29,12 @@ function WalletButton({
   }
   return (
     <>
-     
+
       <button
         className={
           !provider
-          ? "bg-connectedButton rounded-xl shadow-xl p-4 text-brandblue text-sm"
-          : "bg-unconnectedButton text-white rounded-xl shadow-xl py-4 px-5 text-sm"
+          ? "btn-primary p-4 text-sm "
+          : "bg-connectedButton text-white rounded-full py-4 px-5 text-sm"
         }
         color="primary"
         onClick={() => {
@@ -46,7 +46,7 @@ function WalletButton({
           }
         }}
       >
-        
+
         {!provider
           ? "Connect wallet"
           : addressTruncate(accounts)
