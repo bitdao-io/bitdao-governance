@@ -7,8 +7,25 @@ import DelegateVoting from "./DelegateVoting";
 import ConfiramtionPopup from "./ConfirmationPopup";
 import DelegateList from "./DelegateList";
 import handleNumberFormat from "../../helpers/handleNumberFormat";
+import handleIntegerFormat from "../../helpers/handleIntegerFormat";
 import addressTruncate from "../../helpers/addressTruncate";
 // import NotifyPopup from "../../components/NotifyPopup";
+
+// These addresses are known
+const addressMap: Record<string, string> = {
+  "0x853edd954dd508117cb957918378c976ac390d8e": "Bybit",
+  "0x09da12f0977ed3534124a4f593d9c1a243bea598": "Cateatpeanut", // cateatpeanut.eth
+  "0x03ba846444aab999f1536bdfa3241fd900e4a84f": "Mirana Ventures",
+  "0x7e2f1cf2174788e3dba18a3633cd33bba047b38d": "Davion Labs", // davionlabs.eth
+  "0x4e0189610ae7a2d508374edbff728cb1013c5615": "Game7 Labs",
+  "0x75c53632fb3ed2d97f4427df9b14e844ce9b6520": "Mantle Coordinator", //littlehannah.eth
+  "0xf23d8514b671262ac91a9f46b97901fa8833ab73": "Mantle Engineering",
+  "0x8c1b9df70e6cf13f8387dc2870afb3c7091f3ad5": "Mantle Product", // themantlelorian.eth
+  "0x7875923047c6043f98bdeb17f237f941c6e9fdef": "Mantle Ecosystem",
+  "0x4a8b77019176401ba65446cb9865a64bd2e4bc67": "Dragonfly",
+  "0x5bc928bf0dab1e4a2ddd9e347b0f22e88026d76c": "Pantera",
+  "0x2573010a8183a7e8bb4ad744b44cf6feb3284e8e": "Spartan"
+};
 
 function Governance() {
   const [connected, setConnected] = React.useState(false);
@@ -95,7 +112,7 @@ function Governance() {
 
         if (balance > 0) {
           const v = Number(balance.toString()) / 10 ** 18;
-          const formatedVote = handleNumberFormat(v);
+          const formatedVote = handleIntegerFormat(v);
           setDelegationToAddr(address);
           setDelegationClicked(true);
           setVotesDelegated(formatedVote);
@@ -136,9 +153,20 @@ function Governance() {
               `,
         }
       );
-      const allDelegators = data.data.delegates.filter(
+      const allDelegators = await Promise.all(data.data.delegates.filter(
         (b: any) => b.delegatedVotes !== 0
-      );
+      ).map(async (item: {
+        id: string,
+        delegatedVotes: number
+      }) => {
+        return {
+          id: item.id,
+          ens: await provider.lookupAddress(item.id),
+          name: item.id && addressMap[item.id] ? addressMap[item.id] : undefined,
+          delegatedVotes: item.delegatedVotes
+        }
+      }));
+      
       setAddrWithVotes(allDelegators);
 
       // const allVotes = data.data.delegates.map(
@@ -189,7 +217,7 @@ function Governance() {
       contracts.getCurrentVotes(accounts)
         .then((res: any) => {
           const bal = Number(res.toString()) / 10 ** 18;
-          const formatedVotes = handleNumberFormat(bal);
+          const formatedVotes = handleIntegerFormat(bal);
           setCurrentVotes(formatedVotes);
         })
         .catch((err: any) => console.log(err));

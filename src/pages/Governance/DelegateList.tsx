@@ -1,4 +1,4 @@
-import handleNumberFormat from "../../helpers/handleNumberFormat";
+import handleIntegerFormat from "../../helpers/handleIntegerFormat";
 import addressTruncate from "../../helpers/addressTruncate";
 
 type DelegateListProps = {
@@ -38,13 +38,17 @@ function DelegateList({ delegates }: DelegateListProps) {
                       >
                         {index + 1}&nbsp;
                         <span>|</span> &nbsp;
-                        {addressTruncate(row.id)}
+                        {addressTruncate(row.id)}{row.name ? <> &nbsp;
+                        <span>|</span> &nbsp;
+                        {row.name}</> : <></>}{row.ens ? <> &nbsp;
+                        <span>|</span> &nbsp;
+                        {row.ens}</> : <></>}
                       </a>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-brandgreen ">
-                      {handleNumberFormat(row.delegatedVotes)}
+                      {handleIntegerFormat(row.delegatedVotes)}
                       </span>
                     </td>
                   </tr>
