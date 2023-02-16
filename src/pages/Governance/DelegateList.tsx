@@ -21,6 +21,12 @@ function DelegateList({ delegates }: DelegateListProps) {
                       Rank
                     </th>
                     <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Name
+                    </th>
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ENS
+                    </th>
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Votes
                     </th>
 
@@ -38,13 +44,15 @@ function DelegateList({ delegates }: DelegateListProps) {
                       >
                         {index + 1}&nbsp;
                         <span>|</span> &nbsp;
-                        {addressTruncate(row.id)}{row.name ? <> &nbsp;
-                        <span>|</span> &nbsp;
-                        {row.name}</> : <></>}{row.ens ? <> &nbsp;
-                        <span>|</span> &nbsp;
-                        {row.ens}</> : <></>}
+                        {addressTruncate(row.id)}
                       </a>
                       </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {row.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {row.ens}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-brandgreen ">

@@ -154,18 +154,16 @@ function Governance() {
         }
       );
       const allDelegators = await Promise.all(data.data.delegates.filter(
-        (b: any) => b.delegatedVotes !== 0
+        (b: any) => b.delegatedVotes !== 0 && addressMap[b.id]
       ).map(async (item: {
         id: string,
         delegatedVotes: number
-      }) => {
-        return {
-          id: item.id,
-          ens: await provider.lookupAddress(item.id),
-          name: item.id && addressMap[item.id] ? addressMap[item.id] : undefined,
-          delegatedVotes: item.delegatedVotes
-        }
-      }));
+      }) => ({
+        id: item.id,
+        ens: await provider.lookupAddress(item.id),
+        name: addressMap[item.id],
+        delegatedVotes: item.delegatedVotes
+      })));
       
       setAddrWithVotes(allDelegators);
 
