@@ -42,7 +42,7 @@ function DelegateList({ delegates }: DelegateListProps) {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {index + 1}&nbsp;
+                        {row.no}&nbsp;
                         <span>|</span> &nbsp;
                         {addressTruncate(row.id)}
                       </a>

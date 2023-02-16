@@ -54,6 +54,8 @@ function Governance() {
 
   const [addrWithVotes, setAddrWithVotes]: any[] = React.useState([]);
 
+  const [page, setPage]: any[] = React.useState(0);
+
   // const [totalVotes, setTotalVotes]: any = React.useState(0);
 
   const handleOpen = () => {
@@ -145,7 +147,7 @@ function Governance() {
         {
           query: `
           {
-            delegates(first: 15, orderBy: delegatedVotes, orderDirection: desc) {
+            delegates(first: 25, skip: ${page * 25}, orderBy: delegatedVotes, orderDirection: desc, where: { delegatedVotes_gt: 0 }) {
               id
               delegatedVotes
             }
@@ -153,14 +155,14 @@ function Governance() {
               `,
         }
       );
-      const allDelegators = await Promise.all(data.data.delegates.filter(
-        (b: any) => b.delegatedVotes !== 0 && addressMap[b.id]
-      ).map(async (item: {
+      console.log(data.data.delegates);
+      const allDelegators = await Promise.all(data.data.delegates.map(async (item: {
         id: string,
         delegatedVotes: number
-      }) => ({
+      }, key: number) => ({
+        no: key + 1 + (page * 25),
         id: item.id,
-        ens: await provider.lookupAddress(item.id),
+        ens: await provider?.lookupAddress(item.id),
         name: addressMap[item.id],
         delegatedVotes: item.delegatedVotes
       })));
@@ -230,7 +232,8 @@ function Governance() {
 
   React.useEffect(() => {
     getAllAddresses().then((res) => {});
-  }, [connected, refetchVotes, accounts]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connected, refetchVotes, accounts, provider, page]);
 
   function setupInstructions(){
     return (
@@ -413,6 +416,10 @@ function Governance() {
             Top Addresses by Voting Weight
           </div>
           <DelegateList delegates={addrWithVotes} />
+          <div className="flex flex-row justify-between p-6">
+            <button onClick={() => setPage(page-1)} disabled={page === 0} className={`btn-primary text-base p-2 ${page === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Prev Page </button>
+            <button onClick={() => setPage(page+1)} className={`btn-primary text-base p-2 ${addrWithVotes.length === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Next Page</button>
+          </div>
         </div>
 
         {open && (
