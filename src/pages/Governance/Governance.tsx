@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { ethers } from "ethers";
 
 import WalletButton from "../../components/WalletButton";
 import useWeb3Modal from "../../hooks/useWeb3Modal";
@@ -10,6 +11,9 @@ import handleNumberFormat from "../../helpers/handleNumberFormat";
 import handleIntegerFormat from "../../helpers/handleIntegerFormat";
 import addressTruncate from "../../helpers/addressTruncate";
 // import NotifyPopup from "../../components/NotifyPopup";
+
+// Infura key from env
+const INFURA_ID = process.env.REACT_APP_INFURA_KEY;
 
 // These addresses are known
 const addressMap: Record<string, string> = {
@@ -29,6 +33,7 @@ const addressMap: Record<string, string> = {
 
 function Governance() {
   const [connected, setConnected] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [bitBalance, setBitBalance]: any = React.useState("0");
   const [open, setOpen] = React.useState(false);
   // const [openDelegate, setOpenDelegate] = React.useState(false);
@@ -141,6 +146,7 @@ function Governance() {
   };
 
   const getAllAddresses = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_SUBGRAPH_API}`,
@@ -155,14 +161,18 @@ function Governance() {
               `,
         }
       );
-      console.log(data.data.delegates);
+      let locProvider = provider;
+
+      if (!locProvider) {
+        locProvider = new ethers.providers.InfuraProvider("mainnet", INFURA_ID)
+      }
       const allDelegators = await Promise.all(data.data.delegates.map(async (item: {
         id: string,
         delegatedVotes: number
       }, key: number) => ({
         no: key + 1 + (page * 25),
         id: item.id,
-        ens: await provider?.lookupAddress(item.id),
+        ens: await locProvider?.lookupAddress(item.id),
         name: addressMap[item.id],
         delegatedVotes: item.delegatedVotes
       })));
@@ -177,9 +187,13 @@ function Governance() {
       //   0
       // );
       // setTotalVotes(sumOfAllVotes);
+      setLoading(false);
+
       return allDelegators;
     } catch (error: any) {
       console.log(error.message);
+      setLoading(false);
+
       return [];
     }
   };
@@ -415,10 +429,10 @@ function Governance() {
           <div className="py-6 px-7 text-2xl bg-white border-b border-black">
             Top Addresses by Voting Weight
           </div>
-          <DelegateList delegates={addrWithVotes} />
+          <DelegateList loading={loading} delegates={addrWithVotes} />
           <div className="flex flex-row justify-between p-6">
-            <button onClick={() => setPage(page-1)} disabled={page === 0} className={`btn-primary text-base p-2 ${page === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Prev Page </button>
-            <button onClick={() => setPage(page+1)} className={`btn-primary text-base p-2 ${addrWithVotes.length === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Next Page</button>
+            <button onClick={() => setPage(page-1)} disabled={loading || page === 0} className={`btn-primary text-base p-2 ${loading || page === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Prev Page </button>
+            <button onClick={() => setPage(page+1)} disabled={loading || addrWithVotes.length === 0} className={`btn-primary text-base p-2 ${loading || addrWithVotes.length === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Next Page</button>
           </div>
         </div>
 
