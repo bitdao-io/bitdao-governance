@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
-import { ethers } from "ethers";
+
+import { InfuraProvider } from "@ethersproject/providers";
 
 import WalletButton from "../../components/WalletButton";
 import useWeb3Modal from "../../hooks/useWeb3Modal";
@@ -150,17 +151,19 @@ function Governance() {
   };
 
   const getAllAddresses = async () => {
+    let allDelegators = [];
+
+    // activate loading state
     setLoading(true);
 
-    console.log("Page is", page,  document.location.href.replace(/page=(.*)$/, "page="), page)
-
+    try {
       // clean up history
       window.history.replaceState(undefined, '', document.location.href.indexOf("page=") !== -1
         ? document.location.href.replace(/page=(.*)$/, "page=") + page
         : "?page=" + page
       );
 
-    try {
+      // get next page of data
       const { data } = await axios.post(
         `${process.env.REACT_APP_SUBGRAPH_API}`,
         {
@@ -170,16 +173,20 @@ function Governance() {
               id
               delegatedVotes
             }
-          }
-              `,
+          }`,
         }
       );
+
+      // if a provider is connected we can use that to resolve ens addresses
       let locProvider = provider;
 
+      // otherwise we need to use our own infura api key to construct a new provider
       if (!locProvider) {
-        locProvider = new ethers.providers.InfuraProvider("mainnet", INFURA_ID)
+        locProvider = new InfuraProvider("mainnet", INFURA_ID)
       }
-      const allDelegators = await Promise.all(data.data.delegates.map(async (item: {
+      
+      // map the current set of addresses against the known addresses and resolve ens names
+      allDelegators = await Promise.all(data.data.delegates.map(async (item: {
         id: string,
         delegatedVotes: number
       }, key: number) => ({
@@ -189,8 +196,17 @@ function Governance() {
         name: addressMap[item.id],
         delegatedVotes: item.delegatedVotes
       })));
-      
+    } catch (error: any) {
+      // print error in console
+      console.log(error.message);
+      // allDelegators should definitely be empty
+      allDelegators = [];
+    } finally {
+      // set state
       setAddrWithVotes(allDelegators);
+
+      // clear loading state
+      setLoading(false);
 
       // const allVotes = data.data.delegates.map(
       //   (item: any) => item.delegatedVotes
@@ -200,14 +216,9 @@ function Governance() {
       //   0
       // );
       // setTotalVotes(sumOfAllVotes);
-      setLoading(false);
 
+      // return all delagtors with mapped ens names and appropriate no. index (empty arr if err)
       return allDelegators;
-    } catch (error: any) {
-      console.log(error.message);
-      setLoading(false);
-
-      return [];
     }
   };
 
