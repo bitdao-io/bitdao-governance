@@ -48,6 +48,10 @@ function Governance() {
   const [pendingTx, setPendingTx] = React.useState(false);
   const [confirmedTx, setConfirmedTx] = React.useState(false);
 
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
+  const initialPage = Number(params.get('page'));
+
   const [
     provider,
     loadWeb3Modal,
@@ -59,7 +63,7 @@ function Governance() {
 
   const [addrWithVotes, setAddrWithVotes]: any[] = React.useState([]);
 
-  const [page, setPage]: any[] = React.useState(0);
+  const [page, setPage]: any[] = React.useState(isNaN(initialPage) ? 1 : initialPage > 0 ? initialPage : 1);
 
   // const [totalVotes, setTotalVotes]: any = React.useState(0);
 
@@ -147,13 +151,22 @@ function Governance() {
 
   const getAllAddresses = async () => {
     setLoading(true);
+
+    console.log("Page is", page,  document.location.href.replace(/page=(.*)$/, "page="), page)
+
+      // clean up history
+      window.history.replaceState(undefined, '', document.location.href.indexOf("page=") !== -1
+        ? document.location.href.replace(/page=(.*)$/, "page=") + page
+        : "?page=" + page
+      );
+
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_SUBGRAPH_API}`,
         {
           query: `
           {
-            delegates(first: 25, skip: ${page * 25}, orderBy: delegatedVotes, orderDirection: desc, where: { delegatedVotes_gt: 0 }) {
+            delegates(first: 25, skip: ${(page-1) * 25}, orderBy: delegatedVotes, orderDirection: desc, where: { delegatedVotes_gt: 0 }) {
               id
               delegatedVotes
             }
@@ -170,7 +183,7 @@ function Governance() {
         id: string,
         delegatedVotes: number
       }, key: number) => ({
-        no: key + 1 + (page * 25),
+        no: key + 1 + ((page-1) * 25),
         id: item.id,
         ens: await locProvider?.lookupAddress(item.id),
         name: addressMap[item.id],
@@ -431,8 +444,8 @@ function Governance() {
           </div>
           <DelegateList loading={loading} delegates={addrWithVotes} />
           <div className="flex flex-row justify-between p-6">
-            <button onClick={() => setPage(page-1)} disabled={loading || page === 0} className={`btn-primary text-base p-2 ${loading || page === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Prev Page </button>
-            <button onClick={() => setPage(page+1)} disabled={loading || addrWithVotes.length === 0} className={`btn-primary text-base p-2 ${loading || addrWithVotes.length === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Next Page</button>
+            <button onClick={() => setPage(page-1)} disabled={loading || page === 1} className={`btn-primary text-base p-2 ${loading || page === 1 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Prev Page </button>
+            <button onClick={() => setPage(page+1)} disabled={loading || addrWithVotes.length !== 25} className={`btn-primary text-base p-2 ${loading || addrWithVotes.length !== 25 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Next Page</button>
           </div>
         </div>
 
