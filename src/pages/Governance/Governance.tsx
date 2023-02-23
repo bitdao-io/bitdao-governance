@@ -16,7 +16,7 @@ const addressMap: Record<string, string> = {
   "0x853edd954dd508117cb957918378c976ac390d8e": "Bybit",
   "0x09da12f0977ed3534124a4f593d9c1a243bea598": "Cateatpeanut", // cateatpeanut.eth
   "0x03ba846444aab999f1536bdfa3241fd900e4a84f": "Mirana Ventures",
-  "0x7e2f1cf2174788e3dba18a3633cd33bba047b38d": "Davion Labs", // davionlabs.eth
+  "0x7e2f1cf2174788e3dba18a3633cd33bba047b38d": "Apex Protocol", // davionlabs.eth
   "0x4e0189610ae7a2d508374edbff728cb1013c5615": "Game7 Labs",
   "0x75c53632fb3ed2d97f4427df9b14e844ce9b6520": "Mantle Coordinator", //littlehannah.eth
   "0xf23d8514b671262ac91a9f46b97901fa8833ab73": "Mantle Engineering",
