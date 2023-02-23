@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 
+import { InfuraProvider } from "@ethersproject/providers";
+
 import WalletButton from "../../components/WalletButton";
 import useWeb3Modal from "../../hooks/useWeb3Modal";
 import DelegateVoting from "./DelegateVoting";
@@ -10,6 +12,9 @@ import handleNumberFormat from "../../helpers/handleNumberFormat";
 import handleIntegerFormat from "../../helpers/handleIntegerFormat";
 import addressTruncate from "../../helpers/addressTruncate";
 // import NotifyPopup from "../../components/NotifyPopup";
+
+// Infura key from env
+const INFURA_ID = process.env.REACT_APP_INFURA_KEY;
 
 // These addresses are known
 const addressMap: Record<string, string> = {
@@ -29,6 +34,7 @@ const addressMap: Record<string, string> = {
 
 function Governance() {
   const [connected, setConnected] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [bitBalance, setBitBalance]: any = React.useState("0");
   const [open, setOpen] = React.useState(false);
   // const [openDelegate, setOpenDelegate] = React.useState(false);
@@ -43,6 +49,10 @@ function Governance() {
   const [pendingTx, setPendingTx] = React.useState(false);
   const [confirmedTx, setConfirmedTx] = React.useState(false);
 
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
+  const initialPage = Number(params.get('page'));
+
   const [
     provider,
     loadWeb3Modal,
@@ -54,7 +64,7 @@ function Governance() {
 
   const [addrWithVotes, setAddrWithVotes]: any[] = React.useState([]);
 
-  const [page, setPage]: any[] = React.useState(0);
+  const [page, setPage]: any[] = React.useState(isNaN(initialPage) ? 1 : initialPage > 0 ? initialPage : 1);
 
   // const [totalVotes, setTotalVotes]: any = React.useState(0);
 
@@ -141,33 +151,62 @@ function Governance() {
   };
 
   const getAllAddresses = async () => {
+    let allDelegators = [];
+
+    // activate loading state
+    setLoading(true);
+
     try {
+      // clean up history
+      window.history.replaceState(undefined, '', document.location.href.indexOf("page=") !== -1
+        ? document.location.href.replace(/page=(.*)$/, "page=") + page
+        : "?page=" + page
+      );
+
+      // get next page of data
       const { data } = await axios.post(
         `${process.env.REACT_APP_SUBGRAPH_API}`,
         {
           query: `
           {
-            delegates(first: 25, skip: ${page * 25}, orderBy: delegatedVotes, orderDirection: desc, where: { delegatedVotes_gt: 0 }) {
+            delegates(first: 25, skip: ${(page-1) * 25}, orderBy: delegatedVotes, orderDirection: desc, where: { delegatedVotes_gt: 0 }) {
               id
               delegatedVotes
             }
-          }
-              `,
+          }`,
         }
       );
-      console.log(data.data.delegates);
-      const allDelegators = await Promise.all(data.data.delegates.map(async (item: {
+
+      // if a provider is connected we can use that to resolve ens addresses
+      let locProvider = provider;
+
+      // otherwise we need to use our own infura api key to construct a new provider
+      if (!locProvider) {
+        locProvider = new InfuraProvider("mainnet", INFURA_ID)
+      }
+      
+      // map the current set of addresses against the known addresses and resolve ens names
+      allDelegators = await Promise.all(data.data.delegates.map(async (item: {
         id: string,
         delegatedVotes: number
       }, key: number) => ({
-        no: key + 1 + (page * 25),
+        no: key + 1 + ((page-1) * 25),
         id: item.id,
-        ens: await provider?.lookupAddress(item.id),
+        ens: await locProvider?.lookupAddress(item.id),
         name: addressMap[item.id],
         delegatedVotes: item.delegatedVotes
       })));
-      
+    } catch (error: any) {
+      // print error in console
+      console.log(error.message);
+      // allDelegators should definitely be empty
+      allDelegators = [];
+    } finally {
+      // set state
       setAddrWithVotes(allDelegators);
+
+      // clear loading state
+      setLoading(false);
 
       // const allVotes = data.data.delegates.map(
       //   (item: any) => item.delegatedVotes
@@ -177,10 +216,9 @@ function Governance() {
       //   0
       // );
       // setTotalVotes(sumOfAllVotes);
+
+      // return all delagtors with mapped ens names and appropriate no. index (empty arr if err)
       return allDelegators;
-    } catch (error: any) {
-      console.log(error.message);
-      return [];
     }
   };
 
@@ -415,10 +453,10 @@ function Governance() {
           <div className="py-6 px-7 text-2xl bg-white border-b border-black">
             Top Addresses by Voting Weight
           </div>
-          <DelegateList delegates={addrWithVotes} />
+          <DelegateList loading={loading} delegates={addrWithVotes} />
           <div className="flex flex-row justify-between p-6">
-            <button onClick={() => setPage(page-1)} disabled={page === 0} className={`btn-primary text-base p-2 ${page === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Prev Page </button>
-            <button onClick={() => setPage(page+1)} className={`btn-primary text-base p-2 ${addrWithVotes.length === 0 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Next Page</button>
+            <button onClick={() => setPage(page-1)} disabled={loading || page === 1} className={`btn-primary text-base p-2 ${loading || page === 1 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Prev Page </button>
+            <button onClick={() => setPage(page+1)} disabled={loading || addrWithVotes.length !== 25} className={`btn-primary text-base p-2 ${loading || addrWithVotes.length !== 25 ? 'cursor-default pointer-events-none opacity-70' : ''}`}>Next Page</button>
           </div>
         </div>
 
